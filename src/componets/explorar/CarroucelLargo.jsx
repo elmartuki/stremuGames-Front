@@ -1,15 +1,26 @@
 import "../../css/explorarPage.css";
-import sell from "../../icons/sell.svg";
-
 import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
 
-export default function CarroucelLargo() {
+export default function CarroucelLargo({ filtrar }) {
   const { listado } = useObtenerJuegosParthner();
+
+  let juegosParaMostrar = listado ? [...listado] : [];
+
+  if (filtrar === "Populares") {
+    juegosParaMostrar.sort((a, b) => b.cantidadVotos - a.cantidadVotos);
+  } else if (filtrar === "Recientes") {
+    juegosParaMostrar.sort((a, b) => b.createdAt - a.createdAt);
+  } else if (filtrar) {
+    juegosParaMostrar = juegosParaMostrar.filter((juego) =>
+      juego.categorias.includes(filtrar)
+    );
+  }
+
   return (
     <>
-      {listado?.map((juego) => {
-        console.log(juego);
+      {juegosParaMostrar?.map((juego) => {
         const {
+          _id,
           titulo,
           imagenPortada,
           desarrolladora,
@@ -17,20 +28,25 @@ export default function CarroucelLargo() {
           precioBase,
         } = juego;
 
-        const porcentaje = ((precioBase - precioDescuento) / precioBase) * 100;
         return (
-          <article className="juego_card large">
+          <article key={_id} className="juego_card large">
             <div className="juego_card_imagen">
-              <img src={imagenPortada} alt="" />
+              <img src={imagenPortada} alt={titulo} />
             </div>
             <div className="juego_card_data">
               <p className="juego_card_data_titulo">{titulo}</p>
-
               <p className="juego_card_data_empresa">{desarrolladora}</p>
 
-              <div>
-                <p>${precioBase}</p>
-              </div>
+              {precioDescuento !== precioBase ? (
+                <div>
+                  <p>${precioDescuento}</p>
+                  <p>${precioBase}</p>
+                </div>
+              ) : (
+                <div>
+                  <p>${precioBase}</p>
+                </div>
+              )}
             </div>
           </article>
         );
