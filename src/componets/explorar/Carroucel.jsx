@@ -5,9 +5,14 @@ import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
 
 export default function Carroucel() {
   const { listado } = useObtenerJuegosParthner();
+
+  const listadoFiltrado = listado.filter((juego) => {
+    return juego.precioDescuento < juego.precioBase;
+  });
+
   return (
     <>
-      {listado?.map((juego) => {
+      {listadoFiltrado?.map((juego) => {
         console.log(juego);
         const {
           titulo,

@@ -40,6 +40,25 @@ export default function ExplorarPage() {
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div>
+            <p>Juegos Populares</p>
+            <p>Los juegos en tendencias</p>
+          </div>
+
+          <div>
+            <p>
+              Ver todo <img src={rigth_green} alt="" />
+            </p>
+          </div>
+        </div>
+
+        <section className="carroucel_section">
+          <CarroucelLargo filtrar={"Populares"} />
+        </section>
+      </section>
+
+      <section className="explorar_carroucel">
+        <div className="explorar_carroucel_header">
+          <div>
             <p>Agregados Recientemente</p>
             <p>Novedades en stremu</p>
           </div>
@@ -52,12 +71,52 @@ export default function ExplorarPage() {
         </div>
 
         <section className="carroucel_section">
-          <CarroucelLargo />
+          <CarroucelLargo filtrar={"Recientes"} />
         </section>
+      </section>
 
-        <section className="categorias_section">
-          <Categorias />
+      <section className="explorar_carroucel">
+        <div className="explorar_carroucel_header">
+          <div>
+            <p>Carreras</p>
+            <p>Descubre todos los juegos de Carreras</p>
+          </div>
+
+          <div>
+            <p>
+              Ver todo <img src={rigth_green} alt="" />
+            </p>
+          </div>
+        </div>
+
+        <section className="carroucel_section">
+          <CarroucelLargo filtrar={"Carreras"} />
         </section>
+      </section>
+
+      <section className="explorar_carroucel">
+        <div className="explorar_carroucel_header">
+          <div>
+            <p>Terror</p>
+            <p>Descubre todos los juegos de terror</p>
+          </div>
+
+          <div>
+            <p>
+              Ver todo <img src={rigth_green} alt="" />
+            </p>
+          </div>
+        </div>
+
+        <section className="carroucel_section">
+          <CarroucelLargo filtrar={"Terror"} />
+        </section>
+      </section>
+
+      <p className="explorar_page_titulo">Categorias Populares</p>
+
+      <section className="categorias_section">
+        <Categorias />
       </section>
     </section>
   );
