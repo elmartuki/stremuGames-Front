@@ -1,0 +1,178 @@
+.explorar_page_section {
+  .categorias_section {
+    width: 95%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+
+    .categoria {
+      width: 48%;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 1.3rem;
+    }
+  }
+
+  .explorar_page_search {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #282828;
+
+    div {
+      width: 90%;
+      margin: auto;
+      display: flex;
+      background-color: #282828;
+      border-radius: 10px;
+      padding: 0px 15px;
+      border: 2px solid #3f3f3f;
+      input {
+        background-color: transparent;
+        padding: 10px 10px;
+        font-size: 1rem;
+        border: none;
+        width: 100%;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+
+  .explorar_carroucel {
+    .explorar_carroucel_header {
+      width: 90%;
+      margin: auto;
+      margin: 6px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      div:nth-child(1) {
+        p:nth-child(1) {
+          display: flex;
+          gap: 3px;
+          align-items: center;
+          justify-content: center;
+          justify-content: centers;
+          font-size: 1.2rem;
+        }
+
+        p:nth-child(2) {
+          opacity: 70%;
+          font-size: 0.9rem;
+        }
+      }
+
+      div:nth-child(2) {
+        p {
+          font-size: 1.1rem;
+          display: flex;
+          color: #4caf50;
+          gap: 2px;
+          align-items: center;
+          justify-content: center;
+          img {
+            width: 16px;
+          }
+        }
+      }
+    }
+
+    .carroucel_section {
+      display: flex;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      gap: 15px;
+      padding: 10px;
+
+      .large {
+        width: 45% !important;
+        border: none !important;
+
+        .juego_card_data {
+          padding-top: 2px !important;
+          gap: 10px !important;
+
+          .juego_card_data_titulo {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          div {
+            p:nth-child(1) {
+              opacity: 100% !important;
+              text-decoration: none !important;
+            }
+          }
+        }
+        .juego_card_imagen {
+          img {
+            border-radius: 10px;
+            height: 240px !important;
+          }
+        }
+      }
+
+      .juego_card {
+        width: 70%;
+        border: 2px solid #282828;
+        flex-shrink: 0;
+        border-radius: 10px;
+
+        .juego_card_data {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 10px;
+          div {
+            display: flex;
+
+            gap: 5px;
+
+            p:nth-child(1) {
+              text-decoration: line-through;
+              opacity: 50%;
+            }
+          }
+
+          .juego_card_data_empresa {
+            opacity: 50%;
+          }
+
+          .juego_card_data_titulo {
+            font-size: 1.2rem;
+          }
+
+          button {
+            width: 100%;
+            border-radius: 6px;
+            padding: 3px 10px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background-color: #d9770036;
+            border: 1.5px solid #bc6800;
+          }
+        }
+
+        .juego_card_imagen {
+          img {
+            width: 100%;
+            height: 120px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+}
