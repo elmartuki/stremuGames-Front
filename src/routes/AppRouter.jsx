@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import ParthnersPage from "../pages/ParthnersPage.jsx";
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
+import ExplorarPage from "../pages/ExplorarPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -11,6 +12,15 @@ export default function AppRouter() {
         element={
           <>
             <ParthnersPage />
+          </>
+        }
+      />
+
+      <Route
+        path="/explorar"
+        element={
+          <>
+            <ExplorarPage />
           </>
         }
       />
