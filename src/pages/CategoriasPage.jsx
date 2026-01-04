@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { categorias } from "../constants/categorias.js";
 import "../css/categoriasPage.css";
 import search from "../icons/search.svg";
@@ -7,6 +8,8 @@ import { useObtenerJuegosParthner } from "../services/obtenerJuegosParthner";
 
 export default function CategoriasPage() {
   const [buscar, setBuscar] = useState("");
+
+  const navigate = useNavigate();
 
   const { listado } = useObtenerJuegosParthner();
 
@@ -40,6 +43,9 @@ export default function CategoriasPage() {
 
           return (
             <article
+              onClick={() => {
+                navigate(`/categorias/${item.nombre}`);
+              }}
               key={index}
               className="categoria"
               style={{ background: item.color }}

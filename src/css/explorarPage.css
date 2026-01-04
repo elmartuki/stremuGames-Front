@@ -19,8 +19,9 @@
       padding: 18px 10px;
       border-radius: 10px;
       font-size: 1.3rem;
-      display: flex;
       justify-content: space-between;
+      display: flex;
+      flex-direction: row-reverse;
     }
   }
 

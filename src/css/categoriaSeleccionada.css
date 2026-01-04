@@ -1,0 +1,92 @@
+.categoria_seleccionada_page {
+  .juegos_section {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px auto;
+
+    .juegos {
+      display: flex;
+      flex-direction: column;
+      width: 45vw;
+      border-radius: 10px;
+      border: 2px solid #282828;
+      background-color: #282828;
+
+      .juegos_data {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+        flex-grow: 1;
+
+        .juegos_data_empresa {
+          opacity: 70%;
+          font-size: 0.9rem;
+        }
+
+        .juegos_data_precio_sin_descuento {
+          margin-top: auto;
+        }
+        .juegos_data_precio_con_descuento {
+          margin-top: auto;
+
+          p:nth-child(1) {
+            opacity: 60%;
+            text-decoration: line-through;
+          }
+        }
+      }
+
+      .juegos_imagen {
+        height: 200px;
+        position: relative;
+
+        .juegos_imagen_porcentaje {
+          position: absolute;
+          left: 10px;
+          top: 5px;
+          background-color: #970f0084;
+          padding: 0px 10px;
+          border-radius: 5px;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          object-fit: cover;
+        }
+      }
+    }
+  }
+
+  .categoria_seleccionada_search {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #282828;
+
+    div {
+      width: 93%;
+      margin: auto;
+      display: flex;
+      background-color: #282828;
+      border-radius: 10px;
+      padding: 0px 15px;
+      border: 2px solid #3f3f3f;
+      input {
+        background-color: transparent;
+        padding: 10px 10px;
+        font-size: 1rem;
+        border: none;
+        width: 100%;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
