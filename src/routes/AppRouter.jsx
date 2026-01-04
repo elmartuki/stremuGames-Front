@@ -3,6 +3,8 @@ import ParthnersPage from "../pages/ParthnersPage.jsx";
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
+import CategoriasPage from "../pages/CategoriasPage.jsx";
+import CategoriaSeleccionadaPage from "../pages/CategoriaSeleccionadaPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -12,6 +14,24 @@ export default function AppRouter() {
         element={
           <>
             <ParthnersPage />
+          </>
+        }
+      />
+
+      <Route
+        path="/categorias"
+        element={
+          <>
+            <CategoriasPage />
+          </>
+        }
+      />
+
+      <Route
+        path="/categorias/:id"
+        element={
+          <>
+            <CategoriaSeleccionadaPage />
           </>
         }
       />
