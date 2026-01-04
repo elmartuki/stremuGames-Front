@@ -5,6 +5,7 @@ import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
 import CategoriasPage from "../pages/CategoriasPage.jsx";
 import CategoriaSeleccionadaPage from "../pages/CategoriaSeleccionadaPage.jsx";
+import Footer from "../componets/footer/FooterPhone.jsx";
 
 export default function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export default function AppRouter() {
         element={
           <>
             <ParthnersPage />
+            <Footer />
           </>
         }
       />
@@ -23,6 +25,7 @@ export default function AppRouter() {
         element={
           <>
             <CategoriasPage />
+            <Footer />
           </>
         }
       />
@@ -32,6 +35,7 @@ export default function AppRouter() {
         element={
           <>
             <CategoriaSeleccionadaPage />
+            <Footer />
           </>
         }
       />
@@ -41,6 +45,7 @@ export default function AppRouter() {
         element={
           <>
             <ExplorarPage />
+            <Footer />
           </>
         }
       />
@@ -50,6 +55,7 @@ export default function AppRouter() {
         element={
           <>
             <SubirJuego />
+            <Footer />
           </>
         }
       />
@@ -59,6 +65,7 @@ export default function AppRouter() {
         element={
           <>
             <EditarJuego />
+            <Footer />
           </>
         }
       />
