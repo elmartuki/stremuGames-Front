@@ -7,6 +7,8 @@ import CategoriasPage from "../pages/CategoriasPage.jsx";
 import CategoriaSeleccionadaPage from "../pages/CategoriaSeleccionadaPage.jsx";
 import Footer from "../componets/footer/FooterPhone.jsx";
 import PerfilPage from "../pages/PerfilPage.jsx";
+import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
+import RegistroEmpresaPage from "../pages/RegistroEmpresaPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -56,6 +58,26 @@ export default function AppRouter() {
         element={
           <>
             <PerfilPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/registro-empresa/"
+        element={
+          <>
+            <RegistroEmpresaPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/login-empresa/"
+        element={
+          <>
+            <LoginEmpresaPage />
             <Footer />
           </>
         }

@@ -1,0 +1,27 @@
+.formulario_login_section {
+  .seccion_2 {
+    .formulario_login {
+      .formulario_login_header {
+        text-align: center;
+
+        p:nth-child(2) {
+          font-size: 1.4rem;
+        }
+        p:nth-child(3) {
+          font-size: 0.8rem;
+          opacity: 70%;
+        }
+
+        div:nth-child(1) {
+          margin: auto;
+          width: fit-content;
+          background-color: #00dc82;
+          border-radius: 10px;
+          img {
+            width: 50px;
+          }
+        }
+      }
+    }
+  }
+}
