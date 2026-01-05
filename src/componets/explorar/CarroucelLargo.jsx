@@ -1,4 +1,5 @@
 import "../../css/explorarPage.css";
+import { useAgregarJuegoAlcarrito } from "../../services/agregarAlCarrito";
 import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
 
 export default function CarroucelLargo({ filtrar }) {
@@ -29,7 +30,11 @@ export default function CarroucelLargo({ filtrar }) {
         } = juego;
 
         return (
-          <article key={_id} className="juego_card large">
+          <article
+            onClick={() => useAgregarJuegoAlcarrito(_id)}
+            key={_id}
+            className="juego_card large"
+          >
             <div className="juego_card_imagen">
               <img src={imagenPortada} alt={titulo} />
             </div>

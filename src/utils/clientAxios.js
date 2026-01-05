@@ -6,7 +6,7 @@ const clientAxios = axios.create({
 });
 
 clientAxios.interceptors.request.use((config) => {
-  let token = localStorage.getItem("token");
+  let token = localStorage.getItem("TokenStremuGames");
   if (token) {
     token = token.replace(/"/g, "");
     config.headers.Authorization = `Bearer ${token}`;
