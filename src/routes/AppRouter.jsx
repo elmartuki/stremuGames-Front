@@ -6,6 +6,7 @@ import ExplorarPage from "../pages/ExplorarPage.jsx";
 import CategoriasPage from "../pages/CategoriasPage.jsx";
 import CategoriaSeleccionadaPage from "../pages/CategoriaSeleccionadaPage.jsx";
 import Footer from "../componets/footer/FooterPhone.jsx";
+import PerfilPage from "../pages/PerfilPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -45,6 +46,16 @@ export default function AppRouter() {
         element={
           <>
             <ExplorarPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/perfil/"
+        element={
+          <>
+            <PerfilPage />
             <Footer />
           </>
         }
