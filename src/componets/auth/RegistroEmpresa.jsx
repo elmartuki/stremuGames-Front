@@ -1,62 +1,69 @@
 import "../../css/login.css";
 import code from "../../icons/code.svg";
+import empresa from "../../icons/empresa.svg";
+import mail from "../../icons/mail.svg";
+import lock from "../../icons/lock.svg";
+import lock_repeat from "../../icons/lock-repeat.svg";
+import link from "../../icons/link.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistroEmpresa() {
+  const navigate = useNavigate();
+
   return (
     <div className="formulario_login">
       <div className="formulario_login_header">
         <div>
           <img src={code} alt="" />
         </div>
-       
+
         <p>Publica tus juegos</p>
         <p>
-          Crea una cuenta de desarrolladora de videojuegos para distribuir tus
-          titulos, gestionarlos y entrentar a miles de jugadores.
+          Crea una cuenta para tu estudio de videojuegos para poder distribuir
+          tus titulos, gestionarlos y entretener a miles de jugadores.
         </p>
       </div>
 
       <section>
         <p>Nombre del estudio</p>
 
-        <div>
-          <img src="" alt="" />
-          <input type="text" placeholder="ejemplo" />
+        <div className="input_container">
+          <img src={empresa} alt="" />
+          <input type="text" placeholder="Ej. PixelGames" />
         </div>
 
-        <p>Nombre del estudio</p>
+        <p>Correo Electronico</p>
 
-        <div>
-          <img src="" alt="" />
-          <input type="text" placeholder="ejemplo" />
-        </div>
-
-        <p>Correo electronico</p>
-
-        <div>
-          <img src="" alt="" />
-          <input type="text" placeholder="ejemplo" />
+        <div className="input_container">
+          <img src={mail} alt="" />
+          <input type="text" placeholder="Ej. pixelgames@gmail.com" />
         </div>
 
         <p>Contraseña</p>
 
-        <div>
-          <img src="" alt="" />
-          <input type="text" placeholder="ejemplo" />
+        <div className="input_container">
+          <img src={lock} alt="" />
+          <input type="text" placeholder="Ingrese una contraseña" />
         </div>
 
         <p>Repetir contraseña</p>
 
-        <div>
-          <img src="" alt="" />
-          <input type="text" placeholder="ejemplo" />
+        <div className="input_container">
+          <img src={lock_repeat} alt="" />
+          <input type="text" placeholder="Repita la contraseña" />
         </div>
 
         <button>Registrar Desarrolladora</button>
 
-        <p>Tu estudio ya esta registrado?</p>
-
-        <p>Inicia Sesión en el Parthner Portal</p>
+        <div className="formulario_login_footer">
+          <p>¿Ya tienes registrado tu estudio?</p>
+          <div>
+            <p>Inicia sesión</p>
+            <p onClick={() => navigate("/login-empresa")}>
+              haciendo click acá <img src={link} alt="" />
+            </p>
+          </div>
+        </div>
       </section>
     </div>
   );

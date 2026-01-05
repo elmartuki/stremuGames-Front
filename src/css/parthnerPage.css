@@ -3,6 +3,7 @@
   justify-content: space-between;
   padding: 5px 15px;
   border-bottom: 2px solid rgb(56, 56, 56);
+  user-select: none;
 
   img {
     width: 26px;
