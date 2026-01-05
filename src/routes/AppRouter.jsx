@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import ParthnersPage from "../pages/ParthnersPage.jsx";
-import EditarJuego from "../componets/partners/EditarJuego.jsx";
+import ParthnersPage from "../pages/ParthnersPage.jsx"; 
+import EditarJuego from "../componets/partners/EditarJuego.jsx"; 
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
 import CategoriasPage from "../pages/CategoriasPage.jsx";
@@ -8,12 +8,14 @@ import CategoriaSeleccionadaPage from "../pages/CategoriaSeleccionadaPage.jsx";
 import Footer from "../componets/footer/FooterPhone.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
+import PerfilPage from "../pages/PerfilPage.jsx";
 import UsserRouter from "./UsserRouter.jsx";
 import StudioRouter from "./StudioRouter.jsx";
 
 export default function AppRouter() {
   return (
     <Routes>
+    
       <Route
         path="/registro"
         element={
@@ -32,6 +34,8 @@ export default function AppRouter() {
           </>
         }
       />
+
+   
       <Route element={<UsserRouter />}>
         <Route
           path="/categorias"
@@ -42,7 +46,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/categorias/:id"
           element={
@@ -52,7 +55,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/explorar"
           element={
@@ -62,8 +64,18 @@ export default function AppRouter() {
             </>
           }
         />
+        <Route
+          path="/perfil"
+          element={
+            <>
+              <PerfilPage />
+              <Footer />
+            </>
+          }
+        />
       </Route>
 
+    
       <Route element={<StudioRouter />}>
         <Route
           path="/parthner"
@@ -75,7 +87,7 @@ export default function AppRouter() {
           }
         />
         <Route
-          path="/parthner/crear-juego/"
+          path="/parthner/crear-juego"
           element={
             <>
               <SubirJuego />
@@ -83,7 +95,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/parthner/editar-juego/:id"
           element={
