@@ -10,7 +10,7 @@ export default function ParthnersPage() {
     <>
       <section className="parthnerPage_section">
         <nav className="navbar-phone">
-          <img src={back} alt="" />
+          <img onClick={navigate(-1)} src={back} alt="" />
           <div>
             <p>Panel de desarrollador</p>
             <p>Gestiona tus juegos.</p>
