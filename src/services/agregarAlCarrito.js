@@ -1,5 +1,3 @@
-import { jwtDecode } from "jwt-decode";
-import { useObtenerUsuario } from "./obtenerUsuario";
 import clientAxios from "../utils/clientAxios";
 
 export const useAgregarJuegoAlcarrito = async (producto) => {
