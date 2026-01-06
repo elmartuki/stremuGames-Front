@@ -1,0 +1,138 @@
+.perfil_config_section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .perfil_config_footer {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+
+    p {
+      opacity: 70%;
+      margin-top: 10px;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1rem;
+      border: 2px solid rgba(255, 0, 0, 0.317);
+      border-radius: 10px;
+      width: 100%;
+      padding: 10px 15px;
+      background-color: rgba(255, 0, 0, 0.406);
+      img {
+        opacity: 60%;
+      }
+    }
+  }
+
+  .perfil_config_body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    margin: auto;
+
+    .perfil_config_body_titulo {
+      font-size: 1.2rem;
+    }
+    .perfil_config_body_button {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background-color: #282828;
+      padding: 15px 20px;
+      border-radius: 6px;
+
+      div {
+        p:nth-child(2) {
+          opacity: 70%;
+          font-size: 0.8rem;
+        }
+      }
+
+      img:nth-child(1) {
+        width: 40px;
+        padding: 10px;
+        border-radius: 50px;
+        background-color: #404040;
+      }
+
+      img:nth-child(3) {
+        display: flex;
+        margin-left: auto;
+      }
+    }
+  }
+
+  .perfil_config_header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+
+    .perfil_config_header_data_2 {
+      display: flex;
+      width: 100%;
+      margin: auto;
+
+      gap: 0px;
+      background-color: #282828;
+      border-radius: 6px;
+      padding: 5px 0;
+      text-align: center;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        flex: 1;
+
+        padding: 10px 5px;
+        border-right: 2px solid #404040;
+
+        p:nth-child(1) {
+          font-weight: bold;
+          font-size: 1.1rem;
+        }
+        p:nth-child(2) {
+          font-size: 0.8rem;
+          opacity: 0.7;
+        }
+      }
+
+      div:nth-child(3) {
+        border: none;
+      }
+    }
+
+    .perfil_config_header_data {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 1.3rem;
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    .perfil_config_header_imagen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      width: 100px;
+      height: 100px;
+      background-color: #282828;
+      border-radius: 15px;
+      border: 3px solid #404040;
+
+      p:nth-child(1) {
+        font-size: 3rem;
+      }
+    }
+  }
+}
