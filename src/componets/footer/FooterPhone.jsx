@@ -3,7 +3,7 @@ import "../../css/footer.css";
 
 import homeIcon from "../../icons/home.svg";
 import categoriasIcon from "../../icons/grid.svg";
-import ofertasIcon from "../../icons/price-tag.svg";
+import carritoIcon from "../../icons/carrito.svg";
 import wishlistIcon from "../../icons/heart.svg";
 import perfilIcon from "../../icons/user.svg";
 
@@ -23,9 +23,9 @@ export default function Footer() {
       ruta: "/categorias",
     },
     {
-      titulo: "Ofertas",
-      icono: ofertasIcon,
-      ruta: "/ofertas",
+      titulo: "Carrito",
+      icono: carritoIcon,
+      ruta: "/carrito",
     },
     {
       titulo: "Wishlist",

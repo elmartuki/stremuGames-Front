@@ -46,7 +46,10 @@ export default function PerfilConfigPage() {
 
       <section className="perfil_config_body">
         <p className="perfil_config_body_titulo">Gestion de cuenta</p>
-        <article className="perfil_config_body_button">
+        <article
+          onClick={() => navigate("/perfil/editar-perfil")}
+          className="perfil_config_body_button"
+        >
           <img src={editIcon} alt="" />
           <div>
             <p>Editar Perfil</p>
