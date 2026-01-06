@@ -1,6 +1,7 @@
 .categorias_page_section {
   .categorias_container {
     display: flex;
+    justify-content: center;
     width: 95%;
     margin: 10px auto;
     margin-bottom: 70px;
@@ -11,7 +12,7 @@
       display: flex;
       flex-direction: column-reverse;
       align-items: baseline;
-      width: 46vw;
+      width: 45vw;
       padding: 15px;
       border-radius: 10px;
       font-size: 1.2rem;

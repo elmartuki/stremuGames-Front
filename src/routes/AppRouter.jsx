@@ -14,6 +14,7 @@ import StudioRouter from "./StudioRouter.jsx";
 import RegistroEmpresaPage from "../pages/RegistroEmpresaPage.jsx";
 import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
 import PerfilConfigPage from "../pages/PerfilConfigPage.jsx";
+import EditarPerfil from "../componets/perfil/EditarPerfil.jsx";
 
 export default function AppRouter() {
   return (
@@ -99,6 +100,16 @@ export default function AppRouter() {
           element={
             <>
               <PerfilConfigPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/perfil/editar-perfil"
+          element={
+            <>
+              <EditarPerfil />
               <Footer />
             </>
           }
