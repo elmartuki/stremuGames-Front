@@ -14,10 +14,20 @@ import StudioRouter from "./StudioRouter.jsx";
 import RegistroEmpresaPage from "../pages/RegistroEmpresaPage.jsx";
 import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
 import CarritoPage from "../pages/CarritoPage.jsx";
+import PerfilConfigPage from "../pages/PerfilConfigPage.jsx";
+import EditarPerfil from "../componets/perfil/EditarPerfil.jsx";
 
 export default function AppRouter() {
   return (
     <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            <Footer />
+          </>
+        }
+      />
       <Route
         path="/login-empresa"
         element={
@@ -57,36 +67,56 @@ export default function AppRouter() {
         }
       />
 
+      <Route
+        path="/categorias"
+        element={
+          <>
+            <CategoriasPage />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/categorias/:id"
+        element={
+          <>
+            <CategoriaSeleccionadaPage />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/explorar"
+        element={
+          <>
+            <ExplorarPage />
+            <Footer />
+          </>
+        }
+      />
+
       <Route element={<UsserRouter />}>
         <Route
-          path="/categorias"
-          element={
-            <>
-              <CategoriasPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/categorias/:id"
-          element={
-            <>
-              <CategoriaSeleccionadaPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/explorar"
-          element={
-            <>
-              <ExplorarPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
           path="/perfil"
+          element={
+            <>
+              <PerfilConfigPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/perfil/editar-perfil"
+          element={
+            <>
+              <EditarPerfil />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/community"
           element={
             <>
               <PerfilPage />

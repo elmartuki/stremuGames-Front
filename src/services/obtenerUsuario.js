@@ -1,18 +1,28 @@
-import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import clientAxios from "../utils/clientAxios";
+import { useObtenerToken } from "./obtenerToken";
 
 export const useObtenerUsuario = () => {
-  const tokenCompleto = localStorage.getItem("TokenStremuGames");
+  const [usuario, setUsuario] = useState(null);
+  const { usuarioInfo } = useObtenerToken();
+  const id = usuarioInfo?.id;
 
-  const token =
-    tokenCompleto && typeof tokenCompleto === "string"
-      ? tokenCompleto.replace("Bearer ", "")
-      : null;
+  useEffect(() => {
+    if (!id) return;
 
-  if (!token) {
-    return null;
-  }
+    const fetchUsuario = async () => {
+      try {
+        const response = await clientAxios.get(`/usuarios/${id}`);
+        if (response.data) {
+          setUsuario(response.data.datos);
+        }
+      } catch (error) {
+        console.error("Error al obtener datos del usuario:", error);
+      }
+    };
 
-  const usuarioInfo = jwtDecode(token);
+    fetchUsuario();
+  }, [id]);
 
-  return { usuarioInfo };
+  return { usuario };
 };
