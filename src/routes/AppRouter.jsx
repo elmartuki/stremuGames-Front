@@ -13,6 +13,7 @@ import UsserRouter from "./UsserRouter.jsx";
 import StudioRouter from "./StudioRouter.jsx";
 import RegistroEmpresaPage from "../pages/RegistroEmpresaPage.jsx";
 import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
+import CarritoPage from "../pages/CarritoPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -90,6 +91,14 @@ export default function AppRouter() {
             <>
               <PerfilPage />
               <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/carrito"
+          element={
+            <>
+              <CarritoPage />
             </>
           }
         />
