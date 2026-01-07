@@ -1,11 +1,11 @@
 import "../../css/categoriaSeleccionada.css";
 import React, { useEffect, useState } from "react";
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useParams } from "react-router-dom";
 
 export default function Categoria() {
   const [lista, setLista] = useState([]);
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   const { id } = useParams();
 

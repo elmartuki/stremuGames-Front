@@ -1,10 +1,10 @@
 import "../../css/explorarPage.css";
 import sell from "../../icons/sell.svg";
 
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../../services/obtenerJuegos";
 
 export default function Carroucel() {
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   const listadoFiltrado = listado.filter((juego) => {
     return juego.precioDescuento < juego.precioBase;

@@ -10,33 +10,34 @@ import { useSubirImagen } from "../../services/uploadImages";
 import clientAxios from "../../utils/clientAxios";
 
 export default function EditarPerfil() {
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
+  const { usuario } = useObtenerUsuario();
+  const { subirImagen, imagenPreview, imagenUrl, subiendo } = useSubirImagen();
+
   const [data, setData] = useState({
-    foto_de_perfil: "",
     nombreUsuario: "",
     biografia: "",
   });
 
-  const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const { usuario } = useObtenerUsuario();
-
-  if (!usuario) return null;
+  if (!usuario) {
+    return <div className="loading">Cargando datos...</div>;
+  }
 
   const { nombreUsuario, _id, foto_de_perfil, biografia } = usuario;
-
   const idUsuario = _id;
+  const iniciales = nombreUsuario?.toUpperCase().slice(0, 2);
+  const imagenFinal = imagenPreview || imagenUrl || foto_de_perfil;
 
   const handleEditClick = () => {
     fileInputRef.current.click();
   };
 
-  const { subirImagen, imagenPreview, imagenUrl, subiendo } = useSubirImagen();
-
-  const iniciales = nombreUsuario?.toUpperCase().slice(0, 2);
-
   const handleSubmit = async () => {
     const datosParaEnviar = {
       foto_de_perfil: imagenUrl || foto_de_perfil,
+
       nombreUsuario: data.nombreUsuario || nombreUsuario,
       biografia: data.biografia || biografia,
     };
@@ -46,11 +47,15 @@ export default function EditarPerfil() {
         `/usuarios/${idUsuario}`,
         datosParaEnviar
       );
-      console.log(response);
-    } catch (error) {}
+      if (response.status === 200) {
+        alert("Perfil actualizado correctamente");
+        navigate("/perfil");
+      }
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+      alert("No se pudieron guardar los cambios");
+    }
   };
-
-  const imagenFinal = imagenPreview || imagenUrl || foto_de_perfil;
 
   return (
     <section className="editar_perfil_section">
@@ -94,6 +99,9 @@ export default function EditarPerfil() {
               accept="image/*"
               onChange={(e) => subirImagen(e.target.files[0])}
             />
+            {subiendo && (
+              <p style={{ fontSize: "12px", color: "gray" }}>Subiendo...</p>
+            )}
           </div>
         </div>
       </section>
@@ -127,12 +135,11 @@ export default function EditarPerfil() {
       <section className="perfil_editar_footer">
         <button
           className="btn_guardar"
-          onClick={() => {
-            handleSubmit();
-          }}
+          disabled={subiendo}
+          onClick={handleSubmit}
         >
           <img src={checkIcon} alt="Guardar" />
-          Guardar Cambios
+          {subiendo ? "Subiendo imagen..." : "Guardar Cambios"}
         </button>
         <button className="btn_cancelar" onClick={() => navigate("/perfil")}>
           Cancelar

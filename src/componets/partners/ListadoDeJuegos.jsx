@@ -1,10 +1,10 @@
 import "../../css/parthnerPage.css";
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner.js";
 import editIcon from "../../icons/edit.svg";
 import deleteIcon from "../../icons/delete.svg";
 import download from "../../icons/download.svg";
 import { useNavigate } from "react-router-dom";
 import { eliminarUnJuego } from "../../services/eliminarUnJuego.js";
+import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner.js";
 
 export default function ListadoDeJuegos() {
   const { listado, loading, handleEliminar } = useObtenerJuegosParthner();

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { categorias } from "../../constants/categorias";
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../../services/obtenerJuegos";
 
 export default function Categorias() {
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   const navigate = useNavigate();
 

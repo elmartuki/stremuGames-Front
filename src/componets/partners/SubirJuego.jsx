@@ -31,7 +31,7 @@ export default function SubirJuego() {
     imagenPortada: "",
     categorias: [],
     etiquetas: [],
-    desarrolladora: "",
+
     version: "1.0.0",
     pesoGB: 0,
   });
@@ -151,19 +151,6 @@ export default function SubirJuego() {
               type="text"
               placeholder="nombre-del-juego"
               value={form.slug}
-            />
-          </div>
-
-          <div className="edit-game_input-group">
-            <p>Desarrolladora</p>
-            <input
-              className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, desarrolladora: event.target.value })
-              }
-              type="text"
-              placeholder="Empresa desarrolladora"
-              value={form.desarrolladora}
             />
           </div>
         </div>

@@ -10,6 +10,7 @@ export const useObtenerUnJuego = (id) => {
       setLoading(true);
       try {
         const response = await clientAxios.get(`/juegos/${id}`);
+        console.log(response);
         if (response) {
           setJuego(response.data.datos);
         }

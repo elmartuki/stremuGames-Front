@@ -36,7 +36,7 @@ export default function EditarJuego() {
     imagenPortada: "",
     categorias: [],
     etiquetas: [],
-    desarrolladora: "",
+
     version: "",
     pesoGB: 0,
   });
@@ -50,7 +50,7 @@ export default function EditarJuego() {
         pesoGB: juego.pesoGB || 0,
         version: juego.version || "1.0.0",
         titulo: juego.titulo || "",
-        desarrolladora: juego.desarrolladora || "",
+
         descripcion: juego.descripcion || "",
         imagenPortada: juego.imagenPortada || "",
         slug: juego.slug || "",
@@ -169,19 +169,6 @@ export default function EditarJuego() {
               type="text"
               placeholder="nombre-del-juego"
               value={form.slug}
-            />
-          </div>
-
-          <div className="edit-game_input-group">
-            <p>Desarrolladora</p>
-            <input
-              className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, desarrolladora: event.target.value })
-              }
-              type="text"
-              placeholder="Empresa desarrolladora"
-              value={form.desarrolladora}
             />
           </div>
         </div>

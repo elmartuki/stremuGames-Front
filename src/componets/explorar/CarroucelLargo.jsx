@@ -1,9 +1,9 @@
 import "../../css/explorarPage.css";
 import { useAgregarJuegoAlcarrito } from "../../services/agregarAlCarrito";
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../../services/obtenerJuegos";
 
 export default function CarroucelLargo({ filtrar }) {
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   let juegosParaMostrar = listado ? [...listado] : [];
 
