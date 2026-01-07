@@ -1,0 +1,205 @@
+.carrito_container {
+  margin-bottom: 20px;
+}
+
+.card-carrito_section {
+  width: 95%;
+  margin: auto;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .card-carrito {
+    display: flex;
+    gap: 10px;
+    background-color: #282828;
+    border-radius: 8px;
+
+    padding: 5px;
+    .card-carrito_imagen {
+      width: 30%;
+      height: 100px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+    .card-carrito_body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 70%;
+      .card-carrito_body_data {
+        p {
+          font-size: 0.8rem;
+          opacity: 70%;
+        }
+      }
+
+      .card-carrito_body_data_2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+
+        .card-carrito_body_data_precios_sin_descuento {
+          p:nth-child(1) {
+            font-size: 1.3rem;
+            color: #10b981;
+          }
+        }
+
+        .card-carrito_body_data_precios {
+          p:nth-child(1) {
+            text-decoration: line-through;
+            opacity: 40%;
+            font-size: 0.9rem;
+          }
+          p:nth-child(2) {
+            font-size: 1.3rem;
+            color: #10b981;
+          }
+        }
+
+        .card-carrito_body_data_button {
+          button {
+            display: flex;
+            background-color: transparent;
+            border: none;
+            background-color: #0000001f;
+            padding: 5px;
+            border-radius: 50px;
+            filter: contrast(1%);
+          }
+        }
+      }
+    }
+  }
+}
+.ticket_section {
+  width: 95%;
+  margin: auto;
+  background-color: #282828;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 10px;
+
+  .ticket_header {
+    p {
+      display: flex;
+      font-size: 1.3rem;
+      gap: 10px;
+    }
+  }
+
+  .ticket_body {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  }
+  .subtotal_desc {
+    p {
+      display: flex;
+      gap: 5px;
+    }
+  }
+}
+
+.desc-section {
+  width: 95%;
+  margin: auto;
+  margin-top: 10px;
+  background-color: #282828;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .desc-title {
+    p {
+      display: flex;
+      gap: 5px;
+      font-size: 1.1rem;
+    }
+  }
+  .desc-codigo {
+    display: flex;
+    gap: 10px;
+
+    div {
+      display: flex;
+      padding: 0px 10px;
+      border: 2px solid rgba(124, 124, 124, 0.493);
+      border-radius: 8px;
+
+      input {
+        width: 80%;
+        padding: 10px 15px;
+        border: none;
+        font-size: 15px;
+        background-color: #282828;
+      }
+      input:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      width: 20%;
+      background-color: #10b981;
+      border: none;
+      border-radius: 8px;
+    }
+  }
+}
+
+.section_pago_total {
+  width: 95%;
+  margin: auto;
+  margin-top: 20px;
+
+  .boton_pago_total {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #10b981;
+
+    .boton_pago_total_precio {
+      width: 20%;
+      p:nth-child(1) {
+        opacity: 70%;
+        font-size: 0.7rem;
+        font-weight: 700;
+      }
+
+      p:nth-child(2) {
+        font-size: 1.2rem;
+      }
+    }
+
+    div:nth-child(2) {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      width: 80%;
+      font-size: 1rem;
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
