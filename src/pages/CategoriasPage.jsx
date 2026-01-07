@@ -4,14 +4,14 @@ import { categorias } from "../constants/categorias.js";
 import "../css/categoriasPage.css";
 import search from "../icons/search.svg";
 
-import { useObtenerJuegosParthner } from "../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../services/obtenerJuegos";
 
 export default function CategoriasPage() {
   const [buscar, setBuscar] = useState("");
 
   const navigate = useNavigate();
 
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   const articulosFiltrados = categorias.filter((categoria) => {
     return categoria.nombre.toLowerCase().includes(buscar.toLowerCase());

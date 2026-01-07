@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import clientAxios from "../utils/clientAxios";
 import { eliminarUnJuego } from "../services/eliminarUnJuego";
 
-export const useObtenerJuegosParthner = () => {
+export const useObtenerJuegos = () => {
   const [listado, setListado] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const recargarJuegos = async () => {
     try {
-      const response = await clientAxios.get("/juegos/juegos-subidos");
+      const response = await clientAxios.get("/juegos/");
       setListado(response.data.datos);
     } catch (error) {
       console.log(error);

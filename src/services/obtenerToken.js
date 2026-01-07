@@ -9,10 +9,14 @@ export const useObtenerToken = () => {
       : null;
 
   if (!token) {
-    return null;
+    return { usuarioInfo: null, token: null };
   }
 
-  const usuarioInfo = jwtDecode(token);
-
-  return { usuarioInfo };
+  try {
+    const usuarioInfo = jwtDecode(token);
+    return { usuarioInfo, token };
+  } catch (error) {
+    console.error("Token inválido:", error);
+    return { usuarioInfo: null, token: null };
+  }
 };

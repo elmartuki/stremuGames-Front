@@ -31,11 +31,10 @@ export default function LoginEmpresa() {
         datosParaEnviar
       );
 
-      console.log(response);
       if (response.status === 200) {
         localStorage.setItem("TokenStremuGames", response.data.token);
+        navigate("/parthner");
       }
-      navigate("/explorar");
     } catch (error) {
       console.log(error);
     }

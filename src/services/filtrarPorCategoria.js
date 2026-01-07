@@ -1,7 +1,7 @@
-import { useObtenerJuegosParthner } from "./obtenerJuegosParthner";
+import { useObtenerJuegos } from "./obtenerJuegosParthner";
 
 export const useFiltrarPorCategoria = () => {
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   
 };

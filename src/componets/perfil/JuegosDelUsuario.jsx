@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner";
+import { useObtenerJuegos } from "../../services/obtenerJuegos";
 
 export default function JuegosDelUsuario() {
-  const { listado } = useObtenerJuegosParthner();
+  const { listado } = useObtenerJuegos();
 
   return (
     <>
