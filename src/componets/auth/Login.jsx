@@ -7,7 +7,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     usuario_email: "",
-    contraseña: "",
+    password: "",
   });
 
   const handleSubmit = async (event) => {
@@ -16,7 +16,7 @@ export default function Login() {
     try {
       const usuarioFinal = {
         usuario_email: form.usuario_email,
-        contraseña: form.contraseña,
+        password: form.password,
       };
 
       const response = await clientAxios.post("/usuarios/login", usuarioFinal);
@@ -45,9 +45,9 @@ export default function Login() {
         <input
           type="password"
           placeholder="Escriba su contraseña"
-          value={form.contraseña}
+          value={form.password}
           onChange={(event) =>
-            setForm({ ...form, contraseña: event.target.value })
+            setForm({ ...form, password: event.target.value })
           }
           style={{ color: "black" }}
         />

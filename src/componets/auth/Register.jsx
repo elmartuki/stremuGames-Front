@@ -6,7 +6,7 @@ export default function Register() {
   const [form, setForm] = useState({
     nombreUsuario: "",
     email: "",
-    contraseña: "",
+    password: "",
     foto_de_perfil: null,
   });
 
@@ -17,7 +17,7 @@ export default function Register() {
       const usuarioFinal = {
         nombreUsuario: form.nombreUsuario,
         email: form.email,
-        contraseña: form.contraseña,
+        password: form.password,
         foto_de_perfil: "",
       };
 
@@ -56,7 +56,7 @@ export default function Register() {
           placeholder="Escriba su contraseña"
           value={form.contraseña}
           onChange={(event) =>
-            setForm({ ...form, contraseña: event.target.value })
+            setForm({ ...form, password: event.target.value })
           }
           style={{ color: "black" }}
         />
