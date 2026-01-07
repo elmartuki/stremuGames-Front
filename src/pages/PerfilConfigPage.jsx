@@ -12,6 +12,10 @@ export default function PerfilConfigPage() {
 
   const { usuario } = useObtenerUsuario();
 
+  if (!usuario) {
+    return <></>;
+  }
+
   const { nombreUsuario, juegosComprados } = usuario;
 
   const iniciales = nombreUsuario?.toUpperCase().slice(0, 2);

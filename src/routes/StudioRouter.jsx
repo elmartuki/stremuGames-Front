@@ -1,15 +1,16 @@
 import { jwtDecode } from "jwt-decode";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const ROLES_PERMITIDOS = ["empresa"];
 
 export default function StudioRouter() {
   const navigate = useNavigate();
-  const tokenCompleto = localStorage.getItem("TokenStremuGames");
+  const tokenLocalStorage = localStorage.getItem("TokenStremuGames");
 
   const token =
-    tokenCompleto && typeof tokenCompleto === "String"
-      ? tokenCompleto.replace("Bearer ", "")
+    tokenLocalStorage && typeof tokenLocalStorage === "string"
+      ? tokenLocalStorage.replace("Bearer ", "").trim()
       : null;
 
   let rolUsuario = null;
@@ -19,27 +20,21 @@ export default function StudioRouter() {
       const usuarioInfo = jwtDecode(token);
       rolUsuario = usuarioInfo.rol;
     } catch (error) {
-      console.log(error);
+      console.error("Error al decodificar el token:", error);
     }
   }
 
   const tieneAcceso = ROLES_PERMITIDOS.includes(rolUsuario);
 
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
+    if (!token || !tieneAcceso) {
+      navigate("/login-empresa", { replace: true });
     }
-    if (!ROLES_PERMITIDOS.includes(rolUsuario)) {
-      navigate("/login");
-    }
-  }, [token, rolUsuario, navigate, tieneAcceso]);
+  }, [token, tieneAcceso, navigate]);
 
   if (!token || !tieneAcceso) {
     return null;
   }
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+
+  return <Outlet />;
 }

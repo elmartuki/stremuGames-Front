@@ -6,9 +6,50 @@ import lock from "../../icons/lock.svg";
 import lock_repeat from "../../icons/lock-repeat.svg";
 import link from "../../icons/link.svg";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import clientAxios from "../../utils/clientAxios";
 
 export default function RegistroEmpresa() {
   const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    nombreUsuario: "",
+    email: "",
+    password: "",
+    repeatpassword: "",
+  });
+
+  const handleSubmit = async () => {
+    if (
+      !form.nombreUsuario ||
+      !form.email ||
+      !form.password ||
+      !form.repeatpassword
+    ) {
+      return alert("Todos los campos son obligatorios");
+    }
+
+    if (form.password !== form.repeatpassword) {
+      return alert("Las contraseñas no coinciden");
+    }
+
+    const datosParaEnviar = {
+      nombreUsuario: form.nombreUsuario,
+      email: form.email,
+      password: form.password,
+      rol: "empresa",
+    };
+
+    try {
+      const response = await clientAxios.post(
+        "/usuarios/register",
+        datosParaEnviar
+      );
+      navigate("/login-empresa");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="formulario_login">
@@ -29,31 +70,55 @@ export default function RegistroEmpresa() {
 
         <div className="input_container">
           <img src={empresa} alt="" />
-          <input type="text" placeholder="Ej. PixelGames" />
+          <input
+            onChange={(event) =>
+              setForm({ ...form, nombreUsuario: event.target.value })
+            }
+            type="text"
+            placeholder="Ej. PixelGames"
+          />
         </div>
 
         <p>Correo Electronico</p>
 
         <div className="input_container">
           <img src={mail} alt="" />
-          <input type="text" placeholder="Ej. pixelgames@gmail.com" />
+          <input
+            onChange={(event) =>
+              setForm({ ...form, email: event.target.value })
+            }
+            type="text"
+            placeholder="Ej. pixelgames@gmail.com"
+          />
         </div>
 
         <p>Contraseña</p>
 
         <div className="input_container">
           <img src={lock} alt="" />
-          <input type="text" placeholder="Ingrese una contraseña" />
+          <input
+            onChange={(event) =>
+              setForm({ ...form, password: event.target.value })
+            }
+            type="password"
+            placeholder="Ingrese una contraseña"
+          />
         </div>
 
         <p>Repetir contraseña</p>
 
         <div className="input_container">
           <img src={lock_repeat} alt="" />
-          <input type="text" placeholder="Repita la contraseña" />
+          <input
+            onChange={(event) =>
+              setForm({ ...form, repeatpassword: event.target.value })
+            }
+            type="password"
+            placeholder="Repita la contraseña"
+          />
         </div>
 
-        <button>Registrar Desarrolladora</button>
+        <button onClick={() => handleSubmit()}>Registrar Desarrolladora</button>
 
         <div className="formulario_login_footer">
           <p>¿Ya tienes registrado tu estudio?</p>

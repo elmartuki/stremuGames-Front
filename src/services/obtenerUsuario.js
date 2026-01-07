@@ -3,26 +3,25 @@ import clientAxios from "../utils/clientAxios";
 import { useObtenerToken } from "./obtenerToken";
 
 export const useObtenerUsuario = () => {
-  const [usuario, setUsuario] = useState([]);
-
+  const [usuario, setUsuario] = useState(null);
   const { usuarioInfo } = useObtenerToken();
-
-  const { id } = usuarioInfo;
+  const id = usuarioInfo?.id;
 
   useEffect(() => {
-    const usuarioFetch = async () => {
+    if (!id) return;
+
+    const fetchUsuario = async () => {
       try {
         const response = await clientAxios.get(`/usuarios/${id}`);
-
-        if (response) {
+        if (response.data) {
           setUsuario(response.data.datos);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error al obtener datos del usuario:", error);
       }
     };
 
-    usuarioFetch();
+    fetchUsuario();
   }, [id]);
 
   return { usuario };
