@@ -8,6 +8,7 @@ import editIcon from "../../icons/edit.svg";
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useSubirImagen } from "../../services/uploadImages";
 import clientAxios from "../../utils/clientAxios";
+import { useMessageStore } from "../../services/MessageModal";
 
 export default function EditarPerfil() {
   const navigate = useNavigate();
@@ -43,17 +44,18 @@ export default function EditarPerfil() {
     };
 
     try {
+      const { showMessage } = useMessageStore.getState();
       const response = await clientAxios.put(
         `/usuarios/${idUsuario}`,
         datosParaEnviar
       );
+      showMessage(response.data.message, "success");
+
       if (response.status === 200) {
-        alert("Perfil actualizado correctamente");
         navigate("/perfil");
       }
     } catch (error) {
-      console.error("Error al actualizar:", error);
-      alert("No se pudieron guardar los cambios");
+      showMessage(error.response?.data?.message, "error");
     }
   };
 

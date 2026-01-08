@@ -1,11 +1,13 @@
 import clientAxios from "../utils/clientAxios";
+import { useMessageStore } from "./MessageModal";
 
 export const useAgregarJuegoAlcarrito = async (producto) => {
+  const { showMessage } = useMessageStore.getState();
   try {
     const response = await clientAxios.post(`/carrito/${producto}`);
 
-    console.log(response);
+    showMessage(response.data.message, "success");
   } catch (error) {
-    console.error(error);
+    showMessage(error.response?.data?.message, "error");
   }
 };

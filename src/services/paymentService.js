@@ -1,6 +1,9 @@
 import clientAxios from "../utils/clientAxios";
+import { useMessageStore } from "./MessageModal";
 
 export const iniciarPago = async (juegosCarrito) => {
+  const { showMessage } = useMessageStore.getState();
+
   if (!juegosCarrito || juegosCarrito.length === 0) {
     throw new Error("El carrito está vacío");
   }
@@ -17,9 +20,15 @@ export const iniciarPago = async (juegosCarrito) => {
     };
   });
 
-  const response = await clientAxios.post("/payment/create_preference", {
-    items,
-  });
+  try {
+    const response = await clientAxios.post("/payment/create_preference", {
+      items,
+    });
+
+    showMessage(response.data.message, "success");
+  } catch (error) {
+    showMessage(error.response?.data?.message, "error");
+  }
 
   return response.data;
 };
