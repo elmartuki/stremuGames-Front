@@ -1,6 +1,6 @@
 import accion from "../icons/accion.svg";
 import aventura from "../icons/aventura.svg";
-import rpg from "../icons/rpg.svg";
+import rpg from "../icons/rpg-icon.svg";
 import estrategia from "../icons/estrategia.svg";
 import deportes from "../icons/deportes.svg";
 import carreras from "../icons/carreras.svg";
@@ -8,8 +8,6 @@ import simulacion from "../icons/simulacion.svg";
 import terror from "../icons/terror.svg";
 import indie from "../icons/indie.svg";
 import scifi from "../icons/ficcion.svg";
-
-
 
 export const categorias = [
   {
