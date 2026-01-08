@@ -16,7 +16,7 @@ export default function PerfilConfigPage() {
     return <></>;
   }
 
-  const { nombreUsuario, juegosComprados } = usuario;
+  const { nombreUsuario, juegosComprados, foto_de_perfil } = usuario;
 
   const iniciales = nombreUsuario?.toUpperCase().slice(0, 2);
 
@@ -25,8 +25,20 @@ export default function PerfilConfigPage() {
       <section className="perfil_config_header">
         <div className="perfil_config_header_data">
           <div className="perfil_config_header_imagen">
-            <p>{iniciales}</p>
-            <img src="" alt="" />
+            {foto_de_perfil ? (
+              <img
+                src={foto_de_perfil}
+                alt="Avatar"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  borderRadius: "10px",
+                }}
+              />
+            ) : (
+              <p>{iniciales}</p>
+            )}
           </div>
 
           <p>{nombreUsuario}</p>
@@ -34,7 +46,7 @@ export default function PerfilConfigPage() {
 
         <div className="perfil_config_header_data_2">
           <div>
-            <p>{juegosComprados?.length}</p>
+            <p>{juegosComprados?.length || 0}</p>
             <p>Juegos</p>
           </div>
           <div>

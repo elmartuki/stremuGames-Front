@@ -1,0 +1,43 @@
+.modal_section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 10px;
+  animation: mostrar 2s ease 1;
+  pointer-events: none;
+  z-index: 101;
+
+  .modal {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #282828;
+    border-radius: 10px;
+    padding: 5px 10px 10px 10px;
+
+    .modal_header {
+      img {
+        width: 26px;
+      }
+    }
+  }
+}
+
+@keyframes mostrar {
+  0% {
+    top: -100px;
+    opacity: 0%;
+  }
+
+  98% {
+    opacity: 100%;
+  }
+
+  100% {
+    top: 10px;
+    opacity: 0%;
+  }
+}
