@@ -1,0 +1,25 @@
+import clientAxios from "../utils/clientAxios";
+
+export const iniciarPago = async (juegosCarrito) => {
+  if (!juegosCarrito || juegosCarrito.length === 0) {
+    throw new Error("El carrito está vacío");
+  }
+
+  const items = juegosCarrito.map((item) => {
+    if (!item.precio || isNaN(Number(item.precio))) {
+      throw new Error(`Precio inválido: ${item.titulo}`);
+    }
+
+    return {
+      title: item.titulo,
+      unit_price: Number(item.precio),
+      quantity: 1,
+    };
+  });
+
+  const response = await clientAxios.post("/payment/create_preference", {
+    items,
+  });
+
+  return response.data;
+};
