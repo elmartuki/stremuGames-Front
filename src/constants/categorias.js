@@ -9,6 +9,8 @@ import terror from "../icons/terror.svg";
 import indie from "../icons/indie.svg";
 import scifi from "../icons/ficcion.svg";
 
+
+
 export const categorias = [
   {
     nombre: "Acción",
