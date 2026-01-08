@@ -10,6 +10,7 @@ import sell_yellow from "../icons/sell_yellow.svg";
 import clientAxios from "../utils/clientAxios";
 import "../css/carrito.css";
 import { useNavigate } from "react-router-dom";
+import { iniciarPago } from "../services/paymentService";
 
 export default function CarritoPage() {
   const [carrito, setCarrito] = useState({
@@ -18,6 +19,8 @@ export default function CarritoPage() {
   });
 
   const [loading, setLoading] = useState(true);
+  const [procesandoPago, setProcesandoPago] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export default function CarritoPage() {
           total: data?.carrito?.total || 0,
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -49,21 +52,37 @@ export default function CarritoPage() {
         total: data?.carrito?.total || 0,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  const subtotal = carrito.juegos.reduce((acc, item) => {
-    return acc + (item.juegoId?.precioBase || 0);
-  }, 0);
+  const subtotal = carrito.juegos.reduce(
+    (acc, item) => acc + (item.precio || 0),
+    0
+  );
 
-  const total = carrito.juegos.reduce((acc, item) => {
-    return (
-      acc + (item.juegoId?.precioDescuento ?? item.juegoId?.precioBase ?? 0)
-    );
-  }, 0);
+  const total = subtotal;
+  const descuento = 0;
 
-  const descuento = subtotal - total;
+  const handlePago = async () => {
+    if (carrito.juegos.length === 0) return;
+
+    setProcesandoPago(true);
+    try {
+      const data = await iniciarPago(carrito.juegos);
+
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("No se pudo generar el link de pago");
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error.message || "Error al procesar el pago");
+    } finally {
+      setProcesandoPago(false);
+    }
+  };
 
   return (
     <section className="carrito_container">
@@ -98,16 +117,9 @@ export default function CarritoPage() {
                 </div>
 
                 <div className="card-carrito_body_data_2">
-                  {item.juegoId.precioBase !== item.juegoId.precioDescuento ? (
-                    <div className="card-carrito_body_data_precios">
-                      <p>${item.juegoId.precioBase}</p>
-                      <p>${item.juegoId.precioDescuento}</p>
-                    </div>
-                  ) : (
-                    <div className="card-carrito_body_data_precios_sin_descuento">
-                      <p>${item.juegoId.precioBase}</p>
-                    </div>
-                  )}
+                  <div className="card-carrito_body_data_precios_sin_descuento">
+                    <p>${item.precio}</p>
+                  </div>
 
                   <div className="card-carrito_body_data_button">
                     <button onClick={() => handleDelete(item.juegoId._id)}>
@@ -171,15 +183,20 @@ export default function CarritoPage() {
       </section>
 
       <section className="section_pago_total">
-        <button className="boton_pago_total">
+        <button
+          onClick={handlePago}
+          className="boton_pago_total"
+          disabled={procesandoPago || carrito.juegos.length === 0}
+          style={{ opacity: procesandoPago ? 0.7 : 1 }}
+        >
           <div className="boton_pago_total_precio">
             <p>TOTAL</p>
             <p>${total}</p>
           </div>
           <div className="boton_pago_total_proceder">
             <p>
-              Proceder al Pago{" "}
-              <img src={arrowRigth} alt="flecha a la derecha" />
+              {procesandoPago ? "Cargando..." : "Proceder al Pago"}
+              {!procesandoPago && <img src={arrowRigth} alt="->" />}
             </p>
           </div>
         </button>

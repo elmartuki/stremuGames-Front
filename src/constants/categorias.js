@@ -1,6 +1,6 @@
 import accion from "../icons/accion.svg";
 import aventura from "../icons/aventura.svg";
-import rpg from "../icons/rpg.svg";
+import rpg from "../icons/rpg-icon.svg";
 import estrategia from "../icons/estrategia.svg";
 import deportes from "../icons/deportes.svg";
 import carreras from "../icons/carreras.svg";
