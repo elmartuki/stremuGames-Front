@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 
-export default function JuegosDelUsuario() {
+export default function JuegosDelUsuario({ juegosComprados = [] }) {
   const { listado } = useObtenerJuegos();
+
+  const juegosEncontrados = listado.filter((juegoGeneral) =>
+    juegosComprados.includes(juegoGeneral._id)
+  );
+
+  if (juegosEncontrados.length === 0) {
+    return <>Este usuario no tiene juegos comprados.</>;
+  }
 
   return (
     <>
-      {listado.map((juego) => {
-        const { imagenPortada, titulo, desarrolladora } = juego;
-        return (
-          <article className="juego_tarjeta">
-            <div>
-              <img src={imagenPortada} alt="" />
-            </div>
-            <div>
-              <p>{titulo}</p>
-              <p>{desarrolladora}</p>
-            </div>
-          </article>
-        );
-      })}
+      {juegosEncontrados.map((juego) => (
+        <article key={juego._id} className="juego_tarjeta">
+          <div>
+            <img src={juego.imagenPortada} alt={juego.titulo} />
+          </div>
+          <div>
+            <p>{juego.titulo}</p>
+            <p>{juego.desarrolladora}</p>
+          </div>
+        </article>
+      ))}
     </>
   );
 }
