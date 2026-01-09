@@ -1,68 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
 import clientAxios from "../../utils/clientAxios";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     nombreUsuario: "",
     email: "",
     password: "",
-    foto_de_perfil: null,
   });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!form.nombreUsuario || !form.email || !form.password) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    if (form.nombreUsuario.length < 3) {
+      setError("El nombre de usuario debe tener al menos 3 caracteres");
+      return;
+    }
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(form.email)) {
+      setError("Email inválido");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
 
     try {
-      const usuarioFinal = {
-        nombreUsuario: form.nombreUsuario,
-        email: form.email,
+      setLoading(true);
+
+      const response = await clientAxios.post("/usuarios/register", {
+        nombreUsuario: form.nombreUsuario.trim(),
+        email: form.email.trim(),
         password: form.password,
-        foto_de_perfil: "",
-      };
+      });
 
-      const response = await clientAxios.post(
-        "/usuarios/register",
-        usuarioFinal
-      );
-
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error al registrar", error);
+      if (response.status === 201) {
+        alert("Usuario registrado correctamente");
+        navigate("/login");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Error al registrar el usuario");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="Box">
+    <section className="register-section">
+      <form className="register-form" onSubmit={handleSubmit}>
+        <h2>Crear cuenta</h2>
+
         <input
           type="text"
-          placeholder="Escriba su nombre de usuario"
+          name="nombreUsuario"
+          placeholder="Nombre de usuario"
           value={form.nombreUsuario}
-          onChange={(event) =>
-            setForm({ ...form, nombreUsuario: event.target.value })
-          }
-          style={{ color: "black" }}
-        />
-        <input
-          type="text"
-          placeholder="Escriba su email"
-          value={form.email}
-          onChange={(event) => setForm({ ...form, email: event.target.value })}
-          style={{ color: "black" }}
-        />
-        <input
-          type="password"
-          placeholder="Escriba su contraseña"
-          value={form.contraseña}
-          onChange={(event) =>
-            setForm({ ...form, password: event.target.value })
-          }
+          onChange={handleChange}
           style={{ color: "black" }}
         />
 
-        <button>Guardar</button>
+        <input
+          type="text"
+          name="email"
+          placeholder="Correo electrónico"
+          value={form.email}
+          onChange={handleChange}
+          style={{ color: "black" }}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          value={form.password}
+          onChange={handleChange}
+          style={{ color: "black" }}
+        />
+
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Registrando..." : "Registrarse"}
+        </button>
       </form>
-    </>
+    </section>
   );
 }
