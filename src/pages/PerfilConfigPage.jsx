@@ -6,11 +6,13 @@ import arrowRigth from "../icons/arrowRigth.svg";
 import logout from "../icons/logout.svg";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useNavigate } from "react-router-dom";
+import { useCalcularNivel } from "../services/calcularNivel";
 
 export default function PerfilConfigPage() {
   const navigate = useNavigate();
 
   const { usuario } = useObtenerUsuario();
+  const { nivel } = useCalcularNivel();
 
   if (!usuario) {
     return <></>;
@@ -50,7 +52,7 @@ export default function PerfilConfigPage() {
             <p>Juegos</p>
           </div>
           <div>
-            <p>12</p>
+            <p>{nivel + 1}</p>
             <p>Nivel</p>
           </div>
           <div>
