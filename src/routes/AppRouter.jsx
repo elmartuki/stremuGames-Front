@@ -21,6 +21,7 @@ import AdminPanelPage from "../pages/AdminPanelPage.jsx";
 import Usuarios from "../componets/admin/Usuarios.jsx";
 import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
+import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
 
 export default function AppRouter() {
   return (
@@ -95,6 +96,16 @@ export default function AppRouter() {
         element={
           <>
             <ExplorarPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/comunidad/estudio/:id"
+        element={
+          <>
+            <PerfilEmpresaPage />
             <Footer />
           </>
         }

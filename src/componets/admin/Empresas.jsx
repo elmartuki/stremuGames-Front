@@ -82,7 +82,9 @@ export default function Empresas() {
                 <div className="usuario_card_buttons">
                   <button
                     className="btn_ver"
-                    onClick={() => navigate(`/admin/usuarios/${_id}`)}
+                    onClick={() =>
+                      navigate(`/comunidad/estudio/${empresa._id}`)
+                    }
                   >
                     <img src={ojo} alt="Ver" />
                   </button>
