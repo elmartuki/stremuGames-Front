@@ -1,68 +1,110 @@
 import React, { useState } from "react";
 import clientAxios from "../../utils/clientAxios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     nombreUsuario: "",
     email: "",
     password: "",
-    foto_de_perfil: null,
   });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!form.nombreUsuario || !form.email || !form.password) {
+      setError("Todos los campos son obligatorios");
+      return;
+    }
+
+    if (form.nombreUsuario.length < 3) {
+      setError("El nombre de usuario debe tener al menos 3 caracteres");
+      return;
+    }
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(form.email)) {
+      setError("Email inválido");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
 
     try {
-      const usuarioFinal = {
-        nombreUsuario: form.nombreUsuario,
-        email: form.email,
-        password: form.password,
-        foto_de_perfil: "", // El backend suele esperar un string si no hay foto
-      };
+      setLoading(true);
 
-      const response = await clientAxios.post(
-        "/usuarios/register",
-        usuarioFinal
-      );
-      console.log("Registro exitoso:", response.data);
-      alert("¡Usuario registrado con éxito!");
-    } catch (error) {
-      // MEJORA: Ver la respuesta real del backend en la consola
-      if (error.response) {
-        console.error("Detalle del error 400:", error.response.data);
-        alert(`Error: ${error.response.data.message || "Datos inválidos"}`);
-      } else {
-        console.error("Error al registrar:", error.message);
+      const response = await clientAxios.post("/usuarios/register", {
+        nombreUsuario: form.nombreUsuario.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      });
+
+      if (response.status === 201) {
+        alert("Usuario registrado correctamente");
+        navigate("/login");
       }
+    } catch (err) {
+      setError(err.response?.data?.message || "Error al registrar el usuario");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="Box">
-      <input
-        type="text"
-        placeholder="Nombre de usuario"
-        value={form.nombreUsuario}
-        onChange={(e) => setForm({ ...form, nombreUsuario: e.target.value })}
-        style={{ color: "black" }}
-      />
-      <input
-        type="email" // Cambiado a 'email' para validación nativa
-        placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
-        style={{ color: "black" }}
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        // ANTES: form.contraseña (incorrecto) -> AHORA: form.password
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-        style={{ color: "black" }}
-      />
+    <section className="register-section">
+      <form className="register-form" onSubmit={handleSubmit}>
+        <h2>Crear cuenta</h2>
 
-      <button type="submit">Guardar</button>
-    </form>
+        <input
+          type="text"
+          name="nombreUsuario"
+          placeholder="Nombre de usuario"
+          value={form.nombreUsuario}
+          onChange={handleChange}
+          style={{ color: "black" }}
+        />
+
+        <input
+          type="text"
+          name="email"
+          placeholder="Correo electrónico"
+          value={form.email}
+          onChange={handleChange}
+          style={{ color: "black" }}
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          value={form.password}
+          onChange={handleChange}
+          style={{ color: "black" }}
+        />
+
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Registrando..." : "Registrarse"}
+        </button>
+      </form>
+    </section>
   );
 }

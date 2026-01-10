@@ -2,60 +2,167 @@ import React from "react";
 import clientAxios from "../../utils/clientAxios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import back from "../../icons/back.svg";
+import joystick from "../../icons/joystick.svg";
+import user from "../../icons/user.svg";
+import lock from "../../icons/lock.svg";
+import visibility_off from "../../icons/visibility_off.svg";
+import visibility from "../../icons/visibility.svg";
+import logoutWhite from "../../icons/logoutWhite.svg";
 
+import "../../css/parthnerPage.css";
+import "../../css/loginUsuarios.css";
 export default function Login() {
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     usuario_email: "",
     password: "",
   });
+  const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [errorLogin, setErrorLogin] = useState("");
 
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorLogin("");
+
+    if (!form.usuario_email.trim() || !form.password.trim()) {
+      setErrorLogin("Usuario/Email o contraseña incorrectos");
+      return;
+    }
+
+    if (form.password.length < 6) {
+      setErrorLogin("Usuario/Email o contraseña incorrectos");
+      return;
+    }
 
     try {
-      const usuarioFinal = {
-        usuario_email: form.usuario_email,
-        password: form.password,
-      };
+      const response = await clientAxios.post("/usuarios/login", form);
 
-      const response = await clientAxios.post("/usuarios/login", usuarioFinal);
       if (response.status === 200) {
         localStorage.setItem("TokenStremuGames", response.data.token);
         navigate("/explorar");
       }
-      console.log(response);
     } catch (error) {
-      alert("Usuario-Email o contraseña incorrecto");
+      setErrorLogin("Usuario/Email o contraseña incorrectos");
     }
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="Box">
-        <input
-          type="text"
-          placeholder="Escriba su nombre de usuario o email"
-          value={form.usuario_email}
-          onChange={(event) =>
-            setForm({ ...form, usuario_email: event.target.value })
-          }
-          style={{ color: "black" }}
-        />
-        <input
-          type="password"
-          placeholder="Escriba su contraseña"
-          value={form.password}
-          onChange={(event) =>
-            setForm({ ...form, password: event.target.value })
-          }
-          style={{ color: "black" }}
-        />
-
-        <button>
-          <b style={{ color: "black" }}>Ingresar</b>
+      <nav className="login-navbar">
+        <button
+          type="button"
+          className="login-navbar__back"
+          onClick={() => navigate(-1)}
+          aria-label="Volver"
+        >
+          <img src={back} alt="Volver" />
         </button>
-      </form>
+      </nav>
+
+      <section className="login-section">
+        <form className="login-form" onSubmit={handleSubmit}>
+          <div className="login-card">
+            <header className="login-card__header">
+              <img className="login-card__icon" src={joystick} alt="Joystick" />
+              <h2 className="login-card__title">Iniciar sesión</h2>
+              <p className="login-card__subtitle">
+                Bienvenido de nuevo, accede a tu biblioteca.
+              </p>
+            </header>
+            <div className="login-form__content">
+              <div className="login-form__field">
+                <label className="login-form__label" htmlFor="usuario_email">
+                  Correo electrónico o usuario
+                </label>
+
+                <div className="login-form__input-wrapper">
+                  <img src={user} alt="" />
+                  <input
+                    id="usuario_email"
+                    type="text"
+                    className="login-form__input"
+                    placeholder="Escriba su nombre de usuario o email"
+                    value={form.usuario_email}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        usuario_email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="login-form__field">
+                <div className="login-form__field_child">
+                  <label className="login-form__label" htmlFor="password">
+                    Contraseña
+                  </label>
+                  <a className="login-form__forget_my_password" href="#">
+                    ¿Olvidé mi contraseña?
+                  </a>
+                </div>
+
+                <div className="login-form__input-wrapper">
+                  <img src={lock} alt="Contraseña" />
+
+                  <input
+                    id="password"
+                    type={mostrarPassword ? "text" : "password"}
+                    className="login-form__input"
+                    placeholder="Escriba su contraseña"
+                    value={form.password}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        password: e.target.value,
+                      })
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    className="login-form__toggle-password"
+                    onClick={() => setMostrarPassword(!mostrarPassword)}
+                    aria-label={
+                      mostrarPassword
+                        ? "Ocultar contraseña"
+                        : "Mostrar contraseña"
+                    }
+                  >
+                    <img
+                      src={mostrarPassword ? visibility : visibility_off}
+                      alt={
+                        mostrarPassword
+                          ? "Ocultar contraseña"
+                          : "Mostrar contraseña"
+                      }
+                    />
+                  </button>
+                </div>
+              </div>
+              {errorLogin && (
+                <p className="login-form__error login-form__error--center">
+                  {errorLogin}
+                </p>
+              )}
+
+              <button type="submit" className="login-form__submit">
+                <p>Iniciar Sesión</p>
+                <img src={logoutWhite} alt="Iniciar Sesion" />
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <footer className="login-footer">
+          <p className="login-footer__text">¿Aún no tienes cuenta?</p>
+          <a href="" className="login-footer__link">
+            Regístrate ahora
+          </a>
+        </footer>
+      </section>
     </>
   );
 }
