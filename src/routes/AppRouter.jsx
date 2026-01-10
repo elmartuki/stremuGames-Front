@@ -16,6 +16,11 @@ import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
 import CarritoPage from "../pages/CarritoPage.jsx";
 import PerfilConfigPage from "../pages/PerfilConfigPage.jsx";
 import EditarPerfil from "../componets/perfil/EditarPerfil.jsx";
+import AdminRouter from "./AdminRouter.jsx";
+import AdminPanelPage from "../pages/AdminPanelPage.jsx";
+import Usuarios from "../componets/admin/Usuarios.jsx";
+import Empresas from "../componets/admin/Empresas.jsx";
+import Juegos from "../componets/admin/Juegos.jsx";
 
 export default function AppRouter() {
   return (
@@ -94,6 +99,48 @@ export default function AppRouter() {
           </>
         }
       />
+
+      <Route element={<AdminRouter />}>
+        <Route
+          path="/admin-panel"
+          element={
+            <>
+              <AdminPanelPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/admin-panel/usuarios"
+          element={
+            <>
+              <Usuarios />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/admin-panel/empresas"
+          element={
+            <>
+              <Empresas />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/admin-panel/juegos"
+          element={
+            <>
+              <Juegos />
+              <Footer />
+            </>
+          }
+        />
+      </Route>
 
       <Route element={<UsserRouter />}>
         <Route
