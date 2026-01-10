@@ -126,26 +126,33 @@ export default function AdminPanelPage() {
         </div>
 
         <div className="contenedor_tarjetas">
-          {empresas.map((emp) => {
-            const iniciales = emp.nombreUsuario.toUpperCase().slice(0, 2);
+          {empresas.map((empresa) => {
+            const iniciales = empresa.nombreUsuario.toUpperCase().slice(0, 2);
             return (
-              <div className="tarjeta_desarrolladora" key={emp._id}>
+              <div className="tarjeta_desarrolladora" key={empresa._id}>
                 <div className="tarjeta_desarrolladora_header">
                   <div className="desarrolladora_logo">
-                    {emp.foto_de_perfil === "" ? (
+                    {empresa.foto_de_perfil === "" ? (
                       <p>{iniciales}</p>
                     ) : (
-                      <img src={emp.foto_de_perfil} alt="" />
+                      <img src={empresa.foto_de_perfil} alt="" />
                     )}
                   </div>
                   <div className="desarrolladora_data">
-                    <h4>{emp.nombreUsuario}</h4>
-                    <p>Verificada • {emp.juegosSubidos.length} Juegos</p>
+                    <h4>{empresa.nombreUsuario}</h4>
+                    <p>Verificada • {empresa.juegosSubidos.length} Juegos</p>
                   </div>
                   <span className="estado_etiqueta">ACTIVA</span>
                 </div>
                 <div className="desarrolladora_botones">
-                  <button className="ver_perfil">Ver Perfil</button>
+                  <button
+                    onClick={() =>
+                      navigate(`/comunidad/estudio/${empresa._id}`)
+                    }
+                    className="ver_perfil"
+                  >
+                    Ver Perfil
+                  </button>
                   <button className="banear">
                     <img src={iconoBanear} alt="" /> Banear
                   </button>
