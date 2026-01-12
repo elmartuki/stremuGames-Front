@@ -9,13 +9,6 @@ import timer from "../icons/timer.svg";
 export default function ExplorarPage() {
   return (
     <section className="explorar_page_section">
-      <div className="explorar_page_search">
-        <div>
-          <img src={search} alt="" />
-          <input type="text" placeholder="Buscar juegos, dlc y mas..." />
-        </div>
-      </div>
-
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div>
