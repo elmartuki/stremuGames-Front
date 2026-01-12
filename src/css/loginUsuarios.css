@@ -162,13 +162,32 @@
   cursor: pointer;
 }
 
-.login-form__error {
-  color: black;
+.login-form__registeredUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   font-size: 0.9rem;
-  border: none;
+  border: 1px solid rgb(0, 182, 15);
   padding: 10px;
   border-radius: 8px;
-  background-color: red;
+  p {
+    color: rgb(0, 182, 15);
+  }
+}
+
+.login-form__error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  border: 1px solid rgb(255, 0, 0);
+  padding: 10px;
+  border-radius: 8px;
+  p {
+    color: rgb(255, 0, 0);
+  }
 }
 
 .login-form__error--center {

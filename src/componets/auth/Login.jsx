@@ -9,6 +9,7 @@ import lock from "../../icons/lock.svg";
 import visibility_off from "../../icons/visibility_off.svg";
 import visibility from "../../icons/visibility.svg";
 import logoutWhite from "../../icons/logoutWhite.svg";
+import errorIcon from "../../icons/error.svg";
 
 import "../../css/parthnerPage.css";
 import "../../css/loginUsuarios.css";
@@ -24,9 +25,17 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorLogin("");
+    if (!form.usuario_email.trim() && !form.password.trim()) {
+      setErrorLogin("Escriba su usuario/email y su contraseña");
+      return;
+    }
 
-    if (!form.usuario_email.trim() || !form.password.trim()) {
-      setErrorLogin("Usuario/Email o contraseña incorrectos");
+    if (!form.usuario_email.trim()) {
+      setErrorLogin("Escriba su usuario/email");
+      return;
+    }
+    if (!form.password.trim()) {
+      setErrorLogin("Escriba su contraseña");
       return;
     }
 
@@ -143,9 +152,12 @@ export default function Login() {
                 </div>
               </div>
               {errorLogin && (
-                <p className="login-form__error login-form__error--center">
-                  {errorLogin}
-                </p>
+                <>
+                  <div className="login-form__error login-form__error--center">
+                    <img src={errorIcon} />
+                    <p>{errorLogin}</p>
+                  </div>
+                </>
               )}
 
               <button type="submit" className="login-form__submit">
@@ -158,7 +170,7 @@ export default function Login() {
 
         <footer className="login-footer">
           <p className="login-footer__text">¿Aún no tienes cuenta?</p>
-          <a href="" className="login-footer__link">
+          <a href="/registro" className="login-footer__link">
             Regístrate ahora
           </a>
         </footer>
