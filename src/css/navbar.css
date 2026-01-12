@@ -1,0 +1,133 @@
+.resultados_section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  .resultado {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    background-color: #282828;
+    border-radius: 8px;
+
+    .resultado_data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 60%;
+
+      div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        span {
+          font-size: 0.9rem;
+        }
+
+        .descuento {
+          padding: 1px 5px;
+          background-color: green;
+          border-radius: 2px;
+        }
+
+        span:nth-child(2) {
+          opacity: 70%;
+          text-decoration: line-through;
+        }
+      }
+    }
+    .resultado_imagen {
+      width: 40%;
+      height: 60px;
+      img {
+        width: 100%;
+        height: 100%;
+
+        border-radius: 8px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+.navbar_phone_container {
+  width: 100%;
+  position: sticky;
+  top: 0px;
+  background-color: #0f0f0f;
+  z-index: 100;
+
+  .navbar_phone {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+
+    .navbar_phone_search {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      width: 60%;
+
+      .search-hidden {
+        display: flex;
+      }
+
+      .search_show {
+        width: 100%;
+        display: flex;
+        border-radius: 8px;
+        padding: 0px 10px;
+        background-color: #282828;
+        input {
+          font-size: 1rem;
+          background-color: transparent;
+          border: none;
+          width: 100%;
+          padding: 12px 10px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .navbar_phone_perfil {
+      display: flex;
+      justify-content: center;
+      width: 40%;
+      gap: 5px;
+
+      .perfil_message {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        p:nth-child(1) {
+          font-size: 0.7rem;
+          opacity: 80%;
+        }
+        p:nth-child(2) {
+          font-size: 0.9rem;
+        }
+      }
+
+      .iniciales {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background-color: #282828;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+    }
+  }
+}
