@@ -14,7 +14,7 @@ export default function ModalMessage() {
         <article
           className="modal"
           style={{
-            border: type === "success" ? "2px solid #2ab600" : "2px solid red",
+            border: type === "success" ? "2px solid #747574" : "2px solid red",
           }}
         >
           <div className="modal_header">
