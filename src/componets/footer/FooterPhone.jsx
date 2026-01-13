@@ -10,10 +10,13 @@ import juegos from "../../icons/juegos.svg";
 
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerToken } from "../../services/obtenerToken";
+import useMediaQuery from "../../utils/changeDesk";
 
 export default function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const { usuarioInfo } = useObtenerToken();
   const rolToken = usuarioInfo?.rol;
@@ -61,24 +64,33 @@ export default function Footer() {
   if (rutasOcultas.includes(location.pathname)) return null;
 
   return (
-    <footer className="footer">
-      <div className="footer_container">
-        {opcionesAMostrar.map((item, index) => {
-          const isActive = location.pathname === item.ruta;
+    <>
+      {isDesktop ? (
+        <></>
+      ) : (
+        <footer className="footer">
+          <div className="footer_container">
+            {opcionesAMostrar.map((item, index) => {
+              const isActive = location.pathname === item.ruta;
 
-          return (
-            <div key={index} className={isActive ? "active" : "footer_item"}>
-              <div
-                onClick={() => navigate(item.ruta)}
-                className="icon_container"
-              >
-                <img src={item.icono} alt={item.titulo} />
-              </div>
-              <p>{item.titulo}</p>
-            </div>
-          );
-        })}
-      </div>
-    </footer>
+              return (
+                <div
+                  key={index}
+                  className={isActive ? "active" : "footer_item"}
+                >
+                  <div
+                    onClick={() => navigate(item.ruta)}
+                    className="icon_container"
+                  >
+                    <img src={item.icono} alt={item.titulo} />
+                  </div>
+                  <p>{item.titulo}</p>
+                </div>
+              );
+            })}
+          </div>
+        </footer>
+      )}
+    </>
   );
 }
