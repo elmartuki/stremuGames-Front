@@ -22,6 +22,7 @@ import Usuarios from "../componets/admin/Usuarios.jsx";
 import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
 import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
+import NavBar from "../componets/navbar/NavBar.jsx";
 
 export default function AppRouter() {
   return (
@@ -77,6 +78,7 @@ export default function AppRouter() {
         path="/categorias"
         element={
           <>
+            <NavBar />
             <CategoriasPage />
             <Footer />
           </>
@@ -86,6 +88,7 @@ export default function AppRouter() {
         path="/categorias/:id"
         element={
           <>
+            <NavBar />
             <CategoriaSeleccionadaPage />
             <Footer />
           </>
@@ -95,6 +98,7 @@ export default function AppRouter() {
         path="/explorar"
         element={
           <>
+            <NavBar />
             <ExplorarPage />
             <Footer />
           </>
