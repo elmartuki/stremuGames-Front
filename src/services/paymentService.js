@@ -9,13 +9,16 @@ export const iniciarPago = async (juegosCarrito) => {
   }
 
   const items = juegosCarrito.map((item) => {
-    if (!item.precio || isNaN(Number(item.precio))) {
-      throw new Error(`Precio inválido: ${item.titulo}`);
+    const titulo = item.juegoId?.titulo || item.titulo;
+    const precio = item.juegoId?.precio || item.precio;
+
+    if (!precio || isNaN(Number(precio))) {
+      throw new Error(`Precio inválido para el juego`);
     }
 
     return {
-      title: item.titulo,
-      unit_price: Number(item.precio),
+      title: titulo,
+      unit_price: Number(precio),
       quantity: 1,
     };
   });
@@ -25,10 +28,14 @@ export const iniciarPago = async (juegosCarrito) => {
       items,
     });
 
-    showMessage(response.data.message, "success");
-  } catch (error) {
-    showMessage(error.response?.data?.message, "error");
-  }
+    showMessage(response.data.message || "Preferencia creada", "success");
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    const errorMsg =
+      error.response?.data?.message || "Error al procesar el pago";
+    showMessage(errorMsg, "error");
+
+    throw error;
+  }
 };
