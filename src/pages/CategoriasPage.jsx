@@ -3,15 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { categorias } from "../constants/categorias.js";
 import "../css/categoriasPage.css";
 import search from "../icons/search.svg";
-
 import { useObtenerJuegos } from "../services/obtenerJuegos";
 
 export default function CategoriasPage() {
   const [buscar, setBuscar] = useState("");
-
   const navigate = useNavigate();
-
-  const { listado } = useObtenerJuegos();
+  const { listado = [] } = useObtenerJuegos();
 
   const articulosFiltrados = categorias.filter((categoria) => {
     return categoria.nombre.toLowerCase().includes(buscar.toLowerCase());
@@ -26,9 +23,7 @@ export default function CategoriasPage() {
         <div>
           <img src={search} alt="" />
           <input
-            onChange={(event) => {
-              setBuscar(event.target.value);
-            }}
+            onChange={(event) => setBuscar(event.target.value)}
             type="text"
             placeholder="Buscar categoria..."
           />
@@ -41,21 +36,32 @@ export default function CategoriasPage() {
             listado?.filter((juego) => juego.categorias.includes(item.nombre))
               .length || 0;
 
+          const colorBase = item.color
+            .replace("linear-gradient(to right, ", "")
+            .split(",")[0]
+            .replace("rgb", "rgba")
+            .replace(")", ", 0.15)");
+
           return (
             <article
-              onClick={() => {
-                navigate(`/categorias/${item.nombre}`);
-              }}
+              onClick={() => navigate(`/categorias/${item.nombre}`)}
               key={index}
-              className="categoria"
-              style={{ background: item.color }}
+              className="categoria_card"
+              style={{
+                backgroundImage: `
+                  radial-gradient(circle at top right, ${colorBase}, transparent 60%),
+                  radial-gradient(circle at bottom left, ${colorBase}, transparent 60%)
+                `,
+              }}
             >
-              <div>
-                <p>{item.nombre}</p>
-                <p>{cantidad} Juegos</p>
+              <div className="icon_wrapper" style={{ background: item.color }}>
+                <img src={item.icon} alt={item.nombre} />
               </div>
 
-              <img src={item.icon} alt="" />
+              <div className="categoria_textos">
+                <h3>{item.nombre}</h3>
+                <span>{cantidad} Juegos</span>
+              </div>
             </article>
           );
         })}

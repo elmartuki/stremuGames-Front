@@ -1,4 +1,104 @@
 .categoria_seleccionada_page {
+  .categoria_seleccionada_titulo {
+    font-size: 1.2rem;
+    background-color: #282828;
+    border-radius: 6px;
+    padding: 0px 10px;
+    width: 95%;
+
+    font-style: italic;
+    margin: 10px auto;
+  }
+
+  .juego_destacado {
+    width: 95%;
+    margin: auto;
+
+    .hero {
+      display: flex;
+      height: 400px;
+      gap: 10px;
+
+      .hero_big {
+        display: flex;
+        align-items: end;
+        padding: 10px;
+        width: 90%;
+        border-radius: 8px;
+
+        .badge_descuento {
+          width: fit-content;
+          padding: 0px 10px;
+          border-radius: 6px;
+          background-color: #20b356;
+        }
+
+        .hero_precios {
+          font-size: 1.2rem;
+          .precio_viejo {
+            text-decoration: line-through;
+            opacity: 60%;
+          }
+        }
+
+        .hero_info {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          h2 {
+            font-size: 2 rem;
+          }
+
+          p {
+            font-size: 1rem;
+          }
+
+          div {
+            display: flex;
+            gap: 10px;
+
+            button:nth-child(1) {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #ffffff;
+              color: rgba(0, 0, 0, 0.795);
+              padding: 8px 10px;
+              border: none;
+              border-radius: 8px;
+              font-size: 1rem;
+            }
+
+            button:nth-child(2) {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #0000008a;
+              padding: 8px 10px;
+              border: none;
+              border-radius: 8px;
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      .hero_small {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 10%;
+
+        img {
+          width: 100%;
+          height: 50px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
   .juegos_section {
     width: 95%;
     display: flex;
@@ -85,6 +185,54 @@
 
         &:focus {
           outline: none;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .categoria_seleccionada_page {
+    .juegos_section {
+      margin-top: 20px;
+      .juegos {
+        width: calc(20% - 10px);
+      }
+    }
+
+    .categoria_seleccionada_titulo {
+      width: 80%;
+      font-size: 1.4rem;
+    }
+
+    .categoria_seleccionada {
+      .juego_destacado {
+        width: 80%;
+
+        .hero {
+          .hero_info {
+            padding: 10px;
+            h2 {
+              font-size: 3rem;
+            }
+
+            p {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      .explorar_page_titulo {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+      }
+
+      .explorar_carroucel {
+        .explorar_carroucel_header {
+          width: 80%;
         }
       }
     }
