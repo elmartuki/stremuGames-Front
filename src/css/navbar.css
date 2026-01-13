@@ -131,3 +131,231 @@
     }
   }
 }
+
+.navbar_desk_container {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: #0f0f0f;
+  z-index: 100;
+  color: white;
+
+  .navbar_desk {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin: 0 auto;
+
+    .navbar_desk_logo {
+      flex: 5%;
+      display: flex;
+      align-items: center;
+
+      p {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.3rem;
+        font-style: italic;
+        font-weight: bold;
+        margin: 0;
+
+        img {
+          width: 35px;
+          height: auto;
+        }
+      }
+    }
+
+    .navbar_desk_links {
+      flex: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      gap: 20px;
+      padding: 0 15px;
+
+      button {
+        color: white;
+        opacity: 0.75;
+        font-weight: 400;
+        font-size: 1rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.3s;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+
+    .navbar_desk_perfil {
+      width: 65%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 20px;
+
+      .btn-carrito {
+        opacity: 1;
+        border: none;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 15px;
+        background-color: #20b356;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+
+      .navbar_desk_perfil_search {
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+
+        .resultados_section {
+          width: 100%;
+          border-radius: 8px;
+          background-color: #0f0f0f;
+          border: 1px solid #282828;
+          top: 50px;
+          position: absolute;
+          padding: 10px 0px 0px;
+
+          .resultados_finded {
+            display: flex;
+            gap: 10px;
+            justify-content: safe;
+            padding: 0px 10px;
+            font-size: 0.8rem;
+
+            span:nth-child(1) {
+              opacity: 70%;
+            }
+
+            span:nth-child(2) {
+              color: #20b356;
+            }
+          }
+
+          .ver_mas {
+            text-align: center;
+            padding: 10px;
+            background-color: #202020;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+          }
+
+          .resultado {
+            width: 95%;
+            margin: auto;
+          }
+        }
+
+        &.open {
+          width: 100%;
+        }
+        &.closed {
+          width: 40px;
+        }
+
+        .search {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #282828;
+          border-radius: 8px;
+          padding: 8px 12px;
+          gap: 8px;
+
+          img {
+            width: 20px;
+            cursor: pointer;
+            filter: brightness(0) invert(1);
+          }
+
+          input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            font-size: 0.9rem;
+          }
+        }
+      }
+
+      .navbar_desk_perfil_avatar {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-shrink: 0;
+
+        .favoritos {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          &:hover svg {
+            transform: scale(1.1);
+            fill: #ff4b4b;
+          }
+          svg {
+            transition: all 0.2s;
+          }
+        }
+
+        .perfil_info_wrapper {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .perfil_message {
+          text-align: right;
+          p:nth-child(1) {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin: 0;
+          }
+          p:nth-child(2) {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0;
+            color: #20b356;
+          }
+        }
+
+        .perfil {
+          cursor: pointer;
+          .iniciales {
+            background-color: #20b356;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin: 0;
+          }
+          img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 8px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+}
