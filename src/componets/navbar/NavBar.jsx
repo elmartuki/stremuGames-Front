@@ -85,7 +85,10 @@ export default function NavBar() {
                           autoFocus
                         />
                         <img
-                          onClick={() => setOpenSearch(!openSearch)}
+                          onClick={() => {
+                            setOpenSearch(!openSearch);
+                            setBuscar("");
+                          }}
                           src={cerrar}
                           alt="Buscar"
                         />
@@ -122,7 +125,7 @@ export default function NavBar() {
                               {precioBase !== precioDescuento ? (
                                 <div>
                                   <span className="descuento">
-                                    -{porcentaje}%
+                                    -{porcentaje.toFixed(0)}%
                                   </span>
                                   <span>${precioDescuento}</span>
                                   <span>${precioBase}</span>
@@ -254,7 +257,9 @@ export default function NavBar() {
 
                         {precioBase !== precioDescuento ? (
                           <div>
-                            <span className="descuento">-{porcentaje}%</span>
+                            <span className="descuento">
+                              -{porcentaje.toFixed(0)}%
+                            </span>
                             <span>${precioDescuento}</span>
                             <span>${precioBase}</span>
                           </div>

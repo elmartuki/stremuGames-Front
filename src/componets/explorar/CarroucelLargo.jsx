@@ -1,9 +1,19 @@
+import { useState } from "react";
 import "../../css/explorarPage.css";
 import { useAgregarJuegoAlcarrito } from "../../services/agregarAlCarrito";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
+import useMediaQuery from "../../utils/changeDesk";
+import back from "../../icons/back_arrow.svg";
+import next from "../../icons/next.svg";
 
 export default function CarroucelLargo({ filtrar }) {
   const { listado } = useObtenerJuegos();
+
+  const [indice, setIndice] = useState(0);
+
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+  const elementosPorPagina = 5;
 
   let juegosParaMostrar = listado ? [...listado] : [];
 
@@ -17,45 +27,111 @@ export default function CarroucelLargo({ filtrar }) {
     );
   }
 
+  const handleChange = (dato) => {
+    if (dato === "restar") {
+      if (indice > 0) {
+        setIndice(indice - 1);
+      }
+    }
+
+    if (dato === "sumar") {
+      if (indice + elementosPorPagina < juegosParaMostrar.length) {
+        setIndice(indice + 1);
+      }
+    }
+  };
+
   return (
     <>
-      {juegosParaMostrar?.map((juego) => {
-        const {
-          _id,
-          titulo,
-          imagenPortada,
-          desarrolladora,
-          precioDescuento,
-          precioBase,
-        } = juego;
+      {isDesktop ? (
+        <>
+          <button onClick={() => handleChange("restar")}>
+            <img src={back} alt="" />
+          </button>
+          {juegosParaMostrar
+            .slice(indice, indice + elementosPorPagina)
+            .map((juego) => {
+              const {
+                _id,
+                titulo,
+                imagenPortada,
+                desarrolladora,
+                precioDescuento,
+                precioBase,
+              } = juego;
 
-        return (
-          <article
-            onClick={() => useAgregarJuegoAlcarrito(_id)}
-            key={_id}
-            className="juego_card large"
-          >
-            <div className="juego_card_imagen">
-              <img src={imagenPortada} alt={titulo} />
-            </div>
-            <div className="juego_card_data">
-              <p className="juego_card_data_titulo">{titulo}</p>
-              <p className="juego_card_data_empresa">{desarrolladora}</p>
+              return (
+                <article
+                  onClick={() => useAgregarJuegoAlcarrito(_id)}
+                  key={_id}
+                  className="juego_card large"
+                >
+                  <div className="juego_card_imagen">
+                    <img src={imagenPortada} alt={titulo} />
+                  </div>
+                  <div className="juego_card_data">
+                    <p className="juego_card_data_titulo">{titulo}</p>
+                    <p className="juego_card_data_empresa">{desarrolladora}</p>
 
-              {precioDescuento !== precioBase ? (
-                <div>
-                  <p>${precioDescuento}</p>
-                  <p>${precioBase}</p>
+                    {precioDescuento !== precioBase ? (
+                      <div>
+                        <p>${precioDescuento}</p>
+                        <p>${precioBase}</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p>${precioBase}</p>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          <button onClick={() => handleChange("sumar")}>
+            <img src={next} alt="" />
+          </button>
+        </>
+      ) : (
+        <>
+          {juegosParaMostrar?.map((juego) => {
+            const {
+              _id,
+              titulo,
+              imagenPortada,
+              desarrolladora,
+              precioDescuento,
+              precioBase,
+            } = juego;
+
+            return (
+              <article
+                onClick={() => useAgregarJuegoAlcarrito(_id)}
+                key={_id}
+                className="juego_card large"
+              >
+                <div className="juego_card_imagen">
+                  <img src={imagenPortada} alt={titulo} />
                 </div>
-              ) : (
-                <div>
-                  <p>${precioBase}</p>
+                <div className="juego_card_data">
+                  <p className="juego_card_data_titulo">{titulo}</p>
+                  <p className="juego_card_data_empresa">{desarrolladora}</p>
+
+                  {precioDescuento !== precioBase ? (
+                    <div>
+                      <p>${precioDescuento}</p>
+                      <p>${precioBase}</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>${precioBase}</p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </article>
-        );
-      })}
+              </article>
+            );
+          })}
+        </>
+      )}
     </>
   );
 }

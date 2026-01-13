@@ -1,14 +1,22 @@
 import Carroucel from "../componets/explorar/Carroucel";
 import CarroucelLargo from "../componets/explorar/CarroucelLargo";
 import Categorias from "../componets/explorar/Categorias";
+import HeroJuegos from "../componets/explorar/HeroJuegos";
 import "../css/explorarPage.css";
 import rigth_green from "../icons/rigth_green.svg";
 import search from "../icons/search.svg";
 import timer from "../icons/timer.svg";
+import useMediaQuery from "../utils/changeDesk";
 
 export default function ExplorarPage() {
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
+
   return (
     <section className="explorar_page_section">
+      <section className="explorar_hero">
+        <HeroJuegos filtrar={"Populares"} />
+      </section>
+
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div>
@@ -25,9 +33,19 @@ export default function ExplorarPage() {
           </div>
         </div>
 
-        <section className="carroucel_section">
-          <Carroucel />
-        </section>
+        {isDesktop ? (
+          <>
+            <section className="carroucel_section carroucel_section_desk">
+              <Carroucel />
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="carroucel_section">
+              <Carroucel />
+            </section>
+          </>
+        )}
       </section>
 
       <section className="explorar_carroucel">
@@ -44,9 +62,15 @@ export default function ExplorarPage() {
           </div>
         </div>
 
-        <section className="carroucel_section">
-          <CarroucelLargo filtrar={"Populares"} />
-        </section>
+        {isDesktop ? (
+          <section className="carroucel_section carroucel_section_desk">
+            <CarroucelLargo filtrar={"Populares"} />
+          </section>
+        ) : (
+          <section className="carroucel_section">
+            <CarroucelLargo filtrar={"Populares"} />
+          </section>
+        )}
       </section>
 
       <section className="explorar_carroucel">
@@ -63,9 +87,15 @@ export default function ExplorarPage() {
           </div>
         </div>
 
-        <section className="carroucel_section">
-          <CarroucelLargo filtrar={"Recientes"} />
-        </section>
+        {isDesktop ? (
+          <section className="carroucel_section carroucel_section_desk">
+            <CarroucelLargo filtrar={"Recientes"} />
+          </section>
+        ) : (
+          <section className="carroucel_section">
+            <CarroucelLargo filtrar={"Recientes"} />
+          </section>
+        )}
       </section>
 
       <section className="explorar_carroucel">
@@ -82,9 +112,15 @@ export default function ExplorarPage() {
           </div>
         </div>
 
-        <section className="carroucel_section">
-          <CarroucelLargo filtrar={"Carreras"} />
-        </section>
+        {isDesktop ? (
+          <section className="carroucel_section carroucel_section_desk">
+            <CarroucelLargo filtrar={"Carreras"} />
+          </section>
+        ) : (
+          <section className="carroucel_section">
+            <CarroucelLargo filtrar={"Carreras"} />
+          </section>
+        )}
       </section>
 
       <section className="explorar_carroucel">
@@ -101,16 +137,28 @@ export default function ExplorarPage() {
           </div>
         </div>
 
-        <section className="carroucel_section">
-          <CarroucelLargo filtrar={"Terror"} />
-        </section>
+        {isDesktop ? (
+          <section className="carroucel_section carroucel_section_desk">
+            <CarroucelLargo filtrar={"Terror"} />
+          </section>
+        ) : (
+          <section className="carroucel_section">
+            <CarroucelLargo filtrar={"Terror"} />
+          </section>
+        )}
       </section>
 
       <p className="explorar_page_titulo">Categorias Populares</p>
 
-      <section className="categorias_section">
-        <Categorias />
-      </section>
+      {isDesktop ? (
+        <section className="categorias_section categorias_section_desk">
+          <Categorias />
+        </section>
+      ) : (
+        <section className="categorias_section">
+          <Categorias />
+        </section>
+      )}
     </section>
   );
 }
