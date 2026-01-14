@@ -3,6 +3,16 @@
   flex-direction: column;
   gap: 20px;
 
+  .perfil_config_carroucel {
+    display: none;
+  }
+
+  .perfil_config {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
   .perfil_config_header_data {
     display: flex;
     flex-direction: column;
@@ -78,6 +88,10 @@
     margin: auto;
     flex-direction: column;
     gap: 10px;
+
+    label {
+      opacity: 60%;
+    }
   }
 
   .column_input {
@@ -85,13 +99,13 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
-    background-color: #282828;
     padding: 15px 20px;
     border-radius: 6px;
+    border: 2px solid #282828;
 
     label {
       font-size: 1rem;
-      opacity: 0.6;
+      opacity: 60%;
     }
 
     input,
@@ -132,8 +146,8 @@
   }
 
   .btn_cancelar {
-    background-color: #282828;
-    border: 2px solid #404040;
+    background-color: #202020;
+    border: 2px solid #303030;
     color: white;
   }
 
@@ -149,6 +163,44 @@
 
     img {
       width: 18px;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .editar_perfil_section {
+    justify-content: center;
+    .flex-50 {
+      display: flex;
+      height: 90vh;
+    }
+
+    .perfil_config_carroucel {
+      display: flex;
+      width: 40%;
+
+      .carroucel_container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        .carroucel_active_item {
+          width: 60%;
+          box-shadow: 0px 0px 50px 20px rgba(47, 0, 255, 0.1);
+          background-position: center;
+          height: 80vh;
+          border-radius: 10px;
+        }
+      }
+    }
+
+    .perfil_config {
+      width: 50%;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #181818;
     }
   }
 }

@@ -23,8 +23,11 @@ import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
 import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
 import NavBar from "../componets/navbar/NavBar.jsx";
+import useMediaQuery from "../utils/changeDesk.js";
 
 export default function AppRouter() {
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
+
   return (
     <Routes>
       <Route
@@ -109,6 +112,7 @@ export default function AppRouter() {
         path="/comunidad/estudio/:id"
         element={
           <>
+            <NavBar />
             <PerfilEmpresaPage />
             <Footer />
           </>
@@ -162,6 +166,7 @@ export default function AppRouter() {
           path="/perfil"
           element={
             <>
+              {isDesktop ? <NavBar /> : <></>}
               <PerfilConfigPage />
               <Footer />
             </>
@@ -172,6 +177,7 @@ export default function AppRouter() {
           path="/perfil/editar-perfil"
           element={
             <>
+              {isDesktop ? <NavBar /> : <></>}
               <EditarPerfil />
               <Footer />
             </>
