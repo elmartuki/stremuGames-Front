@@ -184,9 +184,10 @@ export default function AppRouter() {
           }
         />
         <Route
-          path="/community"
+          path="/comunidad"
           element={
             <>
+              <NavBar />
               <PerfilPage />
               <Footer />
             </>
