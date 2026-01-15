@@ -1,10 +1,48 @@
 .container-biblioteca {
   width: 100%;
   padding: 20px;
-
   .titulo-container {
     text-align: center;
     margin-bottom: 20px;
+  }
+  .container-line {
+    margin: 16px -20px;
+  }
+  .container-line hr {
+    width: 100vw;
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.719);
+  }
+  .cant-juegos {
+    width: 100%;
+    margin-bottom: 17px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1rem;
+    .cantidad {
+      width: 100%;
+      font-weight: 500;
+      color: #9c9c9c;
+    }
+    .filtro-reciente {
+      display: flex;
+      justify-content: end;
+      align-items: end;
+      gap: 5px;
+      button {
+        font-size: 1.1rem;
+        color: #9c9c9c;
+        border: none;
+        background-color: transparent;
+        font-weight: 500;
+      }
+      img {
+        width: 20px;
+        transform: translateY(2px);
+        filter: contrast(10%);
+      }
+    }
   }
   .Container-buscador {
     width: 100%;
