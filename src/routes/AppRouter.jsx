@@ -22,6 +22,8 @@ import Usuarios from "../componets/admin/Usuarios.jsx";
 import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
 import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
+import BibliotecaPage from "../pages/BibliotecaPage.jsx";
+
 import NavBar from "../componets/navbar/NavBar.jsx";
 import useMediaQuery from "../utils/changeDesk.js";
 
@@ -189,6 +191,16 @@ export default function AppRouter() {
             <>
               <NavBar />
               <PerfilPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/biblioteca"
+          element={
+            <>
+              <NavBar />
+              <BibliotecaPage />
               <Footer />
             </>
           }
