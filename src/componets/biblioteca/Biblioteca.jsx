@@ -3,6 +3,7 @@ import { obtenerBiblioteca } from "../../services/obtenerJuegoComprado";
 import "../../css/biblioteca.css";
 import play_arrow from "../../icons/play_arrow.svg";
 import clock from "../../icons/clock.svg";
+import reciente_filtro from "../../icons/reciente_filtro.svg";
 
 import lupa from "../../icons/search.svg";
 const Biblioteca = () => {
@@ -11,6 +12,7 @@ const Biblioteca = () => {
   const [error, setError] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("todos");
   const [busqueda, setBusqueda] = useState("");
+  const [orden, setOrden] = useState("recientes");
 
   const categoriasDisponibles = [
     "todos",
@@ -45,17 +47,24 @@ const Biblioteca = () => {
   if (juegos.length === 0) {
     return <p>No tenés juegos comprados todavía 🎮</p>;
   }
-  const juegosFiltrados = juegos.filter((juego) => {
-    const coincideCategoria =
-      filtroCategoria === "todos" ||
-      juego.categorias?.includes(filtroCategoria);
+  const juegosFiltrados = juegos
+    .filter((juego) => {
+      const coincideCategoria =
+        filtroCategoria === "todos" ||
+        juego.categorias?.includes(filtroCategoria);
 
-    const coincideBusqueda = juego.titulo
-      .toLowerCase()
-      .includes(busqueda.toLowerCase());
+      const coincideBusqueda = juego.titulo
+        .toLowerCase()
+        .includes(busqueda.toLowerCase());
 
-    return coincideCategoria && coincideBusqueda;
-  });
+      return coincideCategoria && coincideBusqueda;
+    })
+    .sort((a, b) => {
+      if (orden === "recientes") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      return 0;
+    });
   return (
     <section className="container-biblioteca">
       <h1 className="titulo-container">Mi Biblioteca</h1>
@@ -83,6 +92,25 @@ const Biblioteca = () => {
           </button>
         ))}
       </div>
+      <section className="container-line">
+        <hr />
+      </section>
+      <section className="cant-juegos">
+        <div className="cantidad">
+          {juegos.length === 1
+            ? "1 Juego en total"
+            : `${juegos.length} Juegos en total`}
+        </div>
+        <div className="filtro-reciente">
+          <img src={reciente_filtro} alt="" />
+          <button
+            className={orden === "recientes" ? "activo" : ""}
+            onclick={() => setOrden("recientes")}
+          >
+            Recientes
+          </button>
+        </div>
+      </section>
       <div className="biblioteca-grid">
         {juegosFiltrados.map((juego) => (
           <div className="biblioteca-card">
