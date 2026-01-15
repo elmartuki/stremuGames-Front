@@ -22,6 +22,8 @@ import Usuarios from "../componets/admin/Usuarios.jsx";
 import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
 import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
+import BibliotecaPage from "../pages/BibliotecaPage.jsx";
+
 import NavBar from "../componets/navbar/NavBar.jsx";
 
 export default function AppRouter() {
@@ -182,6 +184,16 @@ export default function AppRouter() {
           element={
             <>
               <PerfilPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/biblioteca"
+          element={
+            <>
+              <NavBar />
+              <BibliotecaPage />
               <Footer />
             </>
           }
