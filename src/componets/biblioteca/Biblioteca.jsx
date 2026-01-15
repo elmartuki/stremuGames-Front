@@ -61,7 +61,7 @@ const Biblioteca = () => {
     })
     .sort((a, b) => {
       if (orden === "recientes") {
-        return new Date(b.createdAt) - new Date(a.createdAt);
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
       }
       return 0;
     });
