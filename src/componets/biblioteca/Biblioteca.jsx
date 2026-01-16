@@ -10,12 +10,12 @@ const Biblioteca = () => {
   const [juegos, setJuegos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [filtroCategoria, setFiltroCategoria] = useState("todos");
+  const [filtroCategoria, setFiltroCategoria] = useState("Todos");
   const [busqueda, setBusqueda] = useState("");
   const [orden, setOrden] = useState("recientes");
 
   const categoriasDisponibles = [
-    "todos",
+    "Todos",
     ...new Set(juegos.flatMap((juego) => juego.categorias || [])),
   ];
   console.log(categoriasDisponibles);
@@ -50,7 +50,7 @@ const Biblioteca = () => {
   const juegosFiltrados = juegos
     .filter((juego) => {
       const coincideCategoria =
-        filtroCategoria === "todos" ||
+        filtroCategoria === "Todos" ||
         juego.categorias?.includes(filtroCategoria);
 
       const coincideBusqueda = juego.titulo
@@ -84,7 +84,7 @@ const Biblioteca = () => {
           <button
             key={categoria}
             className={`btn-categoria ${
-              categoria === "todos" ? "categoria-todos" : ""
+              categoria === "Todos" ? "categoria-Todos" : ""
             } ${filtroCategoria === categoria ? "activo" : ""}`}
             onClick={() => setFiltroCategoria(categoria)}
           >
