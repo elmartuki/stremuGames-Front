@@ -85,8 +85,9 @@
     padding: 12px 5px;
 
     button {
-      background-color: #161616;
+      background-color: #272727;
       border-radius: 20px;
+      outline: 1px solid rgba(255, 255, 255, 0.315);
       border: none;
       .categorias {
         padding: 0 20px;
@@ -96,11 +97,11 @@
       }
     }
 
-    button.categoria-todos {
+    button.btn-categoria.activo {
       background: linear-gradient(135deg, #10b981, #059669);
     }
 
-    button.categoria-todos .categorias {
+    button.btn-categoria.activo .categorias {
       color: white;
       font-weight: 600;
     }
