@@ -97,9 +97,9 @@ const Biblioteca = () => {
       </section>
       <section className="cant-juegos">
         <div className="cantidad">
-          {juegos.length === 1
+          {juegosFiltrados.length === 1
             ? "1 Juego en total"
-            : `${juegos.length} Juegos en total`}
+            : `${juegosFiltrados.length} Juegos en total`}
         </div>
         <div className="filtro-reciente">
           <img src={reciente_filtro} alt="" />
