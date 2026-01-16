@@ -1,6 +1,5 @@
 import "../css/studioPerfil.css";
-import back from "../icons/back.svg";
-import more from "../icons/more.svg";
+import mail from "../icons/mail.svg";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function PerfilEmpresaPage() {
   const { empresas } = useObtenerUsuarios();
   const { listado } = useObtenerJuegos();
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -16,8 +14,8 @@ export default function PerfilEmpresaPage() {
 
   if (!empresaEncontrada) {
     return (
-      <section className="perfil_studio_loading">
-        <p>Cargando datos del estudio...</p>
+      <section className="perfil_loading">
+        <p>Cargando datos...</p>
       </section>
     );
   }
@@ -31,93 +29,123 @@ export default function PerfilEmpresaPage() {
 
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
 
-  const juegosCompletos = listado?.filter((juego) =>
+  const juegosDelEstudio = listado?.filter((juego) =>
     juegosSubidos.includes(juego._id)
   );
 
+  const destacado =
+    juegosDelEstudio && juegosDelEstudio.length > 0
+      ? juegosDelEstudio[0]
+      : null;
+  const catalogo =
+    juegosDelEstudio && juegosDelEstudio.length > 0
+      ? juegosDelEstudio.slice(1)
+      : [];
+
+
+
   return (
-    <section className="perfil_studio_container">
-      <nav className="navbar-phone">
-        <img onClick={() => navigate(-1)} src={back} alt="Volver" />
-        <div>
-          <p>Perfil del Estudio</p>
-          <p>Detalles y catálogo</p>
-        </div>
-        <img src={more} alt="Opciones" />
-      </nav>
-
-      <section className="perfil_studio_header">
-        <div
-          className="perfil_studio_top"
-          style={{ backgroundImage: `url(${foto_de_perfil})` }}
-        >
-          <div className="perfil_studio_header_imagen">
-            {foto_de_perfil !== "" ? (
-              <img src={foto_de_perfil} alt={nombreUsuario} />
-            ) : (
-              <p>{iniciales}</p>
-            )}
-          </div>
-          <div className="perfil_studio_header_button">
-            <button className="btn_seguir">Seguir</button>
-          </div>
-        </div>
-
-        <div className="perfil_studio_header_data">
-          <div className="datos">
-            <h1>{nombreUsuario}</h1>
-            <div className="stats_row">
-              <span>400 </span> <span>Seguidores</span>
-              <span className="separador">•</span>
-              <span>{juegosSubidos.length} </span>
-              <span>Juegos</span>
+    <div className="perfil_container_main">
+      <aside className="perfil_sidebar">
+        <div className="sidebar_card">
+          <div className="perfil_top">
+            <div className="perfil_img_box">
+              {foto_de_perfil ? (
+                <img src={foto_de_perfil} alt={nombreUsuario} />
+              ) : (
+                <div className="avatar_letra">{iniciales}</div>
+              )}
             </div>
           </div>
 
-          <div className="biografia">
-            {biografia === "" ? (
-              <p>"Esta cuenta todavía no agregó una biografía."</p>
-            ) : (
-              <p>"{biografia}"</p>
-            )}
+          <div className="perfil_textos">
+            <h1>{nombreUsuario}</h1>
+            <span className="subtitulo_rol">Developer</span>
+
+            <div className="stats_flex">
+              <div className="stat_box">
+                <strong>400</strong>
+                <span>Seguidores</span>
+              </div>
+              <div className="stat_divider"></div>
+              <div className="stat_box">
+                <strong>{juegosSubidos.length}</strong>
+                <span>Juegos</span>
+              </div>
+            </div>
+
+            <p className="bio_texto">
+              "
+              {biografia ||
+                "Esta desarrolladora aun no escribió una descripcion..."}
+              "
+            </p>
+
+            <div className="botones_accion">
+              <button className="btn_seguir">Seguir</button>
+              <button className="btn_contacto">
+                <img src={mail} alt="" />
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </aside>
 
-      <section className="seccion_catalogo">
-        <h3 className="titulo_catalogo">Catálogo de Juegos</h3>
-
-        <div className="listado_de_juegos">
-          {juegosCompletos.length > 0 ? (
-            juegosCompletos.map((juego) => (
-              <article className="juego_card_mini" key={juego._id}>
-                <div className="juego_card_imagen">
-                  <img src={juego.imagenPortada} alt={juego.titulo} />
-                  {juego.precioBase === 0 && (
-                    <span className="badge_free">Gratis</span>
-                  )}
+      <main className="perfil_contenido">
+        {destacado && (
+          <section className="seccion_bloque">
+            <div className="titulo_borde">Ultimo Lanzamiento</div>
+            <div
+              className="banner_destacado"
+              style={{ backgroundImage: `url(${destacado.imagenPortada})` }}
+            >
+              <div className="overlay_gradiente">
+                <span className="badge_nuevo">Nuevo Lanzamiento</span>
+                <h2 className="titulo_grande">{destacado.titulo}</h2>
+                <p className="desc_destacado">{destacado.descripcion}</p>
+                <div className="footer_destacado">
+                  <button className="btn_verde">Ver Detalles</button>
+                  <span className="precio_grande">${destacado.precioBase}</span>
                 </div>
+              </div>
+            </div>
+          </section>
+        )}
 
-                <div className="juego_card_info">
-                  <p className="juego_titulo">{juego.titulo}</p>
-                  <div className="juego_footer">
-                    <span className="juego_categoria">
-                      {juego.categorias?.join(", ")}
+        <section className="seccion_bloque">
+          <div className="titulo_borde">Catálogo de Juegos</div>
+          <div className="flex_catalogo">
+            {catalogo.length > 0 ? (
+              catalogo.map((juego) => (
+                <article className="card_mini" key={juego._id}>
+                  <div className="card_img">
+                    <img src={juego.imagenPortada} alt={juego.titulo} />
+                    <span className="badge_cat">
+                      {juego.categorias?.[0] || "Acción"}
                     </span>
-                    <p className="juego_precio">
-                      {juego.precioBase > 0 ? `$${juego.precioBase}` : "Free"}
-                    </p>
                   </div>
-                </div>
-              </article>
-            ))
-          ) : (
-            <p className="sin_juegos">
-              Este estudio aún no tiene juegos publicados.
-            </p>
-          )}
-        </div>
-      </section>
-    </section>
+                  <div className="card_info">
+                    <h3>{juego.titulo}</h3>
+                    <span className="cat_texto">
+                      {juego.categorias?.join(" • ")}
+                    </span>
+                    <div className="card_bottom">
+                      <span className="precio_mini">
+                        {juego.precioBase > 0 ? `$${juego.precioBase}` : "Free"}
+                      </span>
+                      <button className="btn_carrito">
+                        Agregar al carrito
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <p className="sin_juegos">No hay más juegos en el catálogo.</p>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
