@@ -18,7 +18,7 @@ export default function ListadoDeJuegos() {
       {listado?.map((juego, index) => {
         const { titulo, imagenPortada, descargasTotales, precioBase, _id } =
           juego;
-        console.log(juego);
+ 
         return (
           <article key={index} className="juego-card">
             <div className="juego-card_imagen">

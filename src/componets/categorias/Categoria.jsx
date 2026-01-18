@@ -1,11 +1,13 @@
 import "../../css/categoriaSeleccionada.css";
 import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Categoria() {
   const [lista, setLista] = useState([]);
   const { listado } = useObtenerJuegos();
+
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -35,7 +37,7 @@ export default function Categoria() {
         const porcentaje = ((precioBase - precioDescuento) / precioBase) * 100;
 
         return (
-          <article className="juegos">
+          <article className="juegos" onClick={() => navigate(`/juego/${_id}`)}>
             <div className="juegos_imagen">
               {porcentaje !== 0 ? (
                 <>

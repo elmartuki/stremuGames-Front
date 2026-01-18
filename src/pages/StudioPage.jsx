@@ -4,7 +4,7 @@ import more from "../icons/more.svg";
 import "../css/parthnerPage.css";
 import { useNavigate } from "react-router-dom";
 
-export default function ParthnersPage() {
+export default function StudioPage() {
   const navigate = useNavigate();
   return (
     <>
@@ -20,7 +20,7 @@ export default function ParthnersPage() {
         </nav>
 
         <div className="btn-crear">
-          <button onClick={() => navigate("/parthner/crear-juego/")}>
+          <button onClick={() => navigate("/studio-panel/crear-juego/")}>
             Subir nuevo juego
           </button>
         </div>

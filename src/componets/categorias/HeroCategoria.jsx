@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import favorito from "../../icons/fav.svg";
 import "../../css/categoriaSeleccionada.css";
 
@@ -8,6 +8,8 @@ export default function HeroCategoria() {
   const { listado } = useObtenerJuegos();
   const { id } = useParams();
   const [indiceHero, setIndiceHero] = useState(0);
+
+  const navigate = useNavigate();
 
   const juegosParaMostrar = listado
     ? listado
@@ -21,7 +23,7 @@ export default function HeroCategoria() {
 
     const intervalo = setInterval(() => {
       setIndiceHero((prev) =>
-        prev + 1 >= juegosParaMostrar.length ? 0 : prev + 1
+        prev + 1 >= juegosParaMostrar.length ? 0 : prev + 1,
       );
     }, 4000);
 
@@ -42,6 +44,9 @@ export default function HeroCategoria() {
     <article className="hero">
       <div
         className="hero_big"
+        onClick={() => {
+          navigate(`/juego/${juegoActual._id}`);
+        }}
         style={{
           backgroundImage: `url("${juegoActual.imagenPortada}")`,
           backgroundSize: "cover",

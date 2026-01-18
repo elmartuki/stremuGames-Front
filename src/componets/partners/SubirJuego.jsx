@@ -29,6 +29,7 @@ export default function SubirJuego() {
     precioBase: 0,
     precioDescuento: 0,
     imagenPortada: "",
+    imagenBanner: "",
     categorias: [],
     etiquetas: [],
 
@@ -100,32 +101,62 @@ export default function SubirJuego() {
       </div>
 
       <form className="edit-game_form" onSubmit={handleSubmit}>
-        <div className="edit-game_preview-container">
-          <img
-            className="edit-game_preview-img"
-            src={
-              form.imagenPortada ||
-              "https://via.placeholder.com/150?text=Sin+Imagen"
-            }
-            alt="Vista Previa"
-            onError={(e) =>
-              (e.target.src = "https://via.placeholder.com/150?text=Error+URL")
-            }
-          />
-
-          <div className="edit-game_input-group">
-            <p>URL de la Imagen</p>
-            <input
-              className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, imagenPortada: event.target.value })
+        <section className="preview_imagen_container">
+          <div className="edit-game_preview-container">
+            <img
+              className="edit-game_preview-img"
+              src={
+                form.imagenPortada ||
+                "https://via.placeholder.com/150?text=Sin+Imagen"
               }
-              type="text"
-              placeholder="https://ejemplo.com/imagen.jpg"
-              value={form.imagenPortada}
+              alt="Vista Previa"
+              onError={(e) =>
+                (e.target.src =
+                  "https://via.placeholder.com/150?text=Error+URL")
+              }
             />
+
+            <div className="edit-game_input-group">
+              <p>URL de la Imagen</p>
+              <input
+                className="edit-game_input"
+                onChange={(event) =>
+                  setForm({ ...form, imagenPortada: event.target.value })
+                }
+                type="text"
+                placeholder="https://ejemplo.com/imagen.jpg"
+                value={form.imagenPortada}
+              />
+            </div>
           </div>
-        </div>
+          <div className="edit-game_preview-container">
+            <img
+              className="edit-game_preview-img"
+              src={
+                form.imagenBanner ||
+                "https://via.placeholder.com/150?text=Sin+Imagen"
+              }
+              alt="Vista Previa"
+              onError={(e) =>
+                (e.target.src =
+                  "https://via.placeholder.com/150?text=Error+URL")
+              }
+            />
+
+            <div className="edit-game_input-group">
+              <p>URL del banner</p>
+              <input
+                className="edit-game_input"
+                onChange={(event) =>
+                  setForm({ ...form, imagenBanner: event.target.value })
+                }
+                type="text"
+                placeholder="https://ejemplo.com/imagen.jpg"
+                value={form.imagenBanner}
+              />
+            </div>
+          </div>
+        </section>
 
         <div className="edit-game_input-group">
           <p>Título</p>
@@ -139,7 +170,6 @@ export default function SubirJuego() {
             value={form.titulo}
           />
         </div>
-
         <div className="edit-game_row">
           <div className="edit-game_input-group">
             <p>Slug (URL)</p>
@@ -154,7 +184,6 @@ export default function SubirJuego() {
             />
           </div>
         </div>
-
         <div className="edit-game_row">
           <div className="edit-game_input-group">
             <p>Precio Base</p>
@@ -185,7 +214,6 @@ export default function SubirJuego() {
             />
           </div>
         </div>
-
         <div className="edit-game_row">
           <div className="edit-game_input-group">
             <p>Peso (GB)</p>
@@ -213,7 +241,6 @@ export default function SubirJuego() {
             />
           </div>
         </div>
-
         <div className="edit-game_input-group">
           <p>Categorías</p>
           <div className="edit-game_categories-container">
@@ -232,7 +259,6 @@ export default function SubirJuego() {
             })}
           </div>
         </div>
-
         <div className="edit-game_input-group">
           <p>Etiquetas (Escribe y presiona Enter)</p>
           <input
@@ -261,7 +287,6 @@ export default function SubirJuego() {
             ))}
           </div>
         </div>
-
         <div className="edit-game_input-group">
           <p>Descripción</p>
           <textarea
@@ -274,7 +299,6 @@ export default function SubirJuego() {
             value={form.descripcion}
           ></textarea>
         </div>
-
         <button className="edit-game_submit-btn" type="submit">
           Crear Juego
         </button>

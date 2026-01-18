@@ -1,0 +1,324 @@
+.detalles_juego_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+
+  .juego_descripcion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 95%;
+    margin: auto;
+    background: #202020;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0px 0px 20px black;
+
+    .descripcion_texto {
+      font-size: 0.9rem;
+      opacity: 80%;
+    }
+
+    .section_subtitle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+
+      img {
+        width: 40px;
+        background: #20b3562e;
+        padding: 5px;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  .juego_header_portada {
+    width: 100%;
+    margin: auto;
+    height: 350px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .juego_galeria {
+    width: 95%;
+    margin: auto;
+
+    .section_subtitle {
+      width: 95%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.2rem;
+
+      img {
+        width: 40px;
+        background: #20b3562e;
+        padding: 5px;
+        border-radius: 6px;
+      }
+    }
+
+    .galeria_flex {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 15px;
+      width: 100%;
+      margin: auto;
+      padding: 20px 10px;
+
+      .galeria_item {
+        flex: 0 0 auto;
+        width: calc(70% - 10px);
+        height: 150px;
+        background-color: red;
+        border-radius: 8px;
+      }
+    }
+  }
+}
+
+.juego_info_card_container {
+  width: 100%;
+  margin: auto;
+  position: relative;
+  top: -150px;
+  background: linear-gradient(to top, #101010 0%, #161616 80%, #16161600 100%);
+
+  .juego_info_card {
+    width: 90%;
+    margin: auto;
+
+    .juego_titulo {
+      font-weight: 1000;
+    }
+
+    .juego_precio_container {
+      .label_precio {
+        letter-spacing: 1px;
+        opacity: 70%;
+        position: relative;
+        bottom: -4px;
+      }
+
+      .precios_wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .precio_oferta {
+          font-size: 2rem;
+        }
+
+        .precio_original {
+          text-decoration: line-through;
+          opacity: 70%;
+        }
+
+        .descuento_tag {
+          margin-left: auto;
+          font-size: 1rem;
+          background-color: #20b356;
+          padding: 1px 4px;
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .juego_acciones {
+      width: 95%;
+      margin: auto;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+
+      button {
+        font-size: 1rem;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: none;
+      }
+
+      .btn_comprar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        width: 100%;
+        background-color: #20b356;
+      }
+      .btn_favorito {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff1c;
+      }
+    }
+
+    .badge_categoria_container {
+      display: flex;
+      gap: 6px;
+      .badge_categoria {
+        background-color: #20b356;
+        padding: 1px 6px;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+.mas_info_container {
+  position: relative;
+  top: -130px;
+}
+
+.juego_desarrollador {
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  background-color: #202020;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 0px 20px black;
+
+  .section_subtitle {
+    font-size: 1.2rem;
+  }
+
+  .dev_card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+    background-color: #242424;
+    border-radius: 8px;
+
+    .dev_info {
+      .dev_nombre {
+        text-transform: capitalize;
+      }
+    }
+
+    .dev_logo {
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        object-fit: cover;
+      }
+
+      .iniciales {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background-color: #20b356;
+        font-size: 1.4rem;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+.juego_specs {
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  background-color: #202020;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 0px 20px black;
+
+  .specs_titulo {
+    font-size: 1.2rem;
+  }
+
+  .spec_item {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    opacity: 80%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1024px) {
+  .detalles_juego_container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+
+    .juego_header_portada {
+      width: 95%;
+      height: 400px;
+      margin-top: 15px;
+    }
+
+    .mas_info_container {
+      top: 0px;
+      width: calc(70% - 20px);
+
+      .juego_descripcion {
+        width: 100%;
+        .section_subtitle {
+          font-size: 1.6rem;
+        }
+      }
+
+      .juego_galeria {
+        width: 100%;
+        .section_subtitle {
+          font-size: 1.6rem;
+        }
+
+        .galeria_flex {
+          flex-wrap: wrap;
+          overflow-x: hidden;
+
+          .galeria_item {
+            width: calc(33% - 10px);
+          }
+        }
+      }
+    }
+
+    .juego_contenido_main {
+      display: flex;
+      padding: 10px;
+      width: calc(30% - 20px);
+
+      .juego_info_card_container {
+        top: -100px;
+        background: #161616;
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0px 0px 20px black;
+
+        .juego_info_card {
+          width: 100%;
+        }
+      }
+
+      .juego_galeria .galeria_flex .galeria_item {
+        width: 350px;
+        height: 200px;
+      }
+    }
+  }
+}

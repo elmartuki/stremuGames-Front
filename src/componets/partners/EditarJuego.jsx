@@ -34,6 +34,7 @@ export default function EditarJuego() {
     precioBase: 0,
     precioDescuento: 0,
     imagenPortada: "",
+    imagenBanner: "",
     categorias: [],
     etiquetas: [],
 
@@ -50,9 +51,9 @@ export default function EditarJuego() {
         pesoGB: juego.pesoGB || 0,
         version: juego.version || "1.0.0",
         titulo: juego.titulo || "",
-
         descripcion: juego.descripcion || "",
         imagenPortada: juego.imagenPortada || "",
+        imagenBanner: juego.imagenBanner || "",
         slug: juego.slug || "",
         categorias: juego.categorias || [],
         etiquetas: juego.etiquetas || [],
@@ -118,32 +119,62 @@ export default function EditarJuego() {
       </div>
 
       <form className="edit-game_form" onSubmit={handleSubmit}>
-        <div className="edit-game_preview-container">
-          <img
-            className="edit-game_preview-img"
-            src={
-              form.imagenPortada ||
-              "https://via.placeholder.com/150?text=Sin+Imagen"
-            }
-            alt="Vista Previa"
-            onError={(e) =>
-              (e.target.src = "https://via.placeholder.com/150?text=Error+URL")
-            }
-          />
-
-          <div className="edit-game_input-group">
-            <p>URL de la Imagen</p>
-            <input
-              className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, imagenPortada: event.target.value })
+        <section className="preview_imagen_container">
+          <div className="edit-game_preview-container">
+            <img
+              className="edit-game_preview-img"
+              src={
+                form.imagenPortada ||
+                "https://via.placeholder.com/150?text=Sin+Imagen"
               }
-              type="text"
-              placeholder="https://ejemplo.com/imagen.jpg"
-              value={form.imagenPortada}
+              alt="Vista Previa"
+              onError={(e) =>
+                (e.target.src =
+                  "https://via.placeholder.com/150?text=Error+URL")
+              }
             />
+
+            <div className="edit-game_input-group">
+              <p>URL de la Imagen</p>
+              <input
+                className="edit-game_input"
+                onChange={(event) =>
+                  setForm({ ...form, imagenPortada: event.target.value })
+                }
+                type="text"
+                placeholder="https://ejemplo.com/imagen.jpg"
+                value={form.imagenPortada}
+              />
+            </div>
           </div>
-        </div>
+          <div className="edit-game_preview-container">
+            <img
+              className="edit-game_preview-img"
+              src={
+                form.imagenBanner ||
+                "https://via.placeholder.com/150?text=Sin+Imagen"
+              }
+              alt="Vista Previa"
+              onError={(e) =>
+                (e.target.src =
+                  "https://via.placeholder.com/150?text=Error+URL")
+              }
+            />
+
+            <div className="edit-game_input-group">
+              <p>URL del banner</p>
+              <input
+                className="edit-game_input"
+                onChange={(event) =>
+                  setForm({ ...form, imagenBanner: event.target.value })
+                }
+                type="text"
+                placeholder="https://ejemplo.com/imagen.jpg"
+                value={form.imagenBanner}
+              />
+            </div>
+          </div>
+        </section>
 
         <div className="edit-game_input-group">
           <p>Título</p>

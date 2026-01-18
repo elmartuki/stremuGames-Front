@@ -104,18 +104,26 @@ export default function NavBar() {
                       </div>
 
                       {listadoFiltrado.slice(0, 4).map((juego) => {
-                        console.log(juego);
+                 
                         const {
                           imagenPortada,
                           titulo,
                           precioBase,
                           precioDescuento,
+                          _id,
                         } = juego;
 
                         const porcentaje =
                           ((precioBase - precioDescuento) / precioBase) * 100;
                         return (
-                          <article className="resultado">
+                          <article
+                            className="resultado"
+                            onClick={() => {
+                              (navigate(`/juego/${_id}`),
+                                setBuscar(""),
+                                setOpenSearch(!openSearch));
+                            }}
+                          >
                             <div className="resultado_imagen">
                               <img src={imagenPortada} alt="" />
                             </div>
@@ -241,7 +249,7 @@ export default function NavBar() {
             {buscar !== "" ? (
               <section className="resultados_section">
                 {listadoFiltrado.slice(0, 4).map((juego) => {
-                  console.log(juego);
+                
                   const { imagenPortada, titulo, precioBase, precioDescuento } =
                     juego;
 

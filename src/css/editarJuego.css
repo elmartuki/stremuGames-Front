@@ -28,6 +28,11 @@
   margin-top: 15px;
   padding-bottom: 50px;
 
+  .preview_imagen_container {
+    display: flex;
+    flex-direction: column;
+  }
+
   .edit-game_preview-container {
     width: 100%;
     max-width: 400px;
@@ -143,6 +148,15 @@
 
     &:hover {
       background-color: #43a047;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .edit-game_form {
+    .preview_imagen_container {
+      display: flex;
+      flex-direction: row;
     }
   }
 }

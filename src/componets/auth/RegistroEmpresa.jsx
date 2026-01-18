@@ -47,7 +47,7 @@ export default function RegistroEmpresa() {
       );
       navigate("/login-empresa");
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
