@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import favorito from "../../icons/fav.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function HeroJuegos({ filtrar }) {
   const { listado } = useObtenerJuegos();
   const [indiceHero, setIndiceHero] = useState(0);
+
+  const navigate = useNavigate();
 
   const juegosParaMostrar = listado
     ? [...listado].sort((a, b) => b.cantidadVotos - a.cantidadVotos).slice(0, 6)
@@ -25,13 +28,16 @@ export default function HeroJuegos({ filtrar }) {
   if (juegosParaMostrar.length === 0)
     return <div className="loading">Cargando Hero...</div>;
 
-  console.log(juegosParaMostrar);
+
 
   return (
     <>
       <article className="hero">
         <div
           className="hero_big"
+          onClick={() =>
+            navigate(`/juego/${juegosParaMostrar[indiceHero]?._id}`)
+          }
           style={{
             backgroundImage: `url("${juegosParaMostrar[indiceHero]?.imagenPortada}")`,
             backgroundSize: "cover",

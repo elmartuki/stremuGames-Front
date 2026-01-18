@@ -5,9 +5,12 @@ import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
 import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function CarroucelLargo({ filtrar }) {
   const { listado } = useObtenerJuegos();
+
+  const navigate = useNavigate();
 
   const [indice, setIndice] = useState(0);
 
@@ -23,7 +26,7 @@ export default function CarroucelLargo({ filtrar }) {
     juegosParaMostrar.sort((a, b) => b.createdAt - a.createdAt);
   } else if (filtrar) {
     juegosParaMostrar = juegosParaMostrar.filter((juego) =>
-      juego.categorias.includes(filtrar)
+      juego.categorias.includes(filtrar),
     );
   }
 
@@ -62,7 +65,10 @@ export default function CarroucelLargo({ filtrar }) {
 
               return (
                 <article
-                  onClick={() => useAgregarJuegoAlcarrito(_id)}
+                  onClick={() => {
+                    useAgregarJuegoAlcarrito(_id);
+                    navigate(`/juego/${_id}`);
+                  }}
                   key={_id}
                   className="juego_card large"
                 >
@@ -105,7 +111,10 @@ export default function CarroucelLargo({ filtrar }) {
 
             return (
               <article
-                onClick={() => useAgregarJuegoAlcarrito(_id)}
+                onClick={() => {
+                  useAgregarJuegoAlcarrito(_id);
+                  navigate(`/juego/${_id}`);
+                }}
                 key={_id}
                 className="juego_card large"
               >

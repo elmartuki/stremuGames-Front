@@ -20,7 +20,7 @@ export default function UsserRouter() {
       const usuarioInfo = jwtDecode(token);
       rolUsuario = usuarioInfo.rol;
     } catch (error) {
-      console.log(error);
+
     }
   }
 

@@ -6,10 +6,13 @@ import next from "../../icons/next.svg";
 
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
+import { useNavigate } from "react-router-dom";
 
 export default function Carroucel() {
   const { listado } = useObtenerJuegos();
   const [indice, setIndice] = useState(0);
+
+  const navigate = useNavigate();
 
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
@@ -49,12 +52,16 @@ export default function Carroucel() {
                 desarrolladora,
                 precioDescuento,
                 precioBase,
+                _id,
               } = juego;
 
               const porcentaje =
                 ((precioBase - precioDescuento) / precioBase) * 100;
               return (
-                <article className="juego_card">
+                <article
+                  className="juego_card"
+                  onClick={() => navigate(`/juego/${_id}`)}
+                >
                   <div className="juego_card_imagen">
                     <img src={imagenPortada} alt="" />
                   </div>
@@ -94,7 +101,10 @@ export default function Carroucel() {
             const porcentaje =
               ((precioBase - precioDescuento) / precioBase) * 100;
             return (
-              <article className="juego_card">
+              <article
+                className="juego_card "
+                onClick={() => navigate(`/juego/${_id}`)}
+              >
                 <div className="juego_card_imagen">
                   <img src={imagenPortada} alt="" />
                 </div>

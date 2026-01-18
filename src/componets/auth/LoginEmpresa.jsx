@@ -28,15 +28,15 @@ export default function LoginEmpresa() {
     try {
       const response = await clientAxios.post(
         "/usuarios/login",
-        datosParaEnviar
+        datosParaEnviar,
       );
 
       if (response.status === 200) {
         localStorage.setItem("TokenStremuGames", response.data.token);
-        navigate("/parthner");
+        navigate("/studio-panel");
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

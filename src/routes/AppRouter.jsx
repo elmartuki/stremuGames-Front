@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import ParthnersPage from "../pages/ParthnersPage.jsx";
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
@@ -26,6 +25,8 @@ import BibliotecaPage from "../pages/BibliotecaPage.jsx";
 
 import NavBar from "../componets/navbar/NavBar.jsx";
 import useMediaQuery from "../utils/changeDesk.js";
+import DetallesJuegoPage from "../pages/DetallesJuegoPage.jsx";
+import StudioPage from "../pages/StudioPage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -105,6 +106,17 @@ export default function AppRouter() {
           <>
             <NavBar />
             <ExplorarPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/juego/:id"
+        element={
+          <>
+            <NavBar />
+            <DetallesJuegoPage />
             <Footer />
           </>
         }
@@ -217,16 +229,16 @@ export default function AppRouter() {
 
       <Route element={<StudioRouter />}>
         <Route
-          path="/parthner"
+          path="/studio-panel"
           element={
             <>
-              <ParthnersPage />
+              <StudioPage />
               <Footer />
             </>
           }
         />
         <Route
-          path="/parthner/crear-juego"
+          path="/studio-panel/crear-juego"
           element={
             <>
               <SubirJuego />

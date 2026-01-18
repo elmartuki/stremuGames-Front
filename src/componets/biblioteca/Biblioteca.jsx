@@ -18,7 +18,7 @@ const Biblioteca = () => {
     "todos",
     ...new Set(juegos.flatMap((juego) => juego.categorias || [])),
   ];
-  console.log(categoriasDisponibles);
+ 
 
   useEffect(() => {
     const cargarBiblioteca = async () => {
