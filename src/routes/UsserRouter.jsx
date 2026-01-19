@@ -1,43 +1,46 @@
 import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const ROLES_PERMITIDOS = ["user", "admin", "empresa"];
 
 export default function UsserRouter() {
   const navigate = useNavigate();
-  const tokenCompleto = localStorage.getItem("TokenStremuGames");
+  const tokenLocalStorage = localStorage.getItem("TokenStremuGames");
 
   const token =
-    typeof tokenCompleto === "string"
-      ? tokenCompleto.replace("Bearer ", "")
+    tokenLocalStorage && typeof tokenLocalStorage === "string"
+      ? tokenLocalStorage.replace("Bearer ", "").trim()
       : null;
 
-  let rolUsuario = null;
-
-  if (token) {
+  const datosUsuario = useMemo(() => {
+    if (!token) return null;
     try {
-      const usuarioInfo = jwtDecode(token);
-      rolUsuario = usuarioInfo.rol;
+      return jwtDecode(token);
     } catch (error) {
-
+      return null;
     }
-  }
+  }, [token]);
 
-  const tieneAcceso = ROLES_PERMITIDOS.includes(rolUsuario);
+  const tieneRol = datosUsuario && ROLES_PERMITIDOS.includes(datosUsuario.rol);
+  const tokenNoExpirado = datosUsuario
+    ? datosUsuario.exp * 1000 > Date.now()
+    : false;
+
+  const tieneAcceso = tieneRol && tokenNoExpirado;
 
   useEffect(() => {
     if (!token || !tieneAcceso) {
-      navigate("/login");
+      if (token && !tokenNoExpirado) {
+        localStorage.removeItem("TokenStremuGames");
+      }
+      navigate("/login", { replace: true });
     }
-  }, [token, rolUsuario, navigate, tieneAcceso]);
+  }, [token, tieneAcceso, navigate, tokenNoExpirado]);
 
   if (!token || !tieneAcceso) {
     return null;
   }
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+
+  return <Outlet />;
 }
