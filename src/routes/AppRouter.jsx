@@ -22,11 +22,11 @@ import Empresas from "../componets/admin/Empresas.jsx";
 import Juegos from "../componets/admin/Juegos.jsx";
 import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
 import BibliotecaPage from "../pages/BibliotecaPage.jsx";
-
-import NavBar from "../componets/navbar/NavBar.jsx";
 import useMediaQuery from "../utils/changeDesk.js";
 import DetallesJuegoPage from "../pages/DetallesJuegoPage.jsx";
+import PublicRouter from "./PublicRouter.jsx";
 import StudioPage from "../pages/StudioPage.jsx";
+import NavBar from "../componets/navbar/NavBar.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -41,44 +41,45 @@ export default function AppRouter() {
           </>
         }
       />
-      <Route
-        path="/login-empresa"
-        element={
-          <>
-            <LoginEmpresaPage />
-            <Footer />
-          </>
-        }
-      />
 
-      <Route
-        path="/registro-empresa"
-        element={
-          <>
-            <RegistroEmpresaPage />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/registro"
-        element={
-          <>
-            <RegisterPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <>
-            <LoginPage />
-            <Footer />
-          </>
-        }
-      />
+      <Route element={<PublicRouter />}>
+        <Route
+          path="/login-empresa"
+          element={
+            <>
+              <LoginEmpresaPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/registro-empresa"
+          element={
+            <>
+              <RegistroEmpresaPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/registro"
+          element={
+            <>
+              <RegisterPage />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <>
+              <LoginPage />
+              <Footer />
+            </>
+          }
+        />
+      </Route>
 
       <Route
         path="/categorias"
@@ -143,7 +144,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/admin-panel/usuarios"
           element={
@@ -153,7 +153,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/admin-panel/empresas"
           element={
@@ -163,7 +162,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/admin-panel/juegos"
           element={
@@ -186,7 +184,6 @@ export default function AppRouter() {
             </>
           }
         />
-
         <Route
           path="/perfil/editar-perfil"
           element={
@@ -232,6 +229,7 @@ export default function AppRouter() {
           path="/studio-panel"
           element={
             <>
+              <NavBar />
               <StudioPage />
               <Footer />
             </>
@@ -241,6 +239,7 @@ export default function AppRouter() {
           path="/studio-panel/crear-juego"
           element={
             <>
+              <NavBar />
               <SubirJuego />
               <Footer />
             </>
@@ -250,6 +249,7 @@ export default function AppRouter() {
           path="/parthner/editar-juego/:id"
           element={
             <>
+              <NavBar />
               <EditarJuego />
               <Footer />
             </>
