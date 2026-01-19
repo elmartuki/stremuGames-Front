@@ -11,8 +11,6 @@ import visibility from "../../icons/visibility.svg";
 import logoutWhite from "../../icons/logoutWhite.svg";
 import errorIcon from "../../icons/error.svg";
 
-import "../../css/parthnerPage.css";
-import "../../css/loginUsuarios.css";
 export default function Login() {
   const [form, setForm] = useState({
     usuario_email: "",

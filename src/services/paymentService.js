@@ -4,16 +4,24 @@ import { useMessageStore } from "./MessageModal";
 export const iniciarPago = async (juegosCarrito) => {
   const { showMessage } = useMessageStore.getState();
 
-  if (!juegosCarrito || juegosCarrito.length === 0) {
-    throw new Error("El carrito está vacío");
+  if (
+    !juegosCarrito ||
+    !Array.isArray(juegosCarrito) ||
+    juegosCarrito.length === 0
+  ) {
+    console.error("Carrito recibido:", juegosCarrito);
+    throw new Error("El carrito está vacío o el formato es incorrecto");
   }
 
   const items = juegosCarrito.map((item) => {
-    const titulo = item.juegoId?.titulo || item.titulo;
-    const precio = item.juegoId?.precio || item.precio;
+    const titulo = item.juegoId?.titulo || item.titulo || "Producto sin nombre";
+
+    const precio =
+      item.precio || item.juegoId?.precioDescuento || item.juegoId?.precioBase;
 
     if (!precio || isNaN(Number(precio))) {
-      throw new Error(`Precio inválido para el juego`);
+      console.error("Item con error de precio:", item);
+      throw new Error(`Precio inválido para el juego: ${titulo}`);
     }
 
     return {
