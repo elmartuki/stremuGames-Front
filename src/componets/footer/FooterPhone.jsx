@@ -7,7 +7,6 @@ import carritoIcon from "../../icons/carrito.svg";
 import wishlistIcon from "../../icons/heart.svg";
 import perfilIcon from "../../icons/user.svg";
 import juegos from "../../icons/juegos.svg";
-
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerToken } from "../../services/obtenerToken";
 import useMediaQuery from "../../utils/changeDesk";

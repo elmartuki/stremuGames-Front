@@ -27,6 +27,8 @@ import DetallesJuegoPage from "../pages/DetallesJuegoPage.jsx";
 import PublicRouter from "./PublicRouter.jsx";
 import StudioPage from "../pages/StudioPage.jsx";
 import NavBar from "../componets/navbar/NavBar.jsx";
+import InitPage from "../pages/InitPage.jsx";
+import FooterWeb from "../componets/footer/FooterWeb.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -37,7 +39,9 @@ export default function AppRouter() {
         path="/"
         element={
           <>
-            <Footer />
+            <NavBar />
+            <InitPage />
+            <FooterWeb />
           </>
         }
       />
@@ -239,17 +243,17 @@ export default function AppRouter() {
           path="/studio-panel/crear-juego"
           element={
             <>
-              <NavBar />
+              {isDesktop ? <NavBar /> : <></>}
               <SubirJuego />
               <Footer />
             </>
           }
         />
         <Route
-          path="/parthner/editar-juego/:id"
+          path="/studio-panel/editar-juego/:id"
           element={
             <>
-              <NavBar />
+              {isDesktop ? <NavBar /> : <></>}
               <EditarJuego />
               <Footer />
             </>

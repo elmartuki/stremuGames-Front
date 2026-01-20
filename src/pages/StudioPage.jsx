@@ -147,7 +147,7 @@ export default function StudioPage() {
                     }}
                   >
                     <span>v{juego.version || "1.0"}</span>
-                    <span>{juego.ventas || 0} Ventas</span>
+                    <span>{juego.ventasTotales || 0} Ventas</span>
                   </div>
                 </div>
 
@@ -155,7 +155,7 @@ export default function StudioPage() {
                   <button
                     className="ver"
                     onClick={() =>
-                      navigate(`/parthner/editar-juego/${juego._id}`)
+                      navigate(`/studio-panel/editar-juego/${juego._id}`)
                     }
                   >
                     Editar
