@@ -23,6 +23,7 @@ export default function UsserRouter() {
   }, [token]);
 
   const tieneRol = datosUsuario && ROLES_PERMITIDOS.includes(datosUsuario.rol);
+
   const tokenNoExpirado = datosUsuario
     ? datosUsuario.exp * 1000 > Date.now()
     : false;

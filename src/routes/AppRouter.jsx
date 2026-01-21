@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Outlet, useLocation } from "react-router-dom"; // 1. Importar useLocation
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
@@ -24,14 +24,32 @@ import PerfilEmpresaPage from "../pages/PerfilEmpresaPage.jsx";
 import BibliotecaPage from "../pages/BibliotecaPage.jsx";
 import useMediaQuery from "../utils/changeDesk.js";
 import DetallesJuegoPage from "../pages/DetallesJuegoPage.jsx";
-import PublicRouter from "./PublicRouter.jsx";
 import StudioPage from "../pages/StudioPage.jsx";
 import NavBar from "../componets/navbar/NavBar.jsx";
 import InitPage from "../pages/InitPage.jsx";
 import FooterWeb from "../componets/footer/FooterWeb.jsx";
+import ComunidadPage from "../pages/ComunidadPage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+  // --- MODIFICACIÓN AQUÍ ---
+  const LayoutConNavbar = () => {
+    const location = useLocation();
+
+    const mostrarNavbar =
+      isDesktop ||
+      (location.pathname !== "/perfil" &&
+        location.pathname !== "/carrito" &&
+        location.pathname !== "/perfil/editar-perfil");
+
+    return (
+      <>
+        {mostrarNavbar && <NavBar />}
+        <Outlet />
+      </>
+    );
+  };
 
   return (
     <Routes>
@@ -46,97 +64,146 @@ export default function AppRouter() {
         }
       />
 
-      <Route element={<PublicRouter />}>
+      <Route
+        path="/login-empresa"
+        element={
+          <>
+            <LoginEmpresaPage />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/registro-empresa"
+        element={
+          <>
+            <RegistroEmpresaPage />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/registro"
+        element={
+          <>
+            <RegisterPage />
+            <Footer />
+          </>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <>
+            <LoginPage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route element={<LayoutConNavbar />}>
         <Route
-          path="/login-empresa"
+          path="/explorar"
           element={
             <>
-              <LoginEmpresaPage />
+              <ExplorarPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/categorias"
+          element={
+            <>
+              <CategoriasPage />
               <Footer />
             </>
           }
         />
         <Route
-          path="/registro-empresa"
+          path="/categorias/:id"
           element={
             <>
-              <RegistroEmpresaPage />
+              <CategoriaSeleccionadaPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/juego/:id"
+          element={
+            <>
+              <DetallesJuegoPage />
+              <Footer />
+            </>
+          }
+        />
+
+        <Route
+          path="/comunidad"
+          element={
+            <>
+              <ComunidadPage />
+              <FooterWeb />
+            </>
+          }
+        />
+
+        <Route
+          path="/comunidad/estudio/:id"
+          element={
+            <>
+              <PerfilEmpresaPage />
               <Footer />
             </>
           }
         />
         <Route
-          path="/registro"
+          path="/comunidad/usuario/:id"
           element={
             <>
-              <RegisterPage />
+              <PerfilPage />
               <Footer />
             </>
           }
         />
-        <Route
-          path="/login"
-          element={
-            <>
-              <LoginPage />
-              <Footer />
-            </>
-          }
-        />
+
+        <Route element={<UsserRouter />}>
+          <Route
+            path="/perfil"
+            element={
+              <>
+                <PerfilConfigPage />
+                <Footer />
+              </>
+            }
+          />
+
+          <Route
+            path="/perfil/editar-perfil"
+            element={
+              <>
+                <EditarPerfil />
+                <Footer />
+              </>
+            }
+          />
+
+          <Route
+            path="/biblioteca"
+            element={
+              <>
+                <BibliotecaPage />
+                <Footer />
+              </>
+            }
+          />
+
+          <Route path="/carrito" element={<CarritoPage />} />
+        </Route>
       </Route>
-
-      <Route
-        path="/categorias"
-        element={
-          <>
-            <NavBar />
-            <CategoriasPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/categorias/:id"
-        element={
-          <>
-            <NavBar />
-            <CategoriaSeleccionadaPage />
-            <Footer />
-          </>
-        }
-      />
-      <Route
-        path="/explorar"
-        element={
-          <>
-            <NavBar />
-            <ExplorarPage />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/juego/:id"
-        element={
-          <>
-            <NavBar />
-            <DetallesJuegoPage />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/comunidad/estudio/:id"
-        element={
-          <>
-            <NavBar />
-            <PerfilEmpresaPage />
-            <Footer />
-          </>
-        }
-      />
 
       <Route element={<AdminRouter />}>
         <Route
@@ -177,57 +244,6 @@ export default function AppRouter() {
         />
       </Route>
 
-      <Route element={<UsserRouter />}>
-        <Route
-          path="/perfil"
-          element={
-            <>
-              {isDesktop ? <NavBar /> : <></>}
-              <PerfilConfigPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/perfil/editar-perfil"
-          element={
-            <>
-              {isDesktop ? <NavBar /> : <></>}
-              <EditarPerfil />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/comunidad"
-          element={
-            <>
-              <NavBar />
-              <PerfilPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/biblioteca"
-          element={
-            <>
-              <NavBar />
-              <BibliotecaPage />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/carrito"
-          element={
-            <>
-              <CarritoPage />
-            </>
-          }
-        />
-      </Route>
-
       <Route element={<StudioRouter />}>
         <Route
           path="/studio-panel"
@@ -243,7 +259,7 @@ export default function AppRouter() {
           path="/studio-panel/crear-juego"
           element={
             <>
-              {isDesktop ? <NavBar /> : <></>}
+              <NavBar />
               <SubirJuego />
               <Footer />
             </>
@@ -253,7 +269,7 @@ export default function AppRouter() {
           path="/studio-panel/editar-juego/:id"
           element={
             <>
-              {isDesktop ? <NavBar /> : <></>}
+              <NavBar />
               <EditarJuego />
               <Footer />
             </>
