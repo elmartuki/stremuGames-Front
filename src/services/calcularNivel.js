@@ -1,7 +1,7 @@
 import { useObtenerUsuario } from "./obtenerUsuario";
 
-export const useCalcularNivel = () => {
-  const { usuario } = useObtenerUsuario();
+export const useCalcularNivel = (id) => {
+  const { usuario } = useObtenerUsuario(id);
 
   const juegosCount = usuario?.juegosComprados?.length || 0;
 

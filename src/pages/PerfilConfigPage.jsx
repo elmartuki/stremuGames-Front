@@ -123,7 +123,7 @@ export default function PerfilConfigPage() {
             <button
               onClick={() => {
                 localStorage.removeItem("TokenStremuGames");
-                navigate("/perfil");
+                navigate("/");
               }}
             >
               <img src={logout} alt="" />

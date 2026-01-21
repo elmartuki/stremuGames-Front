@@ -6,10 +6,13 @@ import JuegosDelUsuario from "../componets/perfil/JuegosDelUsuario";
 import { useObtenerUsuario } from "../services/obtenerUsuario.js";
 import { useCalcularNivel } from "../services/calcularNivel.js";
 import useMediaQuery from "../utils/changeDesk.js";
+import { useParams } from "react-router-dom";
 
 export default function PerfilPage() {
-  const { usuario } = useObtenerUsuario();
-  const { nivel, puntos } = useCalcularNivel();
+  const { id } = useParams();
+
+  const { usuario } = useObtenerUsuario(id);
+  const { nivel, puntos } = useCalcularNivel(id);
 
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 

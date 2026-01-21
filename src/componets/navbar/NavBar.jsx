@@ -88,10 +88,6 @@ export default function NavBar() {
                   </div>
 
                   <div className="navbar_desk_links">
-                    <button onClick={() => navigate("/")}>
-                      <img src="" alt="" />
-                      Inicio
-                    </button>
                     <button onClick={() => navigate("/explorar")}>
                       <img src="" alt="" />
                       Explorar
@@ -103,6 +99,10 @@ export default function NavBar() {
                     <button onClick={() => navigate("/ofertas")}>
                       <img src="" alt="" />
                       Ofertas
+                    </button>
+                    <button onClick={() => navigate("/comunidad")}>
+                      <img src="" alt="" />
+                      Comunidad
                     </button>
                   </div>
 
@@ -253,7 +253,12 @@ export default function NavBar() {
                     <></>
                   ) : (
                     <div className="navbar_phone_perfil">
-                      <div className="perfil">
+                      <div
+                        className="perfil"
+                        onClick={() => {
+                          navigate("/perfil");
+                        }}
+                      >
                         {foto_de_perfil === "" ? (
                           <p className="iniciales">{iniciales}</p>
                         ) : (
