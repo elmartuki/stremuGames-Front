@@ -11,10 +11,7 @@ export default function RegistroEmpresaPage() {
     <section className="formulario_login_section">
       <nav className="navbar-phone">
         <img onClick={() => navigate(-1)} src={back} alt="" />
-        <div>
-          <p>Registro de estudios</p>
-          <p>Crea una cuenta.</p>
-        </div>
+        <div></div>
 
         <img src={more} alt="" />
       </nav>

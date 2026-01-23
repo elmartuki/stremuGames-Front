@@ -3,6 +3,7 @@ import "../../css/explorarPage.css";
 import sell from "../../icons/sell.svg";
 import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
+import noImage from "../../icons/noimage.png";
 
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
@@ -36,6 +37,11 @@ export default function Carroucel() {
     }
   };
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <>
       {isDesktop ? (
@@ -63,7 +69,11 @@ export default function Carroucel() {
                   onClick={() => navigate(`/juego/${_id}`)}
                 >
                   <div className="juego_card_imagen">
-                    <img src={imagenPortada} alt="" />
+                    <img
+                      src={imagenPortada || noImage}
+                      alt={titulo}
+                      onError={handleImageError}
+                    />
                   </div>
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
@@ -106,7 +116,11 @@ export default function Carroucel() {
                 onClick={() => navigate(`/juego/${_id}`)}
               >
                 <div className="juego_card_imagen">
-                  <img src={imagenPortada} alt="" />
+                  <img
+                    src={imagenPortada || noImage}
+                    alt={titulo}
+                    onError={handleImageError}
+                  />
                 </div>
                 <div className="juego_card_data">
                   <p className="juego_card_data_titulo">{titulo}</p>

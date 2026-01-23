@@ -5,6 +5,8 @@ import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
 import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
+import noImage from "../../icons/noimage.png";
+
 import { useNavigate } from "react-router-dom";
 
 export default function CarroucelLargo({ filtrar }) {
@@ -44,6 +46,11 @@ export default function CarroucelLargo({ filtrar }) {
     }
   };
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <>
       {isDesktop ? (
@@ -73,7 +80,11 @@ export default function CarroucelLargo({ filtrar }) {
                   className="juego_card large"
                 >
                   <div className="juego_card_imagen">
-                    <img src={imagenPortada} alt={titulo} />
+                    <img
+                      src={imagenPortada || noImage}
+                      alt={titulo}
+                      onError={handleImageError}
+                    />
                   </div>
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
@@ -119,7 +130,11 @@ export default function CarroucelLargo({ filtrar }) {
                 className="juego_card large"
               >
                 <div className="juego_card_imagen">
-                  <img src={imagenPortada} alt={titulo} />
+                  <img
+                    src={imagenPortada || noImage}
+                    alt={titulo}
+                    onError={handleImageError}
+                  />
                 </div>
                 <div className="juego_card_data">
                   <p className="juego_card_data_titulo">{titulo}</p>

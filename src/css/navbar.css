@@ -1,3 +1,25 @@
+.navbar-phone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+
+  img:nth-child(1) {
+    padding: 4px;
+    border-radius: 10px;
+    background-color: #ffffff17;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  img:nth-child(3) {
+    opacity: 0%;
+  }
+}
+
 .resultados_section {
   display: flex;
   flex-direction: column;
@@ -363,6 +385,9 @@
   padding: 10px 20px;
   border-bottom: 1px solid #66f61e;
   background-color: #161616;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 
   .navbar_init {
     display: flex;

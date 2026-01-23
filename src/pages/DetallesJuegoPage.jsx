@@ -3,6 +3,7 @@ import favIcon from "../icons/fav.svg";
 import descIcon from "../icons/desc.svg";
 import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
+import noImage from "../icons/noimage.png";
 import { useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
@@ -37,12 +38,18 @@ export default function DetallesJuegoPage() {
 
   const descuento = ((precioBase - precioDescuento) / precioBase) * 100;
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <>
       <section className="detalles_juego_container">
         <section
           className="juego_header_portada"
-          style={{ backgroundImage: `url("${imagenBanner}")` }}
+          onerror={handleImageError}
+          style={{ backgroundImage: `url("${imagenBanner || noImage}")` }}
         ></section>
 
         <section className="juego_contenido_main">

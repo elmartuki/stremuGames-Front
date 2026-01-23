@@ -2,6 +2,7 @@ import "../../css/categoriaSeleccionada.css";
 import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useNavigate, useParams } from "react-router-dom";
+import noImage from "../../icons/noimage.png";
 
 export default function Categoria() {
   const [lista, setLista] = useState([]);
@@ -20,6 +21,11 @@ export default function Categoria() {
 
     setLista(listadoFiltrado);
   }, [listado, id]);
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
 
   return (
     <>
@@ -49,7 +55,11 @@ export default function Categoria() {
                 <></>
               )}
 
-              <img src={imagenPortada} alt="" />
+              <img
+                src={imagenPortada || noImage}
+                alt={titulo}
+                onError={handleImageError}
+              />
             </div>
             <div className="juegos_data">
               <p>{titulo}</p>
