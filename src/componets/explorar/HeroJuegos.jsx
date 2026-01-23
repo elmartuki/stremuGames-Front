@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import favorito from "../../icons/fav.svg";
 import { useNavigate } from "react-router-dom";
+import noImage from "../../icons/noimage.png";
 
 export default function HeroJuegos({ filtrar }) {
   const { listado } = useObtenerJuegos();
@@ -28,25 +29,42 @@ export default function HeroJuegos({ filtrar }) {
   if (juegosParaMostrar.length === 0)
     return <div className="loading">Cargando Hero...</div>;
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
 
+  const juegoActual = juegosParaMostrar[indiceHero];
 
   return (
     <>
       <article className="hero">
         <div
           className="hero_big"
-          onClick={() =>
-            navigate(`/juego/${juegosParaMostrar[indiceHero]?._id}`)
-          }
-          style={{
-            backgroundImage: `url("${juegosParaMostrar[indiceHero]?.imagenPortada}")`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          onClick={() => navigate(`/juego/${juegoActual?._id}`)}
+          style={{ position: "relative", overflow: "hidden" }}
         >
-          <div className="hero_info">
-            <h2>{juegosParaMostrar[indiceHero]?.titulo}</h2>
-            <p>{juegosParaMostrar[indiceHero]?.descripcion}</p>
+          <img
+            src={juegoActual?.imagenPortada || noImage}
+            alt="Portada"
+            onError={handleImageError}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+          />
+
+          <div
+            className="hero_info"
+            style={{ position: "relative", zIndex: 10 }}
+          >
+            <h2>{juegoActual?.titulo}</h2>
+            <p>{juegoActual?.descripcion}</p>
             <div>
               <button>Comprar Ahora</button>
               <button>
@@ -61,9 +79,11 @@ export default function HeroJuegos({ filtrar }) {
             return (
               <img
                 key={juego._id}
-                src={juego.imagenPortada}
+                src={juego.imagenPortada || noImage}
+                onError={handleImageError}
                 className={i === indiceHero ? "active" : ""}
                 onClick={() => setIndiceHero(i)}
+                alt="miniatura"
               />
             );
           })}

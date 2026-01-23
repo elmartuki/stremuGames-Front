@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useNavigate, useParams } from "react-router-dom";
 import favorito from "../../icons/fav.svg";
+import noImage from "../../icons/noimage.png";
 import "../../css/categoriaSeleccionada.css";
 
 export default function HeroCategoria() {
@@ -40,6 +41,11 @@ export default function HeroCategoria() {
       juegoActual.precioBase) *
     100;
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <article className="hero">
       <div
@@ -47,8 +53,9 @@ export default function HeroCategoria() {
         onClick={() => {
           navigate(`/juego/${juegoActual._id}`);
         }}
+        onError={handleImageError}
         style={{
-          backgroundImage: `url("${juegoActual.imagenPortada}")`,
+          backgroundImage: `url("${juegoActual.imagenPortada || noImage}")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
 
@@ -92,7 +99,10 @@ export default function HeroCategoria() {
             className={`thumb_container ${i === indiceHero ? "active" : ""}`}
             onClick={() => setIndiceHero(i)}
           >
-            <img src={juego.imagenPortada} />
+            <img
+              onError={handleImageError}
+              src={juego.imagenPortada || noImage}
+            />
             <div className="thumb_info_overlay"></div>
           </div>
         ))}

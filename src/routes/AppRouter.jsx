@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet, useLocation } from "react-router-dom"; // 1. Importar useLocation
+import { Route, Routes, Outlet, useLocation } from "react-router-dom"; 
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
@@ -11,7 +11,6 @@ import PerfilPage from "../pages/PerfilPage.jsx";
 import UsserRouter from "./UsserRouter.jsx";
 import StudioRouter from "./StudioRouter.jsx";
 import RegistroEmpresaPage from "../pages/RegistroEmpresaPage.jsx";
-import LoginEmpresaPage from "../pages/LoginEmpresaPage.jsx";
 import CarritoPage from "../pages/CarritoPage.jsx";
 import PerfilConfigPage from "../pages/PerfilConfigPage.jsx";
 import EditarPerfil from "../componets/perfil/EditarPerfil.jsx";
@@ -33,7 +32,6 @@ import ComunidadPage from "../pages/ComunidadPage.jsx";
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
-  // --- MODIFICACIÓN AQUÍ ---
   const LayoutConNavbar = () => {
     const location = useLocation();
 
@@ -64,15 +62,6 @@ export default function AppRouter() {
         }
       />
 
-      <Route
-        path="/login-empresa"
-        element={
-          <>
-            <LoginEmpresaPage />
-            <Footer />
-          </>
-        }
-      />
       <Route
         path="/registro-empresa"
         element={
