@@ -29,8 +29,8 @@
     width: 70px;
     padding: 10px;
     border-radius: 12px;
-    box-shadow: 1px 5px 9px #10b98181;
-    background: linear-gradient(to left, #10b981, #0f9b6c);
+    box-shadow: 1px 5px 9px #66f61e;
+    background: linear-gradient(to left, #3eb402, #66f61e);
     object-fit: cover;
   }
 }
@@ -78,7 +78,7 @@
   color: #888888;
 }
 .login-form__forget_my_password {
-  color: #10b981;
+  color: #66f61e;
 }
 
 .login-form__input-wrapper {
@@ -127,7 +127,7 @@
   padding: 0.7rem;
   border-radius: 8px;
   color: rgb(255, 255, 255);
-  background-color: #10b981;
+  background-color: #66f61eb6;
   border: none;
   font-weight: bold;
   cursor: pointer;
@@ -142,7 +142,7 @@
   font-size: 0.8rem;
 }
 .login-footer__link {
-  color: #10b981;
+  color: #66f61e;
 }
 .login-footer__link {
   display: block;
@@ -172,7 +172,7 @@
   padding: 10px;
   border-radius: 8px;
   p {
-    color: rgb(0, 182, 15);
+    color: #66f61e;
   }
 }
 
