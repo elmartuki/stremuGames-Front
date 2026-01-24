@@ -4,6 +4,7 @@ import "../../css/biblioteca.css";
 import play_arrow from "../../icons/play_arrow.svg";
 import clock from "../../icons/clock.svg";
 import reciente_filtro from "../../icons/reciente_filtro.svg";
+import calendar from "../../icons/calendar.svg";
 
 import lupa from "../../icons/search.svg";
 const Biblioteca = () => {
@@ -13,12 +14,18 @@ const Biblioteca = () => {
   const [filtroCategoria, setFiltroCategoria] = useState("Todos");
   const [busqueda, setBusqueda] = useState("");
   const [orden, setOrden] = useState("recientes");
-
+  const [mostrarOrden, setMostrarOrden] = useState(false);
+  const opcionesOrden = [
+    { value: "recientes", label: "Jugado recientemente" },
+    { value: "comprado", label: "Comprado recientemente" },
+    { value: "az", label: "Orden alfabético A-Z" },
+    { value: "za", label: "Orden alfabético Z-A" },
+    { value: "tiempo", label: "Tiempo jugado" },
+  ];
   const categoriasDisponibles = [
     "Todos",
     ...new Set(juegos.flatMap((juego) => juego.categorias || [])),
   ];
- 
 
   useEffect(() => {
     const cargarBiblioteca = async () => {
@@ -47,6 +54,18 @@ const Biblioteca = () => {
   if (juegos.length === 0) {
     return <p>No tenés juegos comprados todavía 🎮</p>;
   }
+  const comparadores = {
+    recientes: (a, b) =>
+      new Date(b.lastPlayedAt || 0) - new Date(a.lastPlayedAt || 0),
+
+    comprado: (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0),
+
+    az: (a, b) => a.titulo.localeCompare(b.titulo),
+
+    za: (a, b) => b.titulo.localeCompare(a.titulo),
+
+    tiempo: (a, b) => (b.tiempoJugado || 0) - (a.tiempoJugado || 0),
+  };
   const juegosFiltrados = juegos
     .filter((juego) => {
       const coincideCategoria =
@@ -59,12 +78,8 @@ const Biblioteca = () => {
 
       return coincideCategoria && coincideBusqueda;
     })
-    .sort((a, b) => {
-      if (orden === "recientes") {
-        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-      }
-      return 0;
-    });
+    .sort(comparadores[orden] || (() => 0));
+
   return (
     <section className="container-biblioteca">
       <h1 className="titulo-container">Mi Biblioteca</h1>
@@ -101,14 +116,29 @@ const Biblioteca = () => {
             ? "1 Juego en total"
             : `${juegosFiltrados.length} Juegos en total`}
         </div>
-        <div className="filtro-reciente">
-          <img src={reciente_filtro} alt="" />
+        <div className="filtro-reciente ordenar-container">
+          <img src={reciente_filtro} alt="imagen-filtro" />
           <button
-            className={orden === "recientes" ? "activo" : ""}
-            onclick={() => setOrden("recientes")}
+            className="ordenar-btn"
+            onClick={() => setMostrarOrden(!mostrarOrden)}
           >
-            Recientes
+            Ordenar por
           </button>
+          {mostrarOrden && (
+            <div className="menu-orden">
+              {opcionesOrden.map((opcion) => (
+                <button
+                  key={opcion.value}
+                  onClick={() => {
+                    setOrden(opcion.value);
+                    setMostrarOrden(false);
+                  }}
+                >
+                  {opcion.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
       <div className="biblioteca-grid">
@@ -132,8 +162,12 @@ const Biblioteca = () => {
                 </div>
               </div>
               <div className="time">
-                <img src={clock} alt="reloj" />
-                <p className="estado">Jugado 2h</p>
+                <img src={calendar} alt="calendario" />
+                <p className="calendar">
+                  {juego.createdAt
+                    ? new Date(juego.createdAt).toLocaleDateString()
+                    : "Fecha no disponible"}
+                </p>
               </div>
               <div className="button-play">
                 <button className="btn-jugar">
