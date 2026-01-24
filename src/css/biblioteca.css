@@ -26,6 +26,7 @@
       color: #9c9c9c;
     }
     .filtro-reciente {
+      width: 100%;
       display: flex;
       justify-content: end;
       align-items: end;
@@ -43,6 +44,41 @@
         filter: contrast(10%);
       }
     }
+  }
+  .ordenar-container {
+    position: relative;
+  }
+
+  .menu-orden {
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background: #242424e8;
+    z-index: 2;
+    border-radius: 15px;
+    padding: 6px 0;
+    min-width: 220px;
+    border: 2px solid #51ff0096;
+    animation: fadeIn 0.15s ease-in-out;
+  }
+
+  .menu-orden button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: 10px 14px;
+    background: transparent;
+    color: #ffffffee !important;
+    font-weight: 600 !important;
+    text-align: center;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .menu-orden button:hover {
+    background: #66f61e;
+    color: white;
   }
   .Container-buscador {
     width: 100%;
@@ -98,16 +134,13 @@
     }
 
     button.btn-categoria.activo {
-      background: linear-gradient(135deg, #10b981, #059669);
+      background: linear-gradient(110deg, #66f61e, #42c5008f);
+      outline: 1px solid #66f61e;
     }
 
     button.btn-categoria.activo .categorias {
       color: white;
       font-weight: 600;
-    }
-
-    button.categoria-todos.activo {
-      box-shadow: 0 0 0 2px #10b981;
     }
   }
 
@@ -167,20 +200,18 @@
     .time {
       display: flex;
       gap: 3px;
+      z-index: 1;
+
       img {
         width: 15px;
         transform: translateY(41px);
       }
-      .estado {
+      .calendar {
+        width: 20%;
         font-size: 0.8rem;
-        color: #10b981;
+        color: #66f61e;
         transform: translateY(40px);
       }
-    }
-    .estado {
-      font-size: 0.8rem;
-      color: #10b981;
-      transform: translateY(40px);
     }
 
     .btn-jugar {
@@ -188,7 +219,7 @@
       align-items: center;
       gap: 6px;
 
-      background: #10b981;
+      background: #66f61ec7;
       color: white;
       border: none;
       padding: 10px 18px;
