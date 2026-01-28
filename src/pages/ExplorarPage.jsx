@@ -4,7 +4,6 @@ import Categorias from "../componets/explorar/Categorias";
 import HeroJuegos from "../componets/explorar/HeroJuegos";
 import "../css/explorarPage.css";
 import rigth_green from "../icons/rigth_green.svg";
-import search from "../icons/search.svg";
 import time from "../icons/time.svg";
 import fire from "../icons/fire.svg";
 import newIcon from "../icons/new.svg";
@@ -16,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function ExplorarPage() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
-
   const navigate = useNavigate();
 
   return (
@@ -46,17 +44,16 @@ export default function ExplorarPage() {
         </div>
 
         {isDesktop ? (
-          <>
-            <section className="carroucel_section carroucel_section_desk">
-              <Carroucel />
-            </section>
-          </>
+          <section
+            key="countdown-desk"
+            className="carroucel_section carroucel_section_desk"
+          >
+            <Carroucel />
+          </section>
         ) : (
-          <>
-            <section className="carroucel_section">
-              <Carroucel />
-            </section>
-          </>
+          <section key="countdown-mobile" className="carroucel_section">
+            <Carroucel />
+          </section>
         )}
       </section>
 
@@ -81,11 +78,14 @@ export default function ExplorarPage() {
         </div>
 
         {isDesktop ? (
-          <section className="carroucel_section carroucel_section_desk">
+          <section
+            key="populares-desk"
+            className="carroucel_section carroucel_section_desk"
+          >
             <CarroucelLargo filtrar={"Populares"} />
           </section>
         ) : (
-          <section className="carroucel_section">
+          <section key="populares-mobile" className="carroucel_section">
             <CarroucelLargo filtrar={"Populares"} />
           </section>
         )}
@@ -112,11 +112,14 @@ export default function ExplorarPage() {
         </div>
 
         {isDesktop ? (
-          <section className="carroucel_section carroucel_section_desk">
+          <section
+            key="recientes-desk"
+            className="carroucel_section carroucel_section_desk"
+          >
             <CarroucelLargo filtrar={"Recientes"} />
           </section>
         ) : (
-          <section className="carroucel_section">
+          <section key="recientes-mobile" className="carroucel_section">
             <CarroucelLargo filtrar={"Recientes"} />
           </section>
         )}
@@ -143,11 +146,14 @@ export default function ExplorarPage() {
         </div>
 
         {isDesktop ? (
-          <section className="carroucel_section carroucel_section_desk">
+          <section
+            key="carreras-desk"
+            className="carroucel_section carroucel_section_desk"
+          >
             <CarroucelLargo filtrar={"Carreras"} />
           </section>
         ) : (
-          <section className="carroucel_section">
+          <section key="carreras-mobile" className="carroucel_section">
             <CarroucelLargo filtrar={"Carreras"} />
           </section>
         )}
@@ -174,11 +180,14 @@ export default function ExplorarPage() {
         </div>
 
         {isDesktop ? (
-          <section className="carroucel_section carroucel_section_desk">
+          <section
+            key="terror-desk"
+            className="carroucel_section carroucel_section_desk"
+          >
             <CarroucelLargo filtrar={"Terror"} />
           </section>
         ) : (
-          <section className="carroucel_section">
+          <section key="terror-mobile" className="carroucel_section">
             <CarroucelLargo filtrar={"Terror"} />
           </section>
         )}
@@ -190,11 +199,14 @@ export default function ExplorarPage() {
       </p>
 
       {isDesktop ? (
-        <section className="categorias_section categorias_section_desk">
+        <section
+          key="categorias-desk"
+          className="categorias_section categorias_section_desk"
+        >
           <Categorias />
         </section>
       ) : (
-        <section className="categorias_section">
+        <section key="categorias-mobile" className="categorias_section">
           <Categorias />
         </section>
       )}

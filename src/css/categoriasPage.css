@@ -130,7 +130,6 @@
 
       .categoria_card {
         width: calc(30% - 20px);
-        min-width: 180px;
         padding: 25px;
       }
     }

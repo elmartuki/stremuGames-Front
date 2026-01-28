@@ -6,18 +6,24 @@ import useMediaQuery from "../../utils/changeDesk";
 import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
 import noImage from "../../icons/noimage.png";
-
 import { useNavigate } from "react-router-dom";
 
+import CarroucelSkeleton, {
+  CarroucelLargoSkeleton,
+} from "../skeletons/Skeleton";
+
 export default function CarroucelLargo({ filtrar }) {
-  const { listado } = useObtenerJuegos();
+  const { listado, loading } = useObtenerJuegos();
 
   const [previewId, setPreviewId] = useState(null);
-
   const navigate = useNavigate();
   const [indice, setIndice] = useState(0);
   const isDesktop = useMediaQuery("(min-width: 1025px)");
   const elementosPorPagina = 5;
+
+  if (loading || !listado) {
+    return <CarroucelLargoSkeleton />;
+  }
 
   let juegosParaMostrar = listado ? [...listado] : [];
 
@@ -116,6 +122,8 @@ export default function CarroucelLargo({ filtrar }) {
 
                       <div className="datos">
                         <p className="titulo">{titulo}</p>
+
+                        <p>{desarrolladora}</p>
 
                         <div className="precios_container">
                           {precioDescuento !== precioBase ? (

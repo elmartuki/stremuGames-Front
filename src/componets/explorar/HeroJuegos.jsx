@@ -26,8 +26,7 @@ export default function HeroJuegos({ filtrar }) {
     return () => clearInterval(intervalo);
   }, [juegosParaMostrar.length]);
 
-  if (juegosParaMostrar.length === 0)
-    return <div className="loading">Cargando Hero...</div>;
+  if (juegosParaMostrar.length === 0) return <div className="loading"></div>;
 
   const handleImageError = (e) => {
     e.target.onerror = null;
@@ -45,20 +44,33 @@ export default function HeroJuegos({ filtrar }) {
           style={{ position: "relative", overflow: "hidden" }}
         >
           <img
-          className="background"
+            key={juegoActual?._id}
+            className="background animate-fade"
             src={juegoActual?.imagenPortada || noImage}
+            alt={juegoActual?.titulo}
             onError={handleImageError}
           />
 
-          <div
-            className="hero_info"
-            style={{ position: "relative", zIndex: 10 }}
-          >
-            <h2>{juegoActual?.titulo}</h2>
-            <p>{juegoActual?.descripcion}</p>
-            <div>
-              <button>Comprar Ahora</button>
-              <button>
+          <div className="hero_info">
+            <h2 key={`title-${juegoActual?._id}`} className="animate-slideUp">
+              {juegoActual?.titulo}
+            </h2>
+            <p
+              key={`desc-${juegoActual?._id}`}
+              className="animate-slideUp delay-100"
+            >
+              {juegoActual?.descripcion}
+            </p>
+
+            <div className="btn_container">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                Comprar Ahora
+              </button>
+              <button onClick={(e) => {}}>
                 <img src={favorito} alt="" />
               </button>
             </div>

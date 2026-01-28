@@ -1,0 +1,120 @@
+@keyframes skeleton-loading {
+  0% {
+    background-color: #282828;
+  }
+  50% {
+    background-color: #3f3f3f;
+  }
+  100% {
+    background-color: #282828;
+  }
+}
+
+.skeleton-card {
+  pointer-events: none;
+  cursor: default;
+  border-color: #3f3f3f !important;
+  min-width: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  overflow: hidden;
+}
+
+.skeleton-box {
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+.skeleton-box.image-box {
+  width: 100%;
+  height: 240px !important;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.skeleton-box.text-title {
+  width: 80%;
+  height: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.skeleton-box.text-subtitle {
+  width: 50%;
+  height: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.skeleton-box.text-price {
+  width: 40px;
+  height: 1rem;
+  margin-bottom: 10px;
+}
+
+.skeleton-box.button-box {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.skeleton-nav-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skeleton-card.large {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 380px;
+}
+
+.skeleton-card.large .image-box {
+  height: 300px !important;
+  border-radius: 10px;
+}
+
+.skeleton-card.large .juego_card_data {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-card.large .text-title {
+  width: 90%;
+  height: 1.4rem;
+  margin-top: 5px;
+}
+
+.skeleton-card.category {
+  padding: 25px;
+  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+}
+
+.skeleton-box.icon-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-card.category .text-title {
+  width: 70%;
+  height: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.skeleton-card.category .text-subtitle {
+  width: 40%;
+  height: 0.8rem;
+  margin-bottom: 0;
+}

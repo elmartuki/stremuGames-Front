@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet, useLocation } from "react-router-dom"; 
+import { Route, Routes, Outlet, useLocation } from "react-router-dom";
 import EditarJuego from "../componets/partners/EditarJuego.jsx";
 import SubirJuego from "../componets/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
@@ -97,6 +97,7 @@ export default function AppRouter() {
             <>
               <ExplorarPage />
               <Footer />
+              {isDesktop ? <FooterWeb /> : <></>}
             </>
           }
         />
