@@ -1,8 +1,6 @@
 import "../css/categoriaSeleccionada.css";
-import search from "../icons/search.svg";
 import Categoria from "../componets/categorias/Categoria";
 import { useParams } from "react-router-dom";
-import { categorias } from "../constants/categorias";
 import HeroCategoria from "../componets/categorias/HeroCategoria";
 
 export default function CategoriaSeleccionadaPage() {

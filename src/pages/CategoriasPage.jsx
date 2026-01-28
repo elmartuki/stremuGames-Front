@@ -19,6 +19,23 @@ export default function CategoriasPage() {
 
   return (
     <section className="categorias_page_section">
+      <section className="categorias_hero">
+        <img
+          className="background"
+          src="https://i.redd.it/these-official-wallpapers-are-incredible-v0-k0tzxophaz1e1.jpg?width=3840&format=pjpg&auto=webp&s=661016530cbcb61c0a0c6c4403c7fa0219277bf5"
+          alt=""
+        />
+
+        <section className="textos_container">
+          <p className="titulo">Descubre tu proxima</p>
+          <p className="highligth">Obsesión</p>
+          <p className="descripcion">
+            Explora miles de títulos organizados por género. Desde la acción más
+            trepidante hasta las historias más profundas, encuentra exactamente
+            lo que buscas.
+          </p>
+        </section>
+      </section>
       <div className="categorias_page_search">
         <div>
           <img src={search} alt="" />
