@@ -45,18 +45,9 @@ export default function HeroJuegos({ filtrar }) {
           style={{ position: "relative", overflow: "hidden" }}
         >
           <img
+          className="background"
             src={juegoActual?.imagenPortada || noImage}
-            alt="Portada"
             onError={handleImageError}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              zIndex: 0,
-            }}
           />
 
           <div

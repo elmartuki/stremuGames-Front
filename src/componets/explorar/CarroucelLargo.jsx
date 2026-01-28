@@ -12,12 +12,11 @@ import { useNavigate } from "react-router-dom";
 export default function CarroucelLargo({ filtrar }) {
   const { listado } = useObtenerJuegos();
 
+  const [previewId, setPreviewId] = useState(null);
+
   const navigate = useNavigate();
-
   const [indice, setIndice] = useState(0);
-
   const isDesktop = useMediaQuery("(min-width: 1025px)");
-
   const elementosPorPagina = 5;
 
   let juegosParaMostrar = listado ? [...listado] : [];
@@ -68,16 +67,19 @@ export default function CarroucelLargo({ filtrar }) {
                 desarrolladora,
                 precioDescuento,
                 precioBase,
+                descripcion,
               } = juego;
 
               return (
                 <article
+                  key={_id}
+                  className="juego_card large"
                   onClick={() => {
                     useAgregarJuegoAlcarrito(_id);
                     navigate(`/juego/${_id}`);
                   }}
-                  key={_id}
-                  className="juego_card large"
+                  onMouseEnter={() => setPreviewId(_id)}
+                  onMouseLeave={() => setPreviewId(null)}
                 >
                   <div className="juego_card_imagen">
                     <img
@@ -101,6 +103,36 @@ export default function CarroucelLargo({ filtrar }) {
                       </div>
                     )}
                   </div>
+
+                  {previewId === _id && (
+                    <article className="preview-game">
+                      <div className="image">
+                        <img
+                          onError={handleImageError}
+                          src={imagenPortada || noImage}
+                          alt=""
+                        />
+                      </div>
+
+                      <div className="datos">
+                        <p className="titulo">{titulo}</p>
+
+                        <div className="precios_container">
+                          {precioDescuento !== precioBase ? (
+                            <div>
+                              <p>${precioDescuento}</p>
+                              <p>${precioBase}</p>
+                            </div>
+                          ) : (
+                            <div>
+                              <p>${precioBase}</p>
+                            </div>
+                          )}
+                        </div>
+                        <p className="descripcion">{descripcion}</p>
+                      </div>
+                    </article>
+                  )}
                 </article>
               );
             })}
