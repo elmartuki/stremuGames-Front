@@ -4,16 +4,18 @@ import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../icons/noimage.png";
 
+import { CategoriaSkeleton } from "../skeletons/Skeleton";
+
 export default function Categoria() {
   const [lista, setLista] = useState([]);
-  const { listado } = useObtenerJuegos();
+
+  const { listado, loading } = useObtenerJuegos();
 
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   useEffect(() => {
-    if (!listado.length || !id) return;
+    if (!listado || !listado.length || !id) return;
 
     const listadoFiltrado = listado.filter((juego) => {
       return juego.categorias.includes(id);
@@ -27,6 +29,18 @@ export default function Categoria() {
     e.target.src = noImage;
   };
 
+  if (loading || !listado || listado.length === 0) {
+    return <CategoriaSkeleton />;
+  }
+
+  if (lista.length === 0 && !loading) {
+    return (
+      <p style={{ color: "white", padding: "20px" }}>
+        No se encontraron juegos en esta categoría.
+      </p>
+    );
+  }
+
   return (
     <>
       {lista.map((juego) => {
@@ -34,7 +48,6 @@ export default function Categoria() {
           titulo,
           imagenPortada,
           desarrolladora,
-          descargasTotales,
           precioBase,
           precioDescuento,
           _id,
@@ -43,16 +56,25 @@ export default function Categoria() {
         const porcentaje = ((precioBase - precioDescuento) / precioBase) * 100;
 
         return (
-          <article className="juegos" onClick={() => navigate(`/juego/${_id}`)}>
+          <article
+            key={_id}
+            className="juegos"
+            onClick={() => navigate(`/juego/${_id}`)}
+          >
             <div className="juegos_imagen">
-              {porcentaje !== 0 ? (
-                <>
-                  <p className="juegos_imagen_porcentaje">
-                    -{porcentaje.toFixed()}%
-                  </p>
-                </>
-              ) : (
-                <></>
+              {porcentaje > 0 && (
+                <p
+                  className="juegos_imagen_porcentaje"
+                  style={
+                    precioDescuento === 0
+                      ? { backgroundColor: "#66f61ed9" }
+                      : {}
+                  }
+                >
+                  {precioDescuento === 0
+                    ? "GRATIS"
+                    : `-${porcentaje.toFixed()}%`}
+                </p>
               )}
 
               <img
@@ -64,19 +86,25 @@ export default function Categoria() {
             <div className="juegos_data">
               <p>{titulo}</p>
               <p className="juegos_data_empresa">{desarrolladora}</p>
+
               {precioDescuento !== precioBase ? (
-                <>
-                  <div className="juegos_data_precio_con_descuento">
-                    <p>${precioDescuento}</p>
-                    <p>${precioBase}</p>
-                  </div>
-                </>
+                <div className="juegos_data_precio_con_descuento">
+                  {precioDescuento === 0 ? (
+                    <>
+                      <p>${precioBase}</p>
+                      <p style={{ color: "#66f61e" }}>GRATIS</p>
+                    </>
+                  ) : (
+                    <>
+                      <p>${precioBase}</p>
+                      <p>${precioDescuento}</p>
+                    </>
+                  )}
+                </div>
               ) : (
-                <>
-                  <div className="juegos_data_precio_sin_descuento">
-                    <p>${precioBase}</p>
-                  </div>
-                </>
+                <div className="juegos_data_precio_sin_descuento">
+                  <p>${precioBase}</p>
+                </div>
               )}
             </div>
           </article>

@@ -155,3 +155,38 @@ export function CategoriasSkeleton() {
     </section>
   );
 }
+
+export function CategoriaSkeleton() {
+  const skeletons = Array(10).fill(0);
+
+  return (
+    <>
+      {skeletons.map((_, index) => (
+        <article key={index} className="juegos skeleton-card">
+          <div className="juegos_imagen">
+            <div
+              className="skeleton-box image-box"
+              style={{ width: "100%", height: "100%", borderRadius: "10px" }}
+            ></div>
+          </div>
+
+          <div className="juegos_data">
+            <div
+              className="skeleton-box text-title"
+              style={{ width: "80%", marginBottom: "5px" }}
+            ></div>
+            <div
+              className="skeleton-box text-subtitle"
+              style={{ width: "60%" }}
+            ></div>
+
+            <div style={{ marginTop: "auto", display: "flex", gap: "10px" }}>
+              <div className="skeleton-box text-price"></div>
+              <div className="skeleton-box text-price"></div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </>
+  );
+}

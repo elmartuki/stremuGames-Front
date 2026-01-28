@@ -98,6 +98,7 @@
   flex-direction: column;
   justify-content: center;
   min-height: 160px;
+  width: 100%;
 }
 
 .skeleton-box.icon-box {
@@ -117,4 +118,29 @@
   width: 40%;
   height: 0.8rem;
   margin-bottom: 0;
+}
+
+.skeleton-card.juegos {
+  display: flex;
+  flex-direction: column;
+  background-color: #161616;
+  border: 2px solid #3f3f3f !important;
+  min-height: 300px;
+}
+
+.skeleton-card.juegos .image-box {
+  width: 100%;
+  height: 100% !important;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.skeleton-card.juegos .juego_card_data,
+.skeleton-card.juegos .juegos_data {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-grow: 1;
 }
