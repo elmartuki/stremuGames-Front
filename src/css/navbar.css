@@ -437,3 +437,10 @@
     }
   }
 }
+
+.navbar_init_container,
+.navbar_desk_container,
+.navbar_phone_container {
+  z-index: 2000;
+  background-color: #121212;
+}

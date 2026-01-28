@@ -6,13 +6,19 @@ import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
 import { useState } from "react";
 
+import { CategoriasSkeleton } from "../skeletons/Skeleton";
+
 export default function Categorias() {
   const [indice, setIndice] = useState(0);
-  const { listado = [] } = useObtenerJuegos();
+  const { listado = [], loading } = useObtenerJuegos();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
   const navigate = useNavigate();
 
   const elementosPorPagina = 5;
+
+  if (loading || !listado || listado.length === 0) {
+    return <CategoriasSkeleton />;
+  }
 
   const handleChange = (dato) => {
     if (dato === "restar") {
@@ -41,26 +47,24 @@ export default function Categorias() {
       )}
 
       <div className="categorias_grid">
-        {categoriasAMostrar.map((item, index) => {
+        {categoriasAMostrar.map((item) => {
           const count = listado.filter((j) =>
-            j.categorias.includes(item.nombre)
+            j.categorias.includes(item.nombre),
           ).length;
 
-          // Preparamos el color con opacidad para el efecto glass
           const colorTransparente = item.color
-            .replace("linear-gradient(to right, ", "") // Limpiamos si viene como gradient
+            .replace("linear-gradient(to right, ", "")
             .replace(")", "")
-            .split(",")[0] // Tomamos el primer color del gradiente original
+            .split(",")[0]
             .replace("rgb", "rgba")
             .replace(")", ", 0.15)");
 
           return (
             <article
-              key={index}
+              key={item.nombre}
               className="categoria_card"
               onClick={() => navigate(`/categorias/${item.nombre}`)}
               style={{
-                // DOBLE GRADIENTE: Uno en cada esquina opuesta
                 backgroundImage: `
                   radial-gradient(circle at top right, ${colorTransparente}, transparent 60%),
                   radial-gradient(circle at bottom left, ${colorTransparente}, transparent 60%)

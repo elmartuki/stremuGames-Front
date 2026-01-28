@@ -11,7 +11,9 @@ export default function CategoriaSeleccionadaPage() {
   return (
     <section className="categoria_seleccionada_page">
       <div className="categoria_seleccionada">
-        <p className="categoria_seleccionada_titulo">Categoria / {id}</p>
+        <div className="categoria_seleccionada_titulo">
+          <p className="titulo">Categoria / {id}</p>
+        </div>
         <section className="juego_destacado">
           <HeroCategoria />
         </section>
