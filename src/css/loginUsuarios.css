@@ -333,8 +333,9 @@
     overflow: hidden;
     margin: 30px -15px;
     border-radius: 10px;
-    box-shadow: 0 0px 30px rgb(0, 0, 0);
+
     position: relative;
+    animation: shadow 10s ease infinite;
   }
 
   .zoom-carousel {
@@ -349,7 +350,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.5;
+    opacity: 0;
     animation: zoomOutFade 30s infinite;
   }
 
@@ -383,6 +384,20 @@
 
     100% {
       opacity: 0;
+    }
+  }
+  @keyframes shadow {
+    0% {
+      box-shadow: transparent;
+    }
+    5% {
+      box-shadow: 0px 0px 20px 10px #66f61e70;
+    }
+    90% {
+      box-shadow: 0px 0px 20px 10px #000000;
+    }
+    100% {
+      box-shadow: transparent;
     }
   }
 }
