@@ -275,13 +275,48 @@
   padding-left: 10px;
 }
 
-.juego_tarjeta.skeleton-card {
-  background-color: #161616;
-  border: 1px solid #252525;
-  border-radius: 12px;
+.skeleton_anim {
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.juego_tarjeta.skeleton_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   padding: 10px;
+  background-color: #121212;
+  border-radius: 8px;
+  border: 1px solid #282828;
+  margin-bottom: 10px;
+}
+
+.skeleton_img {
+  width: 60px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.skeleton_info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  pointer-events: none;
+  gap: 8px;
+  width: 100%;
+}
+
+.skeleton_text {
+  height: 14px;
+
+  &.title {
+    width: 70%;
+    height: 16px;
+  }
+
+  &.developer {
+    width: 40%;
+    opacity: 0.6;
+  }
 }

@@ -2,40 +2,41 @@ import { useEffect, useState } from "react";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useNavigate } from "react-router-dom";
 import { useCalcularNivel } from "../services/calcularNivel";
-import { useObtenerJuegos } from "../services/obtenerJuegos";
 
 import editIcon from "../icons/edit.svg";
 import seguridad from "../icons/seguridad.svg";
 import compras from "../icons/compras.svg";
 import arrowRigth from "../icons/arrowRigth.svg";
 import logout from "../icons/logout.svg";
-
 import "../css/perfilConfig.css";
-import NavBar from "../componets/navbar/NavBar";
 import useMediaQuery from "../utils/changeDesk";
+
+const imagenesDecorativas = [
+  "https://i0.wp.com/www.pcmrace.com/wp-content/uploads/2019/10/nTm7kHj.jpg",
+  "https://www.10wallpaper.com/wallpaper/3840x2160/1803/Rainbow_Six_Siege_4K_Ultra_HD_Game_3840x2160.jpg",
+  "https://getwallpapers.com/wallpaper/full/7/5/b/198398.jpg",
+  "https://cdn.wallpapersafari.com/75/1/uHOW5n.jpg",
+  "https://img.somosxbox.com/somosxbox/2024/07/23104727/halo-4-1.jpg",
+];
 
 export default function PerfilConfigPage() {
   const navigate = useNavigate();
   const { usuario } = useObtenerUsuario();
-  const { listado } = useObtenerJuegos();
   const { nivel } = useCalcularNivel();
 
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const juegosCarrusel = listado?.slice(0, 6) || [];
 
   useEffect(() => {
-    if (juegosCarrusel.length > 0) {
-      const timer = setTimeout(() => {
-        setCurrentIndex((prevIndex) =>
-          prevIndex === juegosCarrusel.length - 1 ? 0 : prevIndex + 1
-        );
-      }, 3000);
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === imagenesDecorativas.length - 1 ? 0 : prevIndex + 1,
+      );
+    }, 6000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [currentIndex, juegosCarrusel.length]);
+    return () => clearInterval(timer);
+  }, []);
 
   if (!usuario) {
     return <></>;
@@ -134,23 +135,16 @@ export default function PerfilConfigPage() {
         </section>
 
         <section className="perfil_config_carroucel">
-          <div className="carroucel_container">
-            {juegosCarrusel.length > 0 ? (
-              <article
-                style={{
-                  backgroundImage: `url("${juegosCarrusel[currentIndex].imagenPortada}")`,
-                }}
-                className="carroucel_active_item"
-                onClick={() =>
-                  navigate(`/juego/${juegosCarrusel[currentIndex]._id}`)
-                }
-              ></article>
-            ) : (
-              <p className="loading_text">Cargando juegos...</p>
-            )}
+          <div className="imagenes_container">
+            <img
+              key={currentIndex}
+              className="background fade-animation"
+              src={imagenesDecorativas[currentIndex]}
+              alt="Decorativo"
+            />
 
-            <div className="carroucel_dots">
-              {juegosCarrusel.map((_, index) => (
+            <div className="carroucel_dots_overlay">
+              {imagenesDecorativas.map((_, index) => (
                 <span
                   key={index}
                   className={`dot ${index === currentIndex ? "active" : ""}`}
