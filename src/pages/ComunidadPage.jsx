@@ -8,9 +8,11 @@ import trending from "../icons/trending.svg";
 import newIcon from "../icons/new.svg";
 import person_add from "../icons/person_add.svg";
 import visibility from "../icons/visibility.svg";
+import no_banner from "../icons/background-banner.png";
 import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useNavigate } from "react-router-dom";
 import { useCalcularNivel } from "../services/calcularNivel";
+import { ComunidadSkeleton } from "../componets/skeletons/Skeleton";
 
 const PlayerCard = ({ usuario, navigate }) => {
   const { nivel } = useCalcularNivel(usuario._id);
@@ -61,6 +63,7 @@ export default function ComunidadPage() {
   const [filtroActivo, setFiltroActivo] = useState("todos");
   const [busqueda, setBusqueda] = useState("");
   const [mostrar, setMostrar] = useState(4);
+  const [imgError, setImgError] = useState(false);
 
   const calcularPuntajeOrdenamiento = (usuario) => {
     const juegos = usuario.juegosComprados?.length || 0;
@@ -106,10 +109,19 @@ export default function ComunidadPage() {
     filtroActivo === "nuevos" ||
     filtroActivo === "populares";
 
+  if (cargando) {
+    return <ComunidadSkeleton />;
+  }
+
   return (
     <section className="comunidad-page">
       <section className="comunidad-body">
         <div className="comunidad_hero">
+          <img
+            className="background"
+            src="https://www.10wallpaper.com/wallpaper/1920x1080/1512/Assassins_creed_arno_dorian-PC_Game_HD_Wallpaper_1920x1080.jpg"
+            alt=""
+          />
           <p>
             Descubre el <span>Ecosistema</span> Gaming
           </p>
@@ -169,7 +181,7 @@ export default function ComunidadPage() {
         {mostrarEmpresas && (
           <section className="seccion_1">
             <div className="seccion_1_header">
-              <p>Explorar Empresas y Desarrolladoras</p>   
+              <p>Explorar Empresas y Desarrolladoras</p>
             </div>
 
             {empresasFiltradas.length === 0 && (
@@ -180,27 +192,56 @@ export default function ComunidadPage() {
 
             <div className="empresas_container">
               {empresasFiltradas.map((empresa) => {
+                console.log(empresa);
+
+                const iniciales = empresa.nombreUsuario
+                  .toUpperCase()
+                  .slice(0, 2);
+
                 return (
                   <div key={empresa._id} className="empresa-card">
                     <div className="empresa_icon">
                       <img
-                        src={empresa.icon || empresaIcon}
-                        alt={empresa.nombreUsuario}
+                        className="background_banner"
+                        src={no_banner}
+                        alt=""
                       />
+
+                      <div className="empresa_perfil">
+                        {!imgError && empresa.foto_de_perfil ? (
+                          <div className="empresa_perfil_container">
+                            <img
+                              src={empresa.foto_de_perfil}
+                              alt=""
+                              onError={() => setImgError(true)}
+                            />
+                            <div className="empresa_info">
+                              <p>{empresa.nombreUsuario}</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="empresa_perfil_container">
+                            <p className="iniciales">{iniciales}</p>
+                            <div className="empresa_info">
+                              <h4>{empresa.nombreUsuario}</h4>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="empresa_info">
-                      <h4>{empresa.nombreUsuario}</h4>
+
+                    <div className="empresa_info_container">
+                      <span className="empresa_stats">
+                        {empresa.juegosSubidos?.length || 0} Juegos Publicados
+                      </span>
+                      <button
+                        onClick={() =>
+                          navigate(`/comunidad/estudio/${empresa._id}`)
+                        }
+                      >
+                        Ver Perfil
+                      </button>
                     </div>
-                    <span className="empresa_stats">
-                      {empresa.juegosSubidos?.length || 0} Juegos Publicados
-                    </span>
-                    <button
-                      onClick={() =>
-                        navigate(`/comunidad/estudio/${empresa._id}`)
-                      }
-                    >
-                      Ver Perfil
-                    </button>
                   </div>
                 );
               })}

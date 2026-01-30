@@ -1,15 +1,23 @@
-import React, { useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
+import { JuegosDelUsuarioSkeleton } from "../skeletons/Skeleton";
 
 export default function JuegosDelUsuario({ juegosComprados = [] }) {
-  const { listado } = useObtenerJuegos();
+  const { listado, loading } = useObtenerJuegos();
+
+  if (loading || !listado) {
+    return <JuegosDelUsuarioSkeleton />;
+  }
 
   const juegosEncontrados = listado.filter((juegoGeneral) =>
-    juegosComprados.includes(juegoGeneral._id)
+    juegosComprados.includes(juegoGeneral._id),
   );
 
   if (juegosEncontrados.length === 0) {
-    return <>Este usuario no tiene juegos comprados.</>;
+    return (
+      <p style={{ color: "#999", fontStyle: "italic", width: "100%" }}>
+        Este usuario no tiene juegos comprados.
+      </p>
+    );
   }
 
   return (
@@ -21,7 +29,7 @@ export default function JuegosDelUsuario({ juegosComprados = [] }) {
           </div>
           <div>
             <p>{juego.titulo}</p>
-            <p>{juego.desarrolladora}</p>
+            <p className="juego_desarrolladora">{juego.desarrolladora}</p>
           </div>
         </article>
       ))}

@@ -1,3 +1,4 @@
+import { PerfilEmpresaSkeleton } from "../componets/skeletons/Skeleton";
 import "../css/studioPerfil.css";
 import mail from "../icons/mail.svg";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
@@ -5,17 +6,27 @@ import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function PerfilEmpresaPage() {
-  const { empresas } = useObtenerUsuarios();
-  const { listado } = useObtenerJuegos();
+  const { empresas, cargando } = useObtenerUsuarios();
+  const { listado, loading: loadingJuegos } = useObtenerJuegos();
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const empresaEncontrada = empresas?.find((empresa) => empresa._id === id);
+  if (cargando || !empresas || loadingJuegos || !listado) {
+    return <PerfilEmpresaSkeleton />;
+  }
+
+  const empresaEncontrada = empresas.find((empresa) => empresa._id === id);
 
   if (!empresaEncontrada) {
     return (
       <section className="perfil_loading">
-        <p>Cargando datos...</p>
+        <p>Empresa no encontrada.</p>
+        <button
+          onClick={() => navigate(-1)}
+          style={{ marginTop: "10px", padding: "5px 10px" }}
+        >
+          Volver
+        </button>
       </section>
     );
   }
@@ -29,20 +40,19 @@ export default function PerfilEmpresaPage() {
 
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
 
-  const juegosDelEstudio = listado?.filter((juego) =>
-    juegosSubidos.includes(juego._id)
+  const juegosDelEstudio = listado.filter((juego) =>
+    juegosSubidos.includes(juego._id),
   );
 
   const destacado =
     juegosDelEstudio && juegosDelEstudio.length > 0
       ? juegosDelEstudio[0]
       : null;
+
   const catalogo =
     juegosDelEstudio && juegosDelEstudio.length > 0
       ? juegosDelEstudio.slice(1)
       : [];
-
-
 
   return (
     <div className="perfil_container_main">
@@ -84,7 +94,7 @@ export default function PerfilEmpresaPage() {
             <div className="botones_accion">
               <button className="btn_seguir">Seguir</button>
               <button className="btn_contacto">
-                <img src={mail} alt="" />
+                <img src={mail} alt="Contacto" />
               </button>
             </div>
           </div>
@@ -95,16 +105,23 @@ export default function PerfilEmpresaPage() {
         {destacado && (
           <section className="seccion_bloque">
             <div className="titulo_borde">Ultimo Lanzamiento</div>
-            <div
-              className="banner_destacado"
-              style={{ backgroundImage: `url(${destacado.imagenPortada})` }}
-            >
+            <div className="banner_destacado">
+              <img
+                className="background"
+                src={destacado.imagenPortada}
+                alt={destacado.titulo}
+              />
               <div className="overlay_gradiente">
                 <span className="badge_nuevo">Nuevo Lanzamiento</span>
                 <h2 className="titulo_grande">{destacado.titulo}</h2>
                 <p className="desc_destacado">{destacado.descripcion}</p>
                 <div className="footer_destacado">
-                  <button className="btn_verde">Ver Detalles</button>
+                  <button
+                    onClick={() => navigate(`/juego/${destacado._id}`)}
+                    className="btn_verde"
+                  >
+                    Ver Detalles
+                  </button>
                   <span className="precio_grande">${destacado.precioBase}</span>
                 </div>
               </div>
@@ -133,15 +150,25 @@ export default function PerfilEmpresaPage() {
                       <span className="precio_mini">
                         {juego.precioBase > 0 ? `$${juego.precioBase}` : "Free"}
                       </span>
-                      <button className="btn_carrito">
-                        Agregar al carrito
+                      <button
+                        className="btn_carrito"
+                        onClick={() => navigate(`/juego/${juego._id}`)}
+                      >
+                        Ver más
                       </button>
                     </div>
                   </div>
                 </article>
               ))
             ) : (
-              <p className="sin_juegos">No hay más juegos en el catálogo.</p>
+              <p
+                className="sin_juegos"
+                style={{ color: "#999", fontStyle: "italic" }}
+              >
+                {destacado
+                  ? "No hay más juegos en el catálogo."
+                  : "Este estudio aún no ha subido juegos."}
+              </p>
             )}
           </div>
         </section>

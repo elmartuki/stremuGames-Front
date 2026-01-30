@@ -2,22 +2,24 @@ import "../css/perfilPage.css";
 import grid_green from "../icons/grid_green.svg";
 import deseados from "../icons/deseados.svg";
 import next from "../icons/next.svg";
+import game_green from "../icons/games_green.svg";
 import JuegosDelUsuario from "../componets/perfil/JuegosDelUsuario";
 import { useObtenerUsuario } from "../services/obtenerUsuario.js";
 import { useCalcularNivel } from "../services/calcularNivel.js";
 import useMediaQuery from "../utils/changeDesk.js";
 import { useParams } from "react-router-dom";
+import { PerfilPageSkeleton } from "../componets/skeletons/Skeleton.jsx";
 
 export default function PerfilPage() {
   const { id } = useParams();
 
-  const { usuario } = useObtenerUsuario(id);
+  const { usuario, cargando } = useObtenerUsuario(id);
   const { nivel, puntos } = useCalcularNivel(id);
 
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
-  if (!usuario) {
-    return <></>;
+  if (cargando || !usuario) {
+    return <PerfilPageSkeleton />;
   }
 
   const { nombreUsuario, biografia, foto_de_perfil, juegosComprados } = usuario;
@@ -75,7 +77,7 @@ export default function PerfilPage() {
             <img src={grid_green} alt="" />
             <div>
               <p>Biblioteca</p>
-              <p>Ver todos ({juegosComprados.length})</p>
+              <p>Ver todos ({juegosComprados?.length || 0})</p>
             </div>
 
             {isDesktop ? (
@@ -102,7 +104,9 @@ export default function PerfilPage() {
       </section>
 
       <section className="listado_juegos_section">
-        <p className="listado_juegos_titulo">Listado de Juegos</p>
+        <p className="listado_juegos_titulo">
+          <img src={game_green} alt="" /> Listado de Juegos
+        </p>
         <section className="juegos_section">
           <JuegosDelUsuario juegosComprados={juegosComprados} />
         </section>

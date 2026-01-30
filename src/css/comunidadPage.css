@@ -1,6 +1,5 @@
 .comunidad-page {
   font-family: "Space Grotesk", sans-serif;
-  background-color: #121416;
   color: #f1f5f9;
   min-height: 100vh;
   display: flex;
@@ -10,19 +9,39 @@
 .comunidad-body {
   flex: 1;
   width: 100%;
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 20px 10px;
 
   .comunidad_hero {
     display: flex;
+    height: 420px;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+
+    .background {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      position: absolute;
+      opacity: 50%;
+      transition: 1s;
+    }
+
+    &:hover {
+      .background {
+        transform: scale(1.02);
+      }
+    }
 
     p {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 20px;
       line-height: 1.1;
@@ -37,8 +56,7 @@
 
 .search-box {
   display: flex;
-  width: 100%;
-  max-width: 600px;
+  width: 90%;
   padding: 0px 10px;
   margin-bottom: 24px;
   background-color: #1c1d1f;
@@ -53,9 +71,9 @@
 
   input {
     width: 100%;
-    height: 50px;
+    padding: 12px 10px;
     border: none;
-    padding: 0px 10px;
+
     background-color: transparent;
     color: white;
     font-size: 1rem;
@@ -157,7 +175,7 @@
   background-color: #1c1d1f;
   border: 1px solid #2e3928;
   border-radius: 12px;
-  padding: 20px;
+  padding: 0px 0px 20px 0px;
   transition: all 0.3s;
 
   &:hover {
@@ -167,15 +185,60 @@
   }
 
   .empresa_icon {
+    width: 100%;
     height: 110px;
-    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
+
+    .background_banner {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 50%;
+      position: absolute;
+    }
+
+    .empresa_perfil {
+      display: flex;
+      padding: 10px;
+      align-items: end;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: linear-gradient(to top, #1c1d1f, transparent);
+
+      .empresa_perfil_container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .empresa_info {
+          font-size: 1.2rem;
+        }
+      }
+
+      .iniciales {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
+        background-color: #66f61eb0;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+    }
 
     .gradient {
       position: absolute;
@@ -191,42 +254,33 @@
     }
   }
 
-  .empresa_info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+  .empresa_info_container {
+    padding: 0px 20px;
 
-    h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0;
+    .empresa_stats {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
     }
-  }
 
-  .empresa_stats {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-  }
+    button {
+      width: 100%;
+      padding: 8px;
+      background-color: rgba(102, 246, 30, 0.1);
+      border: 1px solid rgba(102, 246, 30, 0.3);
+      color: #66f61e;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
 
-  button {
-    width: 100%;
-    padding: 8px;
-    background-color: rgba(102, 246, 30, 0.1);
-    border: 1px solid rgba(102, 246, 30, 0.3);
-    color: #66f61e;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-      background-color: #66f61e;
-      color: #121416;
+      &:hover {
+        background-color: #66f61e;
+        color: #121416;
+      }
     }
   }
 }
@@ -350,6 +404,19 @@
 }
 
 @media (min-width: 1024px) {
+  .comunidad-body {
+    width: 80%;
+    padding: 24px;
+
+    .comunidad_hero {
+      height: 250px;
+    }
+  }
+
+  .search-box {
+    width: 50%;
+  }
+
   .empresa-card {
     flex: 1;
     width: calc(25% - 10px);
