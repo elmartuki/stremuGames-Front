@@ -136,7 +136,13 @@ export default function AppRouter() {
           element={
             <>
               <ComunidadPage />
-              <FooterWeb />
+              {isDesktop ? (
+                <FooterWeb />
+              ) : (
+                <>
+                  <Footer />
+                </>
+              )}
             </>
           }
         />
@@ -191,7 +197,15 @@ export default function AppRouter() {
             }
           />
 
-          <Route path="/carrito" element={<CarritoPage />} />
+          <Route
+            path="/carrito"
+            element={
+              <>
+                <CarritoPage />
+                {isDesktop ? <></> : <Footer />}
+              </>
+            }
+          />
         </Route>
       </Route>
 
