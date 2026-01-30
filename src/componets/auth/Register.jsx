@@ -9,7 +9,7 @@ import lock from "../../icons/lock.svg";
 import visibility_off from "../../icons/visibility_off.svg";
 import visibility from "../../icons/visibility.svg";
 import errorIcon from "../../icons/error.svg";
-
+import terminal_green from "../../icons/terminal_green.svg";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -114,16 +114,28 @@ export default function Register() {
 
   return (
     <>
-      <nav className="login-navbar">
-        <button
-          type="button"
-          className="login-navbar__back"
-          onClick={() => navigate(-1)}
-          aria-label="Volver"
-        >
-          <img src={back} alt="Volver" />
-        </button>
-      </nav>
+      <section className="container-nav-header-login">
+        <nav className="login-navbar">
+          <button
+            type="button"
+            className="login-navbar__back"
+            onClick={() => navigate(-1)}
+            aria-label="Volver"
+          >
+            <img src={back} alt="Volver" />
+          </button>
+        </nav>
+        <header className="navbar_init_container">
+          <nav className="navbar_init">
+            <div className="logo">
+              <p>
+                <img src={terminal_green} alt="" />
+                Stremugames
+              </p>
+            </div>
+          </nav>
+        </header>
+      </section>
 
       <section className="login-section">
         <form className="login-form" onSubmit={handleSubmit}>
