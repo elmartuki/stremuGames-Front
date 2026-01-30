@@ -3,8 +3,9 @@ import "../../css/footer.css";
 
 import homeIcon from "../../icons/home.svg";
 import categoriasIcon from "../../icons/grid.svg";
+import comunidadIcon from "../../icons/usuarios.svg";
 import carritoIcon from "../../icons/carrito.svg";
-import wishlistIcon from "../../icons/heart.svg";
+import wishlistIcon from "../../icons/fav.svg";
 import perfilIcon from "../../icons/user.svg";
 import juegos from "../../icons/juegos.svg";
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
@@ -23,24 +24,27 @@ export default function Footer() {
   const { usuario } = useObtenerUsuario();
 
   const opcionesUser = [
-    { titulo: "Inicio", icono: homeIcon, ruta: "/explorar" },
-    { titulo: "Categorías", icono: categoriasIcon, ruta: "/categorias" },
-    { titulo: "Carrito", icono: carritoIcon, ruta: "/carrito" },
-    { titulo: "Wishlist", icono: wishlistIcon, ruta: "/wishlist" },
-    { titulo: "Perfil", icono: perfilIcon, ruta: "/perfil" },
+    { titulo: "", icono: homeIcon, ruta: "/explorar" },
+    { titulo: "", icono: categoriasIcon, ruta: "/categorias" },
+    { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
+    { titulo: "", icono: carritoIcon, ruta: "/carrito" },
+    { titulo: "", icono: wishlistIcon, ruta: "/wishlist" },
+    { titulo: "", icono: perfilIcon, ruta: "/perfil" },
   ];
 
   const opcionesEmpresa = [
-    { titulo: "Inicio", icono: homeIcon, ruta: "/explorar" },
-    { titulo: "Categorías", icono: categoriasIcon, ruta: "/categorias" },
-    { titulo: "Mis Juegos", icono: juegos, ruta: "/parthner" },
-    { titulo: "Perfil", icono: perfilIcon, ruta: "/perfil" },
+    { titulo: "", icono: homeIcon, ruta: "/explorar" },
+    { titulo: "", icono: categoriasIcon, ruta: "/categorias" },
+    { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
+    { titulo: "", icono: juegos, ruta: "/studio-panel" },
+    { titulo: "", icono: perfilIcon, ruta: "/perfil" },
   ];
 
   const opcionesInvitado = [
-    { titulo: "Inicio", icono: homeIcon, ruta: "/explorar" },
-    { titulo: "Categorías", icono: categoriasIcon, ruta: "/categorias" },
-    { titulo: "Login", icono: perfilIcon, ruta: "/login" },
+    { titulo: "", icono: homeIcon, ruta: "/explorar" },
+    { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
+    { titulo: "", icono: categoriasIcon, ruta: "/categorias" },
+    { titulo: "", icono: perfilIcon, ruta: "/login" },
   ];
 
   const rolFinal = rolToken || usuario?.rol;
