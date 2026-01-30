@@ -591,67 +591,26 @@ export function PerfilPageSkeleton() {
             style={{ width: "150px", height: "24px" }}
           ></div>
         </div>
-
-        <section className="juegos_section">
-          {fakeJuegos.map((_, index) => (
-            <article key={index} className="juegos skeleton-card">
-              <div className="juegos_imagen">
-                <div
-                  className="skeleton-box image-box"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "10px",
-                  }}
-                ></div>
-              </div>
-
-              <div className="juegos_data">
-                <div
-                  className="skeleton-box"
-                  style={{ width: "80%", height: "18px", marginBottom: "5px" }}
-                ></div>
-                <div
-                  className="skeleton-box"
-                  style={{ width: "50%", height: "14px" }}
-                ></div>
-              </div>
-            </article>
-          ))}
-        </section>
       </section>
     </section>
   );
 }
 
-export function JuegosDelUsuarioSkeleton() {
-  const skeletons = Array(4).fill(0);
+export const JuegosDelUsuarioSkeleton = () => {
+  const skeletonArray = Array(4).fill(0);
 
   return (
     <>
-      {skeletons.map((_, index) => (
-        <article key={index} className="juego_tarjeta skeleton-card">
-          <div
-            style={{ width: "100%", overflow: "hidden", borderRadius: "8px" }}
-          >
-            <div
-              className="skeleton-box image-box"
-              style={{ width: "100%", height: "140px", borderRadius: "8px" }}
-            ></div>
-          </div>
+      {skeletonArray.map((_, index) => (
+        <article key={index} className="juego_tarjeta skeleton_wrapper">
+          <div className="skeleton_img skeleton_anim"></div>
 
-          <div style={{ width: "100%", marginTop: "10px" }}>
-            <div
-              className="skeleton-box"
-              style={{ width: "80%", height: "16px", marginBottom: "5px" }}
-            ></div>
-            <div
-              className="skeleton-box"
-              style={{ width: "50%", height: "12px" }}
-            ></div>
+          <div className="skeleton_info">
+            <div className="skeleton_text title skeleton_anim"></div>
+            <div className="skeleton_text developer skeleton_anim"></div>
           </div>
         </article>
       ))}
     </>
   );
-}
+};

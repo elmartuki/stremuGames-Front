@@ -2,7 +2,23 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 
+  .user_identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .user_name_info {
+      .display_name {
+        display: none;
+      }
+    }
+  }
+
+  .input_hidden {
+    display: none;
+  }
   .perfil_config_carroucel {
     display: none;
   }
@@ -15,27 +31,71 @@
 
   .perfil_config_header_data {
     display: flex;
+    width: 100%;
+    margin: auto;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    padding: 100px 0px 0px 10px;
+    background-size: cover;
+    background-position: center;
 
     p {
       font-size: 1rem;
       opacity: 0.7;
-
       &:last-child {
         color: #00dc82;
         cursor: pointer;
         opacity: 1;
         font-weight: 500;
+        transition: text-shadow 0.3s ease;
+        &:hover {
+          text-shadow: 0 0 8px rgba(0, 220, 130, 0.6);
+        }
+      }
+    }
+  }
+
+  .boton_editar_fondo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    img {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      transform: scale(1.15);
+      background-color: #66f61e;
+      border-color: #66f61e;
+      box-shadow: 0 0 15px rgba(102, 246, 30, 0.4);
+      img {
+        transform: rotate(-15deg);
+        filter: brightness(0) invert(0);
       }
     }
   }
 
   .perfil_config_header_imagen_wrapper {
+    display: flex;
+    flex-direction: row;
     width: 100px;
     height: 100px;
-    margin: 0 auto 10px;
+    position: relative;
   }
 
   .perfil_config_header_imagen {
@@ -47,13 +107,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #00dc82;
+    border: 2px solid #66f61e;
     font-weight: bold;
     color: white;
-  }
+    transition: box-shadow 0.3s ease;
 
-  p:nth-child(1) {
-    font-size: 3rem;
+    p {
+      font-size: 3rem;
+    }
+
+    &:hover {
+      box-shadow: 0 0 15px rgba(102, 246, 30, 0.3);
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+    }
   }
 
   .boton_editar_foto {
@@ -69,17 +140,32 @@
     justify-content: center;
     cursor: pointer;
     border: 3px solid #0f0f0f;
-    background-color: #00dc82;
+    background-color: #66f61e;
     z-index: 5;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     &:hover {
-      transform: translate(30%, 30%) scale(1.1);
+      transform: translate(30%, 30%) scale(1.2);
     }
-
+    &:active {
+      transform: translate(30%, 30%) scale(0.9);
+    }
     img {
-      width: 14px;
+      padding: 3px;
+      width: 100%;
     }
+  }
+
+  .loading_container {
+    margin-top: 10px;
+    text-align: center;
+  }
+  .loading_msg {
+    font-size: 12px;
+    color: #66f61e;
+    display: block;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .perfil_config_body {
@@ -88,9 +174,12 @@
     margin: auto;
     flex-direction: column;
     gap: 10px;
-
     label {
-      opacity: 60%;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+    &:hover label {
+      opacity: 1;
     }
   }
 
@@ -100,14 +189,15 @@
     align-items: flex-start;
     gap: 5px;
     padding: 15px 20px;
-    border-radius: 6px;
-    border: 2px solid #282828;
+    border-radius: 4px;
+    border: 1px solid #282828;
+    background-color: #121212;
+    transition: all 0.3s ease;
 
     label {
       font-size: 1rem;
-      opacity: 60%;
+      opacity: 0.6;
     }
-
     input,
     textarea {
       background: transparent;
@@ -117,90 +207,282 @@
       font-size: 1rem;
       outline: none;
       font-family: inherit;
-
+      transition: color 0.3s;
       &::placeholder {
         opacity: 0.4;
       }
     }
-
     textarea {
       resize: none;
+    }
+
+    &:hover {
+      border-color: #444;
+      background-color: #1a1a1a;
+    }
+    &:focus-within {
+      border-color: #66f61e;
+      background-color: #1a1a1a;
+      animation: glowInput 0.4s ease-out forwards;
+      transform: translateY(-1px);
     }
   }
 
   .perfil_editar_footer {
     width: 90%;
     margin: auto;
+    margin-bottom: 80px;
+    .btn_container {
+      flex-direction: column;
+    }
     button {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
       cursor: pointer;
       font-size: 1rem;
-      transition: opacity 0.2s;
-
-      &:hover {
-        opacity: 0.8;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+      overflow: hidden;
+      &:active {
+        transform: scale(0.98);
       }
     }
   }
 
   .btn_cancelar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     background-color: #202020;
-    border: 2px solid #303030;
-    color: white;
+    border: 1px solid #303030;
+    color: rgba(255, 255, 255, 0.7);
+    img {
+      opacity: 0.7;
+      width: 20px;
+      transition: transform 0.3s;
+    }
+    &:hover {
+      background-color: #2a2a2a;
+      border-color: #555;
+      color: white;
+      img {
+        opacity: 1;
+        transform: translateX(-3px);
+      }
+    }
   }
 
   .btn_guardar {
-    background-color: rgba(0, 220, 130, 0.2);
-    border: 2px solid rgba(0, 220, 130, 0.3);
-    color: white;
+    background-color: #66f61e;
+    border: 1px solid #66f61e;
+    color: #0f0f0f;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     margin-bottom: 10px;
-
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      filter: grayscale(1);
+    }
     img {
       width: 18px;
+      transition: transform 0.3s;
+      filter: invert();
+    }
+    &:hover:not(:disabled) {
+      transform: translateY(-3px);
+      background-color: #7aff35;
+
+      img {
+        transform: scale(1.1);
+      }
     }
   }
 }
 
 @media (min-width: 1024px) {
   .editar_perfil_section {
+    position: relative;
+    top: 0;
     justify-content: center;
+    height: 92vh;
+    overflow-x: hidden;
+    animation: none;
+
+    .desk {
+      position: fixed;
+      z-index: 1;
+      top: 8%;
+      img {
+        background-color: #181818 !important;
+      }
+    }
+
+    .user_identity {
+      .user_name_info {
+        .display_name {
+          font-weight: 800;
+          font-size: 1.5rem;
+          color: white;
+          display: flex;
+          text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+
+    .perfil_config_body {
+      width: 95%;
+      margin: 0px;
+      height: 100%;
+    }
+
+    .perfil_editar_footer {
+      display: flex;
+      align-items: end;
+      justify-content: end;
+      margin: 0px;
+      width: 100%;
+      padding: 20px;
+      border-top: 1px solid #333;
+      .btn_container {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 60%;
+        gap: 15px;
+        .btn_cancelar {
+          background-color: transparent;
+          border-color: transparent;
+          &:hover {
+            border-color: #444;
+          }
+        }
+        button {
+          padding: 10px 0px;
+          width: calc(50% - 10px);
+          margin: 0px;
+        }
+      }
+    }
+
+    .perfil_config_header_data {
+      border-radius: 0px;
+    }
     .flex-50 {
       display: flex;
-      height: 90vh;
+      height: 100%;
     }
 
     .perfil_config_carroucel {
       display: flex;
-      width: 40%;
+      width: 50%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+
+      .imagenes_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        .background {
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          position: absolute;
+          z-index: 1;
+          &.fade-animation {
+            animation: zoomOutEffect 6s ease-out forwards;
+          }
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
+          background: linear-gradient(
+            to right,
+            transparent 0%,
+            transparent 50%,
+            #0f0f0f 90%,
+            #0f0f0f 100%
+          );
+        }
+      }
 
       .carroucel_container {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
-
+        height: 100%;
+        position: relative;
+        z-index: 3;
         .carroucel_active_item {
-          width: 60%;
+          width: 50%;
           box-shadow: 0px 0px 50px 20px rgba(47, 0, 255, 0.1);
           background-position: center;
           height: 80vh;
           border-radius: 10px;
+          transition: transform 0.5s ease;
+          &:hover {
+            transform: scale(1.02);
+          }
         }
       }
     }
 
     .perfil_config {
       width: 50%;
-      margin: auto;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #181818;
+      animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+      animation-delay: 0.15s;
     }
+  }
+}
+
+@keyframes zoomOutEffect {
+  0% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glowInput {
+  0% {
+    box-shadow: 0 0 0 rgba(102, 246, 30, 0);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(102, 246, 30, 0.2);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
