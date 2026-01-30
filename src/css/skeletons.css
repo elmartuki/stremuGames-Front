@@ -144,3 +144,144 @@
   gap: 5px;
   flex-grow: 1;
 }
+
+.comunidad_hero.skeleton-hero-container {
+  background-color: #1a1a1a;
+  position: relative;
+}
+
+.title-box {
+  width: 40%;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.skeleton-search {
+  background-color: #282828 !important;
+  border: none !important;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.filter-btn-box {
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.header-text-box {
+  width: 300px;
+  height: 24px;
+}
+
+.text-line {
+  height: 14px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+}
+
+.empresa-card.skeleton-card {
+  border: 1px solid #3f3f3f;
+  background-color: #161616;
+  pointer-events: none;
+}
+
+.banner-box {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px 8px 0 0;
+}
+
+.avatar-circle-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #161616;
+}
+
+.button-small {
+  width: 80px;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.usuario_card.skeleton-card {
+  background-color: #161616;
+  border: 1px solid #3f3f3f;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 10px;
+}
+
+.avatar-circle-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.text-title-center {
+  width: 70%;
+  height: 20px;
+  margin: 10px 0;
+}
+
+.btn-block {
+  width: 100%;
+  height: 35px;
+  border-radius: 8px;
+}
+
+.usuario_card.skeleton-card .btn_container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.sidebar_card.skeleton-card-base {
+  background-color: #161616;
+  border: 1px solid #252525;
+  pointer-events: none;
+}
+
+.banner_destacado.skeleton-banner {
+  background-color: #1a1a1a;
+  border: none !important;
+  pointer-events: none;
+}
+
+.card_mini.skeleton-card-mini {
+  background-color: #161616;
+  border: 1px solid #252525;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card_mini.skeleton-card-mini .card_img {
+  height: 150px;
+  width: 100%;
+}
+
+.text-line {
+  height: 14px;
+  border-radius: 4px;
+}
+
+.title-section {
+  border-left: 4px solid #3f3f3f;
+  padding-left: 10px;
+}
+
+.juego_tarjeta.skeleton-card {
+  background-color: #161616;
+  border: 1px solid #252525;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
