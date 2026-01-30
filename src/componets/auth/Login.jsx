@@ -76,6 +76,13 @@ export default function Login() {
               Experience high-fidelity gaming with zero latency. Join the elite
               network of players shaping the future of the grid.
             </p>
+            <div className="carousel">
+              <div className="zoom-carousel">
+                <img src={fondo_futurista_4k} />
+                <img src={fondo_futurista_4k_2} />
+                <img src={fondo_futurista_4k_3} />
+              </div>
+            </div>
           </div>
         </article>
         <section className="login-section">
