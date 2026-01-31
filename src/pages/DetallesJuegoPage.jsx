@@ -10,14 +10,11 @@ import { useObtenerUnJuego } from "../services/obtenerUnJuego";
 
 export default function DetallesJuegoPage() {
   const { id } = useParams();
-
   const { juego } = useObtenerUnJuego(id);
-
   const { usuario } = useObtenerUsuario(juego?.studioId);
 
-  if (!juego) return <p>No se encontró el juego</p>;
-
-  if (!usuario) return <p>No se encontró la empresa</p>;
+  if (!juego) return <></>;
+  if (!usuario) return <></>;
 
   const {
     titulo,
@@ -32,8 +29,6 @@ export default function DetallesJuegoPage() {
 
   const { nombreUsuario, foto_de_perfil } = usuario;
 
-  if (!juego) return <p>No se encontró el juego</p>;
-
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
 
   const descuento = ((precioBase - precioDescuento) / precioBase) * 100;
@@ -46,19 +41,25 @@ export default function DetallesJuegoPage() {
   return (
     <>
       <section className="detalles_juego_container">
-        <section
-          className="juego_header_portada"
-          onerror={handleImageError}
-          style={{ backgroundImage: `url("${imagenBanner || noImage}")` }}
-        ></section>
+        <section className="juego_header_portada">
+          <img
+            src={imagenBanner || noImage}
+            alt={titulo}
+            onError={handleImageError}
+          />
+        </section>
 
         <section className="juego_contenido_main">
           <div className="juego_info_card_container">
             <div className="juego_info_card">
               <div className="juego_generos">
                 <div className="badge_categoria_container">
-                  {categorias?.map((categoria) => {
-                    return <span className="badge_categoria">{categoria}</span>;
+                  {categorias?.map((categoria, index) => {
+                    return (
+                      <span key={index} className="badge_categoria">
+                        {categoria}
+                      </span>
+                    );
                   })}
                 </div>
 
@@ -141,16 +142,36 @@ export default function DetallesJuegoPage() {
             </p>
             <section className="galeria_flex">
               <div className="galeria_item">
-                <img src="" className="galeria_img" />
+                <img
+                  src={noImage}
+                  className="galeria_img"
+                  alt="galeria"
+                  onError={handleImageError}
+                />
               </div>
               <div className="galeria_item">
-                <img src="" className="galeria_img" />
+                <img
+                  src={noImage}
+                  className="galeria_img"
+                  alt="galeria"
+                  onError={handleImageError}
+                />
               </div>
               <div className="galeria_item">
-                <img src="" className="galeria_img" />
+                <img
+                  src={noImage}
+                  className="galeria_img"
+                  alt="galeria"
+                  onError={handleImageError}
+                />
               </div>
               <div className="galeria_item">
-                <img src="" className="galeria_img" />
+                <img
+                  src={noImage}
+                  className="galeria_img"
+                  alt="galeria"
+                  onError={handleImageError}
+                />
               </div>
             </section>
           </div>

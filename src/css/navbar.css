@@ -164,10 +164,9 @@
           align-items: center;
           justify-content: center;
           border-radius: 8px;
-          background-color: #66f61e;
+          background-color: #292929;
           font-weight: bold;
           font-size: 1.3rem;
-          color: rgba(0, 0, 0, 0.804);
         }
         img {
           width: 40px;

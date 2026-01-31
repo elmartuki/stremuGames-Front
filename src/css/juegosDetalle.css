@@ -4,17 +4,28 @@
   width: 100%;
   gap: 10px;
 
-  .juego_descripcion {
+  .juego_descripcion,
+  .juego_desarrollador,
+  .juego_specs {
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 95%;
     margin: auto;
-    background: #202020;
+    background: #161616;
     padding: 20px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0px 0px 20px black;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+
+    &:hover {
+      transform: translateY(-5px);
+      border-color: rgba(102, 246, 30, 0.3);
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.8);
+    }
 
     .descripcion_texto {
       font-size: 0.9rem;
@@ -32,8 +43,23 @@
         background: #20b3562e;
         padding: 5px;
         border-radius: 6px;
+        transition: transform 0.3s ease;
       }
     }
+
+    &:hover .section_subtitle img {
+      transform: rotate(10deg) scale(1.1);
+    }
+  }
+
+  .juego_descripcion {
+    animation-delay: 0.4s;
+  }
+  .juego_desarrollador {
+    animation-delay: 0.5s;
+  }
+  .juego_specs {
+    animation-delay: 0.6s;
   }
 
   .juego_header_portada {
@@ -41,13 +67,33 @@
     margin: auto;
     height: 350px;
     border-radius: 10px;
-    background-size: cover;
-    background-position: center;
+    position: relative;
+    overflow: hidden;
+    background-color: #202020;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: filter 0.5s ease;
+      animation: zoomOutLoadedImage 1.5s cubic-bezier(0.25, 0.8, 0.25, 1)
+        forwards;
+    }
+
+    &:hover img {
+      filter: brightness(1.1);
+    }
   }
 
   .juego_galeria {
     width: 95%;
     margin: auto;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: 0.3s;
 
     .section_subtitle {
       width: 95%;
@@ -74,12 +120,55 @@
       margin: auto;
       padding: 20px 10px;
 
+      &::-webkit-scrollbar {
+        height: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #333;
+        border-radius: 4px;
+      }
+
       .galeria_item {
         flex: 0 0 auto;
         width: calc(70% - 10px);
         height: 150px;
-        background-color: red;
         border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 2px solid transparent;
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+
+        &:nth-child(1) {
+          animation-delay: 0.4s;
+        }
+        &:nth-child(2) {
+          animation-delay: 0.5s;
+        }
+        &:nth-child(3) {
+          animation-delay: 0.6s;
+        }
+        &:nth-child(4) {
+          animation-delay: 0.7s;
+        }
+
+        .galeria_img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 10px;
+          transition: transform 0.5s ease;
+        }
+
+        &:hover {
+          border-color: #66f61e;
+          transform: scale(1.02);
+
+          .galeria_img {
+            transform: scale(1.1);
+          }
+        }
       }
     }
   }
@@ -91,6 +180,10 @@
   position: relative;
   top: -150px;
   background: linear-gradient(to top, #101010 0%, #161616 80%, #16161600 100%);
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out forwards;
+  animation-delay: 0.2s;
 
   .juego_info_card {
     width: 90%;
@@ -115,6 +208,8 @@
 
         .precio_oferta {
           font-size: 2rem;
+          color: white;
+          text-shadow: 0 0 10px rgba(102, 246, 30, 0.2);
         }
 
         .precio_original {
@@ -125,9 +220,12 @@
         .descuento_tag {
           margin-left: auto;
           font-size: 1rem;
-          background-color: #20b356;
+          background-color: #66f61e;
           padding: 1px 4px;
           border-radius: 4px;
+          color: black;
+          font-weight: bold;
+          animation: pulse 2s infinite;
         }
       }
     }
@@ -145,6 +243,14 @@
         padding: 8px 10px;
         border-radius: 8px;
         border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        position: relative;
+        overflow: hidden;
+
+        &:active {
+          transform: scale(0.95);
+        }
       }
 
       .btn_comprar {
@@ -153,13 +259,40 @@
         justify-content: center;
         gap: 5px;
         width: 100%;
-        background-color: #20b356;
+        background-color: #66f61e;
+        color: #101010;
+        font-weight: 700;
+
+        img {
+          filter: invert();
+          transition: transform 0.3s;
+        }
+
+        &:hover {
+          background-color: lighten(#66f61e, 10%);
+          box-shadow: 0 0 15px rgba(102, 246, 30, 0.4);
+
+          img {
+            transform: translateX(3px) scale(1.1);
+          }
+        }
       }
+
       .btn_favorito {
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: #ffffff1c;
+
+        &:hover {
+          background-color: #ffffff30;
+          img {
+            transform: scale(1.2);
+          }
+        }
+        img {
+          transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
       }
     }
 
@@ -167,9 +300,16 @@
       display: flex;
       gap: 6px;
       .badge_categoria {
-        background-color: #20b356;
+        background-color: #66f61e;
+        color: #101010;
         padding: 1px 6px;
         border-radius: 2px;
+        cursor: default;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
       }
     }
   }
@@ -178,82 +318,6 @@
 .mas_info_container {
   position: relative;
   top: -130px;
-}
-
-.juego_desarrollador {
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
-  background-color: #202020;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0px 0px 20px black;
-
-  .section_subtitle {
-    font-size: 1.2rem;
-  }
-
-  .dev_card {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px;
-    background-color: #242424;
-    border-radius: 8px;
-
-    .dev_info {
-      .dev_nombre {
-        text-transform: capitalize;
-      }
-    }
-
-    .dev_logo {
-      width: 45px;
-      height: 45px;
-      border-radius: 10px;
-
-      img {
-        width: 45px;
-        height: 45px;
-        border-radius: 10px;
-        object-fit: cover;
-      }
-
-      .iniciales {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 45px;
-        height: 45px;
-        background-color: #20b356;
-        font-size: 1.4rem;
-        border-radius: 10px;
-      }
-    }
-  }
-}
-
-.juego_specs {
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 20px;
-  background-color: #202020;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0px 0px 20px black;
-
-  .specs_titulo {
-    font-size: 1.2rem;
-  }
-
-  .spec_item {
-    margin-top: 6px;
-    font-size: 0.8rem;
-    opacity: 80%;
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -309,9 +373,20 @@
         padding: 20px;
         border: 1px solid rgba(255, 255, 255, 0.05);
         box-shadow: 0px 0px 20px black;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+
+        &:hover {
+          border-color: rgba(102, 246, 30, 0.4);
+          box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.9);
+        }
 
         .juego_info_card {
-          width: 100%;
+          gap: 15px;
+          display: flex;
+          flex-direction: column;
         }
       }
 
@@ -320,5 +395,39 @@
         height: 200px;
       }
     }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomOutLoadedImage {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }
