@@ -35,9 +35,9 @@
 
 .navbar_init {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 25px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .logo p {
