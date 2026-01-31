@@ -99,22 +99,6 @@ export default function DetallesJuegoPage() {
                 </button>
               </div>
 
-              <div className="juego_specs">
-                <p className="specs_titulo">Especificaciones Técnicas</p>
-                <div className="spec_item">
-                  <span className="spec_label">OS</span>
-                  <span className="spec_value">Windows 10/11</span>
-                </div>
-                <div className="spec_item">
-                  <span className="spec_label">Procesador</span>
-                  <span className="spec_value">AMD Ryzen 5 5600g</span>
-                </div>
-                <div className="spec_item">
-                  <span className="spec_label">Gráficos</span>
-                  <span className="spec_value">AMD RX 6600XT 8gb</span>
-                </div>
-              </div>
-
               <div className="juego_desarrollador">
                 <p className="section_subtitle">Desarrollador</p>
                 <div className="dev_card">
@@ -128,6 +112,22 @@ export default function DetallesJuegoPage() {
                   <div className="dev_info">
                     <p className="dev_nombre">{nombreUsuario}</p>
                   </div>
+                </div>
+              </div>
+
+              <div className="juego_specs">
+                <p className="specs_titulo">Especificaciones Técnicas</p>
+                <div className="spec_item">
+                  <span className="spec_label">OS</span>
+                  <span className="spec_value">Windows 10/11</span>
+                </div>
+                <div className="spec_item">
+                  <span className="spec_label">Procesador</span>
+                  <span className="spec_value">AMD Ryzen 5 5600g</span>
+                </div>
+                <div className="spec_item">
+                  <span className="spec_label">Gráficos</span>
+                  <span className="spec_value">AMD RX 6600XT 8gb</span>
                 </div>
               </div>
             </div>
