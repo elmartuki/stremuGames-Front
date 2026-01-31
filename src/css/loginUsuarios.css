@@ -391,7 +391,10 @@
       box-shadow: transparent;
     }
     5% {
-      box-shadow: 0px 0px 20px 10px #66f61e70;
+      box-shadow: 0px 0px 20px 10px #000000;
+    }
+    50% {
+      box-shadow: 0px 0px 20px 10px #000000;
     }
     90% {
       box-shadow: 0px 0px 20px 10px #000000;

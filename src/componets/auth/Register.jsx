@@ -10,6 +10,13 @@ import visibility_off from "../../icons/visibility_off.svg";
 import visibility from "../../icons/visibility.svg";
 import errorIcon from "../../icons/error.svg";
 import terminal_green from "../../icons/terminal_green.svg";
+import arroba from "../../icons/arroba.svg";
+import encrypted from "../../icons/encrypted.svg";
+import person_green from "../../icons/person_green.svg";
+
+import fondo_futurista_4k from "../../images/fondo_futurista_4k_register.png";
+import fondo_futurista_4k_2 from "../../images/fondo_futurista_4k_register_3.png";
+import fondo_futurista_4k_register_2 from "../../images/fondo_futurista_4k_register_2.png";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -114,191 +121,151 @@ export default function Register() {
 
   return (
     <>
-      <section className="container-nav-header-login">
-        <nav className="login-navbar">
-          <button
-            type="button"
-            className="login-navbar__back"
-            onClick={() => navigate(-1)}
-            aria-label="Volver"
-          >
-            <img src={back} alt="Volver" />
-          </button>
-        </nav>
-        <header className="navbar_init_container">
-          <nav className="navbar_init">
-            <div className="logo">
-              <p>
-                <img src={terminal_green} alt="" />
-                Stremugames
-              </p>
+      <section className="container-login-father">
+        <article className="container-login">
+          <div className="subcontainer-login">
+            <div className="container-login-title">
+              <div className="image-joystick">
+                <img src={joystick} alt="Joystick" />
+              </div>
+              <p>STREMU GAMES</p>
             </div>
-          </nav>
-        </header>
-      </section>
 
-      <section className="login-section">
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="login-card">
-            <header className="login-card__header">
-              <img className="login-card__icon" src={joystick} alt="Joystick" />
-              <h2 className="login-card__title">Crear cuenta</h2>
-              <p className="login-card__subtitle">
-                Registrate para acceder a la plataforma.
-              </p>
-            </header>
+            <p className="container-login-subtitle">JOIN THE</p>
+            <p className="container-login-subtitle-2">GRID.</p>
 
-            <div className="login-form__content">
-              <div className="login-form__field">
-                <label className="login-form__label">Nombre de usuario</label>
+            <p className="container-login-description">
+              Create your account and become part of the next-generation gaming
+              platform.
+            </p>
 
-                <div className="login-form__input-wrapper">
-                  <img src={user} alt="Usuario" />
-                  <input
-                    type="text"
-                    name="nombreUsuario"
-                    className="login-form__input"
-                    placeholder="Nombre de usuario"
-                    value={form.nombreUsuario}
-                    onChange={handleChange}
-                  />
-                </div>
+            <div className="carousel">
+              <div className="zoom-carousel">
+                <img src={fondo_futurista_4k} />
+                <img src={fondo_futurista_4k_2} />
+                <img src={fondo_futurista_4k_register_2} />
               </div>
-
-              <div className="login-form__field">
-                <label className="login-form__label">Correo electrónico</label>
-
-                <div className="login-form__input-wrapper">
-                  <img src={user} alt="Email" />
-                  <input
-                    type="text"
-                    name="email"
-                    className="login-form__input"
-                    placeholder="Correo electrónico"
-                    value={form.email}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="login-form__field">
-                <label className="login-form__label">Contraseña</label>
-
-                <div className="login-form__input-wrapper">
-                  <img src={lock} alt="Contraseña" />
-
-                  <input
-                    id="password"
-                    type={mostrarPassword ? "text" : "password"}
-                    className="login-form__input"
-                    placeholder="Escriba su contraseña"
-                    value={form.password}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        password: e.target.value,
-                      })
-                    }
-                  />
-
-                  <button
-                    type="button"
-                    className="login-form__toggle-password"
-                    onClick={() => setMostrarPassword(!mostrarPassword)}
-                    aria-label={
-                      mostrarPassword
-                        ? "Ocultar contraseña"
-                        : "Mostrar contraseña"
-                    }
-                  >
-                    <img
-                      src={mostrarPassword ? visibility : visibility_off}
-                      alt={
-                        mostrarPassword
-                          ? "Ocultar contraseña"
-                          : "Mostrar contraseña"
-                      }
-                    />
-                  </button>
-                </div>
-              </div>
-              <div className="login-form__field">
-                <label className="login-form__label">
-                  Repetí la contraseña
-                </label>
-
-                <div className="login-form__input-wrapper">
-                  <img src={lock} alt="Contraseña" />
-
-                  <input
-                    id="repeatPassword"
-                    type={mostrarRepeatPassword ? "text" : "password"}
-                    className="login-form__input"
-                    placeholder="Repita su contraseña"
-                    value={form.repeatPassword}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        repeatPassword: e.target.value,
-                      })
-                    }
-                  />
-
-                  <button
-                    type="button"
-                    className="login-form__toggle-password"
-                    onClick={() =>
-                      setMostrarRepeatPassword(!mostrarRepeatPassword)
-                    }
-                    aria-label={
-                      mostrarRepeatPassword
-                        ? "Ocultar contraseña"
-                        : "Mostrar contraseña"
-                    }
-                  >
-                    <img
-                      src={mostrarRepeatPassword ? visibility : visibility_off}
-                      alt={
-                        mostrarRepeatPassword
-                          ? "Ocultar contraseña"
-                          : "Mostrar contraseña"
-                      }
-                    />
-                  </button>
-                </div>
-              </div>
-
-              {error && (
-                <div className="login-form__error login-form__error--center">
-                  <img src={errorIcon} />
-                  <p>{error}</p>
-                </div>
-              )}
-
-              {showMessage && (
-                <div className="login-form__registeredUser login-form__error--center">
-                  <img src="" alt="" />
-                  <p>{showMessage}</p>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="login-form__submit"
-                disabled={loading}
-              >
-                <p>{loading ? "Registrando..." : "Registrarse"}</p>
-              </button>
             </div>
           </div>
-        </form>
+        </article>
 
-        <footer className="login-footer">
-          <p className="login-footer__text">¿Ya tenés cuenta?</p>
-          <a href="/login" className="login-footer__link">
-            Iniciar sesión
-          </a>
-        </footer>
+        <section className="login-section">
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-card">
+              <header className="login-card__header">
+                <h2 className="login-card__title">CREATE_ACCOUNT</h2>
+                <p className="login-card__subtitle">
+                  Create your account to access Stremu Games.
+                </p>
+              </header>
+
+              <div className="login-form__content">
+                <div className="login-form__field">
+                  <label className="login-form__label">USERNAME</label>
+                  <div className="login-form__input-wrapper">
+                    <img src={person_green} alt="Usuario" />
+                    <input
+                      type="text"
+                      className="login-form__input"
+                      placeholder="Your username"
+                      value={form.nombreUsuario}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="login-form__field">
+                  <label className="login-form__label">EMAIL</label>
+                  <div className="login-form__input-wrapper">
+                    <img src={arroba} alt="Email" />
+                    <input
+                      type="text"
+                      className="login-form__input"
+                      placeholder="alias@stremu.games"
+                      value={form.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                <div className="login-form__field">
+                  <label className="login-form__label">PASSWORD</label>
+                  <div className="login-form__input-wrapper">
+                    <img src={encrypted} alt="Contraseña" />
+                    <input
+                      type={mostrarPassword ? "text" : "password"}
+                      className="login-form__input"
+                      placeholder="Enter your password"
+                      value={form.password}
+                      onChange={(e) =>
+                        setForm({ ...form, password: e.target.value })
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="login-form__toggle-password"
+                      onClick={() => setMostrarPassword(!mostrarPassword)}
+                    >
+                      <img
+                        src={mostrarPassword ? visibility : visibility_off}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="login-form__field">
+                  <label className="login-form__label">REPEAT PASSWORD</label>
+                  <div className="login-form__input-wrapper">
+                    <img src={encrypted} alt="Contraseña" />
+                    <input
+                      type={mostrarRepeatPassword ? "text" : "password"}
+                      className="login-form__input"
+                      placeholder="Repeat your password"
+                      value={form.repeatPassword}
+                      onChange={(e) =>
+                        setForm({ ...form, repeatPassword: e.target.value })
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="login-form__toggle-password"
+                      onClick={() =>
+                        setMostrarRepeatPassword(!mostrarRepeatPassword)
+                      }
+                    >
+                      <img
+                        src={
+                          mostrarRepeatPassword ? visibility : visibility_off
+                        }
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="login-form__error login-form__error--center">
+                    <img src={errorIcon} />
+                    <p>{error}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="login-form__submit"
+                  disabled={loading}
+                >
+                  <p>{loading ? "CREATING..." : "CREATE ACCOUNT"}</p>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <footer className="login-footer">
+            <p className="login-footer__text">Already have an account?</p>
+            <a href="/login" className="login-footer__link">
+              Sign in
+            </a>
+          </footer>
+        </section>
       </section>
     </>
   );
