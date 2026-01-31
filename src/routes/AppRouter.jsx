@@ -126,7 +126,7 @@ export default function AppRouter() {
           element={
             <>
               <DetallesJuegoPage />
-              <Footer />
+              {isDesktop ? <FooterWeb /> : <Footer />}
             </>
           }
         />

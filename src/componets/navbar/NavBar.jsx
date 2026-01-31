@@ -4,7 +4,7 @@ import lupa from "../../icons/search.svg";
 import terminal from "../../icons/terminal_green.svg";
 import carrito from "../../icons/shopping.svg";
 import cerrar from "../../icons/close.svg";
-import noImage from "../../icons/noImage.png";
+import noImage from "../../icons/noimage.png";
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
