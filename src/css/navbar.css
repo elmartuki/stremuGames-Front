@@ -49,7 +49,7 @@
 
         .descuento {
           padding: 2px 6px;
-          background-color: #20b356;
+          background-color: #66f61ec0;
           border-radius: 4px;
           font-size: 0.8rem;
           font-weight: bold;
@@ -372,7 +372,7 @@
                 opacity: 0.6;
               }
               span:nth-child(2) {
-                color: #20b356;
+                color: #66f61e;
               }
             }
 

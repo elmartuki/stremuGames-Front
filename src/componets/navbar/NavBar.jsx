@@ -4,6 +4,7 @@ import lupa from "../../icons/search.svg";
 import terminal from "../../icons/terminal_green.svg";
 import carrito from "../../icons/shopping.svg";
 import cerrar from "../../icons/close.svg";
+import noImage from "../../icons/noImage.png";
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
@@ -80,14 +81,7 @@ export default function NavBar() {
                 ) : (
                   <></>
                 )}
-
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login
-                </button>
+                <button onClick={() => navigate("/login")}>Login</button>
               </div>
             </nav>
           </header>
@@ -100,11 +94,9 @@ export default function NavBar() {
                 <nav className="navbar_desk">
                   <div className="navbar_desk_logo">
                     <p>
-                      <img src={terminal} alt="" />
-                      StremuGames
+                      <img src={terminal} alt="" /> StremuGames
                     </p>
                   </div>
-
                   <div className="navbar_desk_links">
                     <button
                       className={isActive("/explorar")}
@@ -138,9 +130,7 @@ export default function NavBar() {
 
                   <div className="navbar_desk_perfil">
                     <div
-                      className={`navbar_desk_perfil_search ${
-                        openSearch ? "open" : "closed"
-                      }`}
+                      className={`navbar_desk_perfil_search ${openSearch ? "open" : "closed"}`}
                     >
                       <div className="search">
                         <img
@@ -151,9 +141,7 @@ export default function NavBar() {
                         {openSearch && (
                           <>
                             <input
-                              onChange={(event) =>
-                                setBuscar(event.target.value)
-                              }
+                              onChange={(e) => setBuscar(e.target.value)}
                               value={buscar}
                               type="text"
                               placeholder="Buscar juegos..."
@@ -188,10 +176,10 @@ export default function NavBar() {
                               precioDescuento,
                               _id,
                             } = juego;
-
                             const porcentaje =
                               ((precioBase - precioDescuento) / precioBase) *
                               100;
+
                             return (
                               <article
                                 key={_id}
@@ -203,11 +191,16 @@ export default function NavBar() {
                                 }}
                               >
                                 <div className="resultado_imagen">
-                                  <img src={imagenPortada} alt="" />
+                                  <img
+                                    src={imagenPortada || noImage}
+                                    alt={titulo}
+                                    onError={(e) => {
+                                      e.target.src = noImage;
+                                    }}
+                                  />
                                 </div>
                                 <div className="resultado_data">
                                   <p>{titulo}</p>
-
                                   {precioBase !== precioDescuento ? (
                                     <div>
                                       <span className="descuento">
@@ -246,7 +239,6 @@ export default function NavBar() {
                           <path d="m480-120-58-52q-101-91-167-157T150-447q-39-52-54.5-103T80-658q0-106 71-177t177-71q59 0 113 25.5T534-810q13-15 27-28t31-23.5q53-48 119-48 106 0 177 71t71 177q0 57-15.5 108T860-447q-39 52-105 118T588-172l-58 52q-11 10-25 10t-25-10Z" />
                         </svg>
                       </div>
-
                       <div className="perfil_info_wrapper">
                         <div className="perfil_message">
                           <p>Nos encanta verte,</p>
@@ -263,7 +255,6 @@ export default function NavBar() {
                           )}
                         </div>
                       </div>
-
                       <button
                         className="btn-carrito"
                         onClick={() => navigate("/carrito")}
@@ -286,9 +277,7 @@ export default function NavBar() {
                     <div className="navbar_phone_perfil">
                       <div
                         className="perfil"
-                        onClick={() => {
-                          navigate("/perfil");
-                        }}
+                        onClick={() => navigate("/perfil")}
                       >
                         {foto_de_perfil === "" ? (
                           <p className="iniciales">{iniciales}</p>
@@ -310,15 +299,13 @@ export default function NavBar() {
                     {openSearch ? (
                       <div className="search_show">
                         <img src={lupa} alt="" />
-
                         <input
-                          onChange={(event) => setBuscar(event.target.value)}
+                          onChange={(e) => setBuscar(e.target.value)}
                           value={buscar}
                           type="text"
                           placeholder="Buscar juego..."
                           autoFocus
                         />
-
                         <img
                           onClick={() => {
                             setOpenSearch(false);
@@ -351,9 +338,9 @@ export default function NavBar() {
                         precioDescuento,
                         _id,
                       } = juego;
-
                       const porcentaje =
                         ((precioBase - precioDescuento) / precioBase) * 100;
+
                       return (
                         <article
                           key={_id}
@@ -365,11 +352,16 @@ export default function NavBar() {
                           }}
                         >
                           <div className="resultado_imagen">
-                            <img src={imagenPortada} alt="" />
+                            <img
+                              src={imagenPortada || noImage}
+                              alt={titulo}
+                              onError={(e) => {
+                                e.target.src = noImage;
+                              }}
+                            />
                           </div>
                           <div className="resultado_data">
                             <p>{titulo}</p>
-
                             {precioBase !== precioDescuento ? (
                               <div>
                                 <span className="descuento">
