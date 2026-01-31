@@ -4,10 +4,11 @@ import lupa from "../../icons/search.svg";
 import terminal from "../../icons/terminal_green.svg";
 import carrito from "../../icons/shopping.svg";
 import cerrar from "../../icons/close.svg";
+import noImage from "../../icons/noImage.png";
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function NavBar() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -15,6 +16,8 @@ export default function NavBar() {
   const [buscar, setBuscar] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { usuario } = useObtenerUsuario();
   const { listado } = useObtenerJuegos();
 
@@ -29,6 +32,10 @@ export default function NavBar() {
   const iniciales = nombreUsuario
     ? nombreUsuario.toUpperCase().slice(0, 2)
     : "";
+
+  const isActive = (path) => {
+    return location.pathname === path ? "active-link" : "";
+  };
 
   return (
     <>
@@ -46,30 +53,35 @@ export default function NavBar() {
               <div className="links">
                 {isDesktop ? (
                   <>
-                    <button onClick={() => navigate("/explorar")}>
+                    <button
+                      className={isActive("/explorar")}
+                      onClick={() => navigate("/explorar")}
+                    >
                       Explorar
                     </button>
-                    <button onClick={() => navigate("/categorias")}>
+                    <button
+                      className={isActive("/categorias")}
+                      onClick={() => navigate("/categorias")}
+                    >
                       Categorias
                     </button>
-                    <button onClick={() => navigate("/comunidad")}>
+                    <button
+                      className={isActive("/comunidad")}
+                      onClick={() => navigate("/comunidad")}
+                    >
                       Comunidad
                     </button>
-                    <button onClick={() => navigate("/ofertas")}>
+                    <button
+                      className={isActive("/ofertas")}
+                      onClick={() => navigate("/ofertas")}
+                    >
                       Ofertas
                     </button>
                   </>
                 ) : (
                   <></>
                 )}
-
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login
-                </button>
+                <button onClick={() => navigate("/login")}>Login</button>
               </div>
             </nav>
           </header>
@@ -82,25 +94,35 @@ export default function NavBar() {
                 <nav className="navbar_desk">
                   <div className="navbar_desk_logo">
                     <p>
-                      <img src={terminal} alt="" />
-                      StremuGames
+                      <img src={terminal} alt="" /> StremuGames
                     </p>
                   </div>
-
                   <div className="navbar_desk_links">
-                    <button onClick={() => navigate("/explorar")}>
+                    <button
+                      className={isActive("/explorar")}
+                      onClick={() => navigate("/explorar")}
+                    >
                       <img src="" alt="" />
                       Explorar
                     </button>
-                    <button onClick={() => navigate("/categorias")}>
+                    <button
+                      className={isActive("/categorias")}
+                      onClick={() => navigate("/categorias")}
+                    >
                       <img src="" alt="" />
                       Categorias
                     </button>
-                    <button onClick={() => navigate("/ofertas")}>
+                    <button
+                      className={isActive("/ofertas")}
+                      onClick={() => navigate("/ofertas")}
+                    >
                       <img src="" alt="" />
                       Ofertas
                     </button>
-                    <button onClick={() => navigate("/comunidad")}>
+                    <button
+                      className={isActive("/comunidad")}
+                      onClick={() => navigate("/comunidad")}
+                    >
                       <img src="" alt="" />
                       Comunidad
                     </button>
@@ -108,9 +130,7 @@ export default function NavBar() {
 
                   <div className="navbar_desk_perfil">
                     <div
-                      className={`navbar_desk_perfil_search ${
-                        openSearch ? "closed" : "open"
-                      }`}
+                      className={`navbar_desk_perfil_search ${openSearch ? "open" : "closed"}`}
                     >
                       <div className="search">
                         <img
@@ -118,29 +138,28 @@ export default function NavBar() {
                           src={lupa}
                           alt="Buscar"
                         />
-                        {!openSearch && (
+                        {openSearch && (
                           <>
                             <input
-                              onChange={(event) =>
-                                setBuscar(event.target.value)
-                              }
+                              onChange={(e) => setBuscar(e.target.value)}
+                              value={buscar}
                               type="text"
                               placeholder="Buscar juegos..."
                               autoFocus
                             />
                             <img
                               onClick={() => {
-                                setOpenSearch(!openSearch);
+                                setOpenSearch(false);
                                 setBuscar("");
                               }}
                               src={cerrar}
-                              alt="Buscar"
+                              alt="Cerrar"
                             />
                           </>
                         )}
                       </div>
 
-                      {buscar !== "" ? (
+                      {buscar !== "" && openSearch ? (
                         <section className="resultados_section">
                           <div className="resultados_finded">
                             <span>RESULTADOS RAPIDOS</span>
@@ -157,10 +176,10 @@ export default function NavBar() {
                               precioDescuento,
                               _id,
                             } = juego;
-
                             const porcentaje =
                               ((precioBase - precioDescuento) / precioBase) *
                               100;
+
                             return (
                               <article
                                 key={_id}
@@ -168,15 +187,20 @@ export default function NavBar() {
                                 onClick={() => {
                                   navigate(`/juego/${_id}`);
                                   setBuscar("");
-                                  setOpenSearch(!openSearch);
+                                  setOpenSearch(false);
                                 }}
                               >
                                 <div className="resultado_imagen">
-                                  <img src={imagenPortada} alt="" />
+                                  <img
+                                    src={imagenPortada || noImage}
+                                    alt={titulo}
+                                    onError={(e) => {
+                                      e.target.src = noImage;
+                                    }}
+                                  />
                                 </div>
                                 <div className="resultado_data">
                                   <p>{titulo}</p>
-
                                   {precioBase !== precioDescuento ? (
                                     <div>
                                       <span className="descuento">
@@ -215,7 +239,6 @@ export default function NavBar() {
                           <path d="m480-120-58-52q-101-91-167-157T150-447q-39-52-54.5-103T80-658q0-106 71-177t177-71q59 0 113 25.5T534-810q13-15 27-28t31-23.5q53-48 119-48 106 0 177 71t71 177q0 57-15.5 108T860-447q-39 52-105 118T588-172l-58 52q-11 10-25 10t-25-10Z" />
                         </svg>
                       </div>
-
                       <div className="perfil_info_wrapper">
                         <div className="perfil_message">
                           <p>Nos encanta verte,</p>
@@ -232,7 +255,6 @@ export default function NavBar() {
                           )}
                         </div>
                       </div>
-
                       <button
                         className="btn-carrito"
                         onClick={() => navigate("/carrito")}
@@ -255,9 +277,7 @@ export default function NavBar() {
                     <div className="navbar_phone_perfil">
                       <div
                         className="perfil"
-                        onClick={() => {
-                          navigate("/perfil");
-                        }}
+                        onClick={() => navigate("/perfil")}
                       >
                         {foto_de_perfil === "" ? (
                           <p className="iniciales">{iniciales}</p>
@@ -278,15 +298,22 @@ export default function NavBar() {
                   >
                     {openSearch ? (
                       <div className="search_show">
-                        <img
-                          onClick={() => setOpenSearch(false)}
-                          src={lupa}
-                          alt=""
-                        />
+                        <img src={lupa} alt="" />
                         <input
-                          onChange={(event) => setBuscar(event.target.value)}
+                          onChange={(e) => setBuscar(e.target.value)}
+                          value={buscar}
                           type="text"
                           placeholder="Buscar juego..."
+                          autoFocus
+                        />
+                        <img
+                          onClick={() => {
+                            setOpenSearch(false);
+                            setBuscar("");
+                          }}
+                          src={cerrar}
+                          alt="Cerrar"
+                          style={{ marginLeft: "10px" }}
                         />
                       </div>
                     ) : (
@@ -301,7 +328,7 @@ export default function NavBar() {
                   </div>
                 </nav>
 
-                {buscar !== "" ? (
+                {buscar !== "" && openSearch ? (
                   <section className="resultados_section">
                     {listadoFiltrado.slice(0, 4).map((juego) => {
                       const {
@@ -311,17 +338,30 @@ export default function NavBar() {
                         precioDescuento,
                         _id,
                       } = juego;
-
                       const porcentaje =
                         ((precioBase - precioDescuento) / precioBase) * 100;
+
                       return (
-                        <article key={_id} className="resultado">
+                        <article
+                          key={_id}
+                          className="resultado"
+                          onClick={() => {
+                            navigate(`/juego/${_id}`);
+                            setBuscar("");
+                            setOpenSearch(false);
+                          }}
+                        >
                           <div className="resultado_imagen">
-                            <img src={imagenPortada} alt="" />
+                            <img
+                              src={imagenPortada || noImage}
+                              alt={titulo}
+                              onError={(e) => {
+                                e.target.src = noImage;
+                              }}
+                            />
                           </div>
                           <div className="resultado_data">
                             <p>{titulo}</p>
-
                             {precioBase !== precioDescuento ? (
                               <div>
                                 <span className="descuento">
