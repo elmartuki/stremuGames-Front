@@ -10,6 +10,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
 
     .perfil_admin {
       display: flex;
@@ -18,6 +20,11 @@
 
       .perfil_admin_avatar {
         position: relative;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
 
         .avatar_admin {
           border-radius: 50%;
@@ -25,6 +32,7 @@
           width: 52px;
           height: 52px;
           object-fit: cover;
+          box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
         }
 
         .admin {
@@ -38,6 +46,7 @@
           font-weight: 800;
           padding: 1px 6px;
           border-radius: 4px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
       }
 
@@ -60,9 +69,11 @@
       border: none;
       cursor: pointer;
       opacity: 0.7;
-      transition: opacity 0.3s;
+      transition: all 0.3s ease;
+
       &:hover {
         opacity: 1;
+        transform: rotate(90deg);
       }
     }
   }
@@ -76,6 +87,14 @@
     padding: 10px 16px;
     gap: 12px;
     margin-bottom: 15px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.1s forwards;
+
+    &:focus-within {
+      border-color: #66f61e;
+      box-shadow: 0 0 10px rgba(102, 246, 30, 0.2);
+    }
 
     input {
       background: transparent;
@@ -90,6 +109,8 @@
   .seccion_estadisticas {
     border-top: 2px solid #282828;
     padding-top: 10px;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.2s forwards;
 
     .seccion_estadisticas_titulo {
       color: #666;
@@ -112,17 +133,24 @@
         padding: 20px 10px;
         border-radius: 16px;
         text-align: center;
-        transition: transform 0.2s;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        cursor: default;
 
         img {
           padding: 6px;
-          background-color: #20b35631;
+          background-color: #00ff5e31;
           border-radius: 6px;
+          transition: transform 0.3s ease;
         }
 
         &:hover {
-          transform: translateY(-3px);
-          border-color: #444;
+          transform: translateY(-5px);
+          border-color: #66f61e;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+          img {
+            transform: scale(1.1);
+          }
         }
 
         .estadistica_numero {
@@ -141,6 +169,8 @@
 
   .seccion_gestion {
     margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.3s forwards;
 
     .seccion_gestion_header {
       display: flex;
@@ -156,15 +186,38 @@
         gap: 8px;
       }
 
-      .seccion_gestion_header_link {
+      .btn_upload {
+        display: flex;
+        align-items: center;
+        gap: 5px;
         border-radius: 8px;
         font-size: 1rem;
-        color: #2ecc71;
-        background: transparent;
+        color: #1a1a1a;
+        background-color: #66f61e;
+        padding: 8px 12px;
         border: none;
         font-size: 14px;
         cursor: pointer;
-        font-weight: 500;
+        font-weight: 900;
+        transition: all 0.3s ease;
+
+        img {
+          filter: invert();
+          transition: transform 0.3s;
+        }
+
+        &:hover {
+          background-color: lighten(#66f61e, 10%);
+          box-shadow: 0 0 15px rgba(102, 246, 30, 0.4);
+          transform: translateY(-2px);
+
+          img {
+            transform: rotate(90deg);
+          }
+        }
+        &:active {
+          transform: scale(0.95);
+        }
       }
     }
 
@@ -178,6 +231,12 @@
         border: 1px solid #2a2a2a;
         border-radius: 18px;
         padding: 1.2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          border-color: #444;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
         .tarjeta_desarrolladora_header {
           display: flex;
@@ -194,6 +253,11 @@
             background-color: #333;
             border-radius: 10px;
             overflow: hidden;
+            transition: transform 0.3s ease;
+
+            &:hover {
+              transform: scale(1.1);
+            }
 
             img {
               width: 100%;
@@ -236,8 +300,12 @@
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s ease;
             border: none;
+
+            &:active {
+              transform: scale(0.98);
+            }
           }
 
           .ver_perfil {
@@ -246,6 +314,7 @@
             color: #fff;
             &:hover {
               background-color: #333;
+              border-color: #555;
             }
           }
 
@@ -259,6 +328,7 @@
             gap: 8px;
             &:hover {
               background-color: rgba(231, 76, 60, 0.2);
+              border-color: #e74c3c;
             }
             img {
               width: 14px;
@@ -273,6 +343,11 @@
       border: 1px solid #222;
       border-radius: 20px;
       padding: 10px;
+      transition: border-color 0.3s;
+
+      &:hover {
+        border-color: #333;
+      }
 
       .usuario_card_fila {
         display: flex;
@@ -280,6 +355,12 @@
         align-items: center;
         padding: 12px;
         border-bottom: 1px solid #222;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #1a1a1a;
+        }
+
         &:last-of-type {
           border-bottom: none;
         }
@@ -298,6 +379,11 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            transition: transform 0.2s;
+
+            &:hover {
+              transform: scale(1.1);
+            }
 
             img {
               width: 100%;
@@ -337,11 +423,21 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            transition: all 0.2s;
+
+            &:hover {
+              transform: translateY(-2px);
+              border-color: #666;
+            }
           }
 
           .bannear {
             color: #e74c3c;
             border-color: rgba(231, 76, 60, 0.2);
+            &:hover {
+              background-color: rgba(231, 76, 60, 0.1);
+              border-color: #e74c3c;
+            }
           }
         }
       }
@@ -354,9 +450,12 @@
         padding: 15px;
         cursor: pointer;
         font-size: 14px;
-        transition: color 0.3s;
+        transition: all 0.3s;
+
         &:hover {
           color: #fff;
+          background-color: #1a1a1a;
+          border-radius: 0 0 15px 15px;
         }
       }
     }
@@ -370,35 +469,46 @@
       margin-bottom: 2rem;
 
       .tarjeta_juego {
-        width: calc(|100% - 10px);
+        width: calc(100% - 10px);
         background-color: #1a1a1a;
         border: 1px solid #2a2a2a;
         border-radius: 15px;
         overflow: hidden;
-        transition: transform 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
 
         &:hover {
-          transform: translateY(-5px);
-          border-color: #444;
+          transform: translateY(-8px);
+          border-color: #66f61e;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+
+          .tarjeta_juego_imagen img {
+            transform: scale(1.1);
+          }
         }
 
         .tarjeta_juego_imagen {
           position: relative;
           height: 120px;
+          overflow: hidden;
+
           img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
           }
           .tarjeta_juego_categorias {
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             font-size: 10px;
             padding: 2px 8px;
             border-radius: 4px;
             border: 1px solid #333;
+            z-index: 2;
           }
         }
 
@@ -440,13 +550,18 @@
             font-weight: 600;
             cursor: pointer;
             border: none;
+            transition: all 0.2s;
+
+            &:active {
+              transform: scale(0.95);
+            }
           }
 
           .ver {
             background: #333;
             color: white;
             &:hover {
-              background-color: #444;
+              background-color: #555;
             }
           }
 
@@ -456,6 +571,7 @@
             border: 1px solid rgba(231, 76, 60, 0.2);
             &:hover {
               background-color: rgba(231, 76, 60, 0.2);
+              border-color: #e74c3c;
             }
           }
         }
@@ -466,6 +582,8 @@
 
 .listado_de_usuarios_section {
   margin-bottom: 80px;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out 0.4s forwards;
 
   .paginacion_controles {
     display: flex;
@@ -487,8 +605,11 @@
       font-size: 0.9rem;
 
       &:hover:not(:disabled) {
-        background-color: #424242;
-        border-color: #606060;
+        background-color: #66f61e;
+        color: black;
+        border-color: #66f61e;
+        transform: translateY(-2px);
+        font-weight: bold;
       }
 
       &:disabled {
@@ -508,6 +629,7 @@
   .listado_de_usuarios {
     width: 95%;
     margin: auto;
+
     .listado_de_usuarios_search {
       display: flex;
       align-items: center;
@@ -516,6 +638,13 @@
       background-color: #282828;
       border-radius: 8px;
       padding: 0px 10px;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+
+      &:focus-within {
+        border-color: #66f61e;
+        background-color: #1a1a1a;
+      }
 
       input {
         width: 100%;
@@ -523,6 +652,7 @@
         border: none;
         font-size: 1rem;
         padding: 10px 10px;
+        color: white;
 
         &:focus {
           outline: none;
@@ -543,6 +673,14 @@
         padding: 10px 15px;
         border-radius: 8px;
         background-color: #282828;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+
+        &:hover {
+          transform: translateX(5px);
+          border-color: #444;
+          background-color: #333;
+        }
 
         .usuario_card_buttons {
           width: 30%;
@@ -552,6 +690,10 @@
 
           .btn_ban {
             border: 1px solid rgb(155, 0, 0);
+            color: #ff4d4d;
+            &:hover {
+              background-color: rgba(255, 0, 0, 0.1);
+            }
           }
 
           button {
@@ -562,6 +704,13 @@
             padding: 6px 10px;
             background-color: transparent;
             border: 1px solid #424242;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+
+            &:hover {
+              border-color: white;
+            }
           }
         }
 
@@ -573,6 +722,7 @@
           .usuario_datos {
             .usuario_datos_nombre {
               font-size: 1.1rem;
+              font-weight: 600;
             }
             .usuario_datos_año {
               opacity: 70%;
@@ -589,12 +739,18 @@
             width: 40px;
             height: 40px;
             background-color: #424242;
+            overflow: hidden;
 
             img {
               width: 100%;
               height: 100%;
               object-fit: cover;
               border-radius: 10px;
+              transition: transform 0.3s;
+            }
+
+            &:hover img {
+              transform: scale(1.1);
             }
           }
         }
@@ -609,9 +765,32 @@
       .tarjetas_juegos_container {
         flex-direction: row;
         .tarjeta_juego {
-          width: calc(25% - 10px);
+          width: calc(25% - 12px);
         }
       }
     }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }
