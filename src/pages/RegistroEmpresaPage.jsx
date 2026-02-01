@@ -9,7 +9,7 @@ export default function RegistroEmpresaPage() {
 
   return (
     <section className="formulario_login_section">
-      <nav className="navbar-phone">
+      <nav className="navbar-phone desk">
         <img onClick={() => navigate(-1)} src={back} alt="" />
         <div></div>
 

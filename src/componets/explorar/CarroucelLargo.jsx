@@ -60,7 +60,7 @@ export default function CarroucelLargo({ filtrar }) {
     <>
       {isDesktop ? (
         <>
-          <button onClick={() => handleChange("restar")}>
+          <button className="btn-page" onClick={() => handleChange("restar")}>
             <img src={back} alt="" />
           </button>
           {juegosParaMostrar
@@ -75,6 +75,9 @@ export default function CarroucelLargo({ filtrar }) {
                 precioBase,
                 descripcion,
               } = juego;
+
+              const porcentaje =
+                ((precioBase - precioDescuento) / precioBase) * 100;
 
               return (
                 <article
@@ -99,9 +102,12 @@ export default function CarroucelLargo({ filtrar }) {
                     <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                     {precioDescuento !== precioBase ? (
-                      <div>
-                        <p>${precioDescuento}</p>
+                      <div className="precios_container">
+                        <div className="descuento">
+                          -{porcentaje.toFixed()}%
+                        </div>
                         <p>${precioBase}</p>
+                        <p>${precioDescuento}</p>
                       </div>
                     ) : (
                       <div>
@@ -144,7 +150,7 @@ export default function CarroucelLargo({ filtrar }) {
                 </article>
               );
             })}
-          <button onClick={() => handleChange("sumar")}>
+          <button className="btn-page" onClick={() => handleChange("sumar")}>
             <img src={next} alt="" />
           </button>
         </>
@@ -159,6 +165,9 @@ export default function CarroucelLargo({ filtrar }) {
               precioDescuento,
               precioBase,
             } = juego;
+
+            const porcentaje =
+              ((precioBase - precioDescuento) / precioBase) * 100;
 
             return (
               <article
@@ -178,12 +187,12 @@ export default function CarroucelLargo({ filtrar }) {
                 </div>
                 <div className="juego_card_data">
                   <p className="juego_card_data_titulo">{titulo}</p>
-                  <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                   {precioDescuento !== precioBase ? (
                     <div>
-                      <p>${precioDescuento}</p>
+                      <div className="descuento">-{porcentaje.toFixed()}%</div>
                       <p>${precioBase}</p>
+                      <p>${precioDescuento}</p>
                     </div>
                   ) : (
                     <div>

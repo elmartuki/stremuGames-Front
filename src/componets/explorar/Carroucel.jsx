@@ -50,7 +50,7 @@ export default function Carroucel() {
     <>
       {isDesktop ? (
         <>
-          <button onClick={() => handleChange("restar")}>
+          <button className="btn-page" onClick={() => handleChange("restar")}>
             <img src={back} alt="" />
           </button>
           {listadoFiltrado
@@ -83,20 +83,18 @@ export default function Carroucel() {
                       onError={handleImageError}
                     />
                   </div>
+
+                  <button className="descuento">
+                    <img src={sell} alt="" />
+                    AHORRA UN {porcentaje.toFixed(0)} %
+                  </button>
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
-
-                    <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                     <div>
                       <p>${precioBase}</p>
                       <p>${precioDescuento}</p>
                     </div>
-
-                    <button>
-                      <img src={sell} alt="" />
-                      AHORRA UN {porcentaje.toFixed(0)} %
-                    </button>
                   </div>
 
                   {previewId === _id && (
@@ -127,7 +125,7 @@ export default function Carroucel() {
                 </article>
               );
             })}
-          <button onClick={() => handleChange("sumar")}>
+          <button className="btn-page" onClick={() => handleChange("sumar")}>
             <img src={next} alt="" />
           </button>
         </>
@@ -158,20 +156,19 @@ export default function Carroucel() {
                     onError={handleImageError}
                   />
                 </div>
+
+                <button className="descuento">
+                  <img src={sell} alt="" />
+                  AHORRA UN {porcentaje.toFixed(0)} %
+                </button>
+
                 <div className="juego_card_data">
                   <p className="juego_card_data_titulo">{titulo}</p>
-
-                  <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                   <div>
                     <p>${precioBase}</p>
                     <p>${precioDescuento}</p>
                   </div>
-
-                  <button>
-                    <img src={sell} alt="" />
-                    AHORRA UN {porcentaje.toFixed(0)} %
-                  </button>
                 </div>
               </article>
             );
