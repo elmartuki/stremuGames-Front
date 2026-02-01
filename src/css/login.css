@@ -1,10 +1,31 @@
+.navbar-phone,
+.desk {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  z-index: 2;
+  padding: 15px 15px;
+
+  img:nth-child(1) {
+    background-color: #181818;
+    padding: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.5s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
 .formulario_section {
   display: flex;
   flex-direction: column;
-  min-height: 70dvh;
+  min-height: 100dvh;
   align-items: center;
   justify-content: center;
-
   gap: 5px;
 
   .formulario_header {
@@ -165,7 +186,7 @@
 @media (min-width: 1024px) {
   .formulario_section {
     display: flex;
-    min-height: 80vh;
+    min-height: 100vh;
     align-items: center;
     flex-direction: row;
 

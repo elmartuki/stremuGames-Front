@@ -1,3 +1,52 @@
+@keyframes showing {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFade {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+    width: 0%;
+  }
+  60% {
+    transform: scale(0);
+    opacity: 0;
+    width: 0%;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    width: 150%;
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .explorar_page_section {
   margin-bottom: 80px;
   position: relative;
@@ -51,7 +100,6 @@
             transform: scale(1.02);
             opacity: 0.8;
           }
-
           &.active {
             opacity: 1;
             border-color: #66f61e;
@@ -79,7 +127,6 @@
           height: 100%;
           object-fit: cover;
           z-index: 0;
-
           &.animate-fade {
             animation: fadeInZoom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
               forwards;
@@ -128,12 +175,11 @@
             display: flex;
             justify-content: start;
             gap: 10px;
-
             button {
               transition: 0.5s;
-            }
-            button:hover {
-              transform: scale(1.09);
+              &:hover {
+                transform: scale(1.09);
+              }
             }
 
             button:nth-child(1) {
@@ -156,7 +202,6 @@
               border: none;
               border-radius: 8px;
               font-size: 1rem;
-
               &:hover {
                 background-color: red;
               }
@@ -213,18 +258,15 @@
         position: relative;
         overflow: hidden;
         width: 100%;
-
         background-color: #121212;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 15px;
         padding: 25px;
-
         display: flex;
         flex-direction: column;
         gap: 25px;
         cursor: pointer;
-
         opacity: 0;
         animation: showing 0.5s ease-in forwards;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -245,7 +287,6 @@
           justify-content: center;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
           flex-shrink: 0;
-
           img {
             width: 24px;
             height: 24px;
@@ -278,7 +319,6 @@
         flex-wrap: nowrap;
         justify-content: space-between;
         gap: 20px;
-
         .categoria_card {
           flex: 1;
           min-width: 0;
@@ -292,7 +332,6 @@
     margin-top: 10px;
     padding-bottom: 10px;
     border-bottom: 3px solid #282828;
-
     div {
       width: 93%;
       margin: auto;
@@ -301,7 +340,6 @@
       border-radius: 10px;
       padding: 0px 15px;
       border: 2px solid #3f3f3f;
-
       input {
         background-color: transparent;
         padding: 10px 10px;
@@ -339,12 +377,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
       .titulo_container {
         display: flex;
         gap: 10px;
         align-items: center;
-
         img:nth-child(1) {
           background-color: #66f61e38;
           border: 1px solid #66f61e2a;
@@ -363,20 +399,17 @@
           }
         }
       }
-
       .btn_ver_mas {
         display: flex;
         justify-content: end;
         width: 30%;
         cursor: pointer;
-
         p {
           color: #66f61e;
           font-size: 0.9rem;
           display: flex;
           gap: 2px;
           transition: 0.5s;
-
           &:hover {
             padding: 5px;
             background-color: #66f61e4e;
@@ -385,118 +418,6 @@
           img {
             width: 16px;
           }
-        }
-      }
-    }
-
-    .carroucel_section,
-    .carroucel_section_desk {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 15px;
-      padding: 10px;
-
-      .juego_card {
-        width: 70%;
-        background-color: transparent;
-        border: 2px solid #282828;
-        flex-shrink: 0;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.3s ease;
-        position: relative;
-
-        opacity: 0;
-        animation: showing 0.5s ease-in forwards;
-
-        &:hover {
-          z-index: 1000;
-          transform: translateY(-10px);
-        }
-
-        .juego_card_data {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-          padding: 10px;
-
-          div {
-            display: flex;
-            gap: 5px;
-            p:nth-child(1) {
-              text-decoration: line-through;
-              opacity: 50%;
-            }
-          }
-          .juego_card_data_empresa {
-            opacity: 50%;
-          }
-          .juego_card_data_titulo {
-            font-size: 1.2rem;
-          }
-
-          button {
-            width: 100%;
-            border-radius: 6px;
-            padding: 3px 10px;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            background-color: #d9770036;
-            border: 1.5px solid #bc6800;
-
-            &:hover {
-              transform: scale(1);
-            }
-          }
-        }
-
-        .juego_card_imagen img {
-          width: 100%;
-          height: 240px !important;
-          border-top-left-radius: 10px;
-          border-top-right-radius: 10px;
-          object-fit: cover;
-        }
-      }
-
-      .large {
-        width: 45%;
-        border: none;
-        overflow: visible;
-
-        .juego_card_data {
-          padding-top: 2px;
-          gap: 4px;
-          .juego_card_data_titulo {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-          .juego_card_data_empresa {
-            font-size: 1rem;
-          }
-          div {
-            display: flex;
-            align-items: center;
-            p:nth-child(1) {
-              font-size: 1.1rem;
-              opacity: 100%;
-              text-decoration: none;
-            }
-            p:nth-child(2) {
-              font-size: 0.9rem;
-              opacity: 70%;
-              text-decoration: line-through;
-            }
-          }
-        }
-        .juego_card_imagen img {
-          border-radius: 10px;
-          height: 300px;
         }
       }
     }
@@ -517,8 +438,7 @@
       align-items: center;
       margin: auto;
       overflow: visible;
-
-      button {
+      .btn-page {
         background: #282828;
         border: none;
         border-radius: 10px;
@@ -531,7 +451,6 @@
         transition: all 0.3s ease;
         flex-shrink: 0;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
         &:hover:not(:disabled) {
           background: #3f3f3f;
           transform: scale(1.1);
@@ -546,20 +465,274 @@
           height: 20px;
         }
       }
+    }
+
+    .carroucel-corto,
+    .carroucel_section_desk.carroucel-corto {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 15px;
+      padding: 10px;
 
       .juego_card {
-        flex: 1;
         display: flex;
         flex-direction: column;
-        border-radius: 8px;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        background-color: transparent;
+        flex-shrink: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        position: relative;
         opacity: 0;
         animation: showing 0.5s ease-in forwards;
         min-width: 0;
+
+        &:hover {
+          z-index: 1000;
+          transform: translateY(-10px);
+        }
+
+        .descuento {
+          width: fit-content;
+          top: 10px;
+          right: 10px;
+          position: absolute;
+          border-radius: 6px;
+          padding: 2px 8px;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          font-size: 0.8rem;
+          color: #0f0f0f;
+          background-color: #66f61e;
+          border: 1.5px solid #66f61e57;
+          font-weight: 1000;
+
+          img {
+            width: 20px;
+            filter: invert() saturate(100%) brightness(0%);
+          }
+          &:hover {
+            transform: scale(1);
+          }
+        }
+
+        .juego_card_data {
+          display: flex;
+          width: 95%;
+          margin: auto;
+          position: absolute;
+          bottom: 10px;
+          border-radius: 10px;
+          flex-direction: column;
+          gap: 5px;
+          padding: 10px;
+          z-index: 1;
+
+          div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            p:nth-child(1) {
+              text-decoration: line-through;
+              opacity: 50%;
+              font-weight: 800;
+            }
+
+            p:nth-child(2) {
+              font-size: 1.3rem;
+              color: #66f61e;
+              font-weight: 800;
+            }
+          }
+          .juego_card_data_empresa {
+            opacity: 50%;
+          }
+          .juego_card_data_titulo {
+            font-size: 1.2rem;
+            font-weight: 1000;
+          }
+        }
+
+        .juego_card_imagen {
+          width: 100%;
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+              to top,
+              #0f0f0f 0%,
+              #0f0f0f61 50%,
+              transparent 100%
+            );
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 1;
+          }
+          img {
+            width: 100%;
+            height: 300px !important;
+            border-radius: 10px;
+            object-fit: cover;
+            display: block;
+          }
+        }
+      }
+
+      &.carroucel_section_desk .juego_card {
+        flex: 1;
         width: 100%;
       }
+    }
+
+    .carroucel-largo,
+    .carroucel_section_desk.carroucel-largo {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 15px;
+      padding: 10px;
+
+      .juego_card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 90%;
+        background-color: transparent;
+        flex-shrink: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        position: relative;
+        opacity: 0;
+        animation: showing 0.5s ease-in forwards;
+
+        &:hover {
+          z-index: 1000;
+          transform: translateY(-10px);
+        }
+
+        .juego_card_data {
+          display: flex;
+          width: 100%;
+          margin: auto;
+          bottom: 10px;
+          border-radius: 10px;
+          flex-direction: column;
+          gap: 5px;
+          padding: 10px;
+
+          div {
+            display: flex;
+            gap: 5px;
+            p:nth-child(1) {
+              text-decoration: line-through;
+              opacity: 50%;
+            }
+          }
+          .juego_card_data_empresa {
+            opacity: 50%;
+          }
+          .juego_card_data_titulo {
+            font-size: 1rem;
+            font-weight: 1000;
+          }
+        }
+
+        .juego_card_imagen {
+          width: 100%;
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 1;
+          }
+          img {
+            width: 100%;
+            height: 230px !important;
+            border-radius: 10px;
+            object-fit: cover;
+            display: block;
+          }
+        }
+      }
+
       .large {
-        flex: 1;
-        min-width: 0;
+        width: 45%;
+        border: none;
+        overflow: visible;
+        .juego_card_data {
+          width: 100%;
+          padding-top: 0px;
+          margin-top: 5px;
+          gap: 2px;
+
+          .descuento {
+            background-color: #66f61e;
+            color: #0f0f0f;
+            font-size: 0.8rem;
+            border-radius: 2px;
+            padding: 0px 4px;
+          }
+
+          .juego_card_data_titulo {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          .juego_card_data_empresa {
+            font-size: 1rem;
+          }
+          div {
+            display: flex;
+            align-items: center;
+            p:nth-child(1) {
+              font-size: 1rem;
+              opacity: 100%;
+              text-decoration: none;
+              font-weight: 900;
+            }
+            p:nth-child(2) {
+              font-size: 0.8rem;
+              opacity: 70%;
+              text-decoration: line-through;
+              font-weight: 900;
+            }
+          }
+        }
+        .juego_card_imagen img {
+          border-radius: 10px;
+          height: 300px;
+        }
+      }
+
+      &.carroucel_section_desk {
+        .juego_card {
+          flex: 1;
+          min-width: 0;
+          width: 100%;
+        }
+        .large {
+          flex: 1;
+          min-width: 0;
+        }
       }
     }
   }
@@ -587,14 +760,12 @@
         object-fit: cover;
       }
     }
-
     .datos {
       display: flex;
       flex-direction: column;
       gap: 10px;
       width: 40%;
       padding: 10px;
-
       .titulo {
         font-size: 1.5rem;
       }
@@ -602,19 +773,17 @@
         color: #ffffffad;
         font-size: 0.9rem;
       }
-      .precios_container {
-        div {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          p:nth-child(1) {
-            font-size: 1.1rem;
-          }
-          p:nth-child(2) {
-            font-size: 0.9rem;
-            opacity: 70%;
-            text-decoration: line-through;
-          }
+      .precios_container div {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        p:nth-child(1) {
+          font-size: 1.1rem;
+        }
+        p:nth-child(2) {
+          font-size: 0.9rem;
+          opacity: 70%;
+          text-decoration: line-through;
         }
       }
     }
@@ -623,96 +792,61 @@
 
 @media (min-width: 1024px) {
   .explorar_page_section {
+    .explorar_carroucel {
+      .carroucel-largo,
+      .carroucel_section_desk.carroucel-largo {
+        .large {
+          .juego_card_data {
+            .precios_container {
+              .descuento {
+                font-size: 1rem;
+              }
+
+              p:nth-child(2) {
+                font-size: 0.9rem;
+              }
+
+              p:nth-child(3) {
+                font-size: 1.1rem;
+              }
+            }
+          }
+
+          .juego_card_imagen img {
+            height: 300px !important;
+          }
+        }
+      }
+    }
+
     .explorar_page_titulo {
       width: 80%;
       margin: auto;
       margin-bottom: 15px;
       font-size: 1.4rem;
     }
-
     .explorar_hero {
       width: 85%;
-      .hero {
-        .hero_big {
-          .hero_info {
-            position: relative;
-            width: 40%;
-            z-index: 10;
-            h2 {
-              font-weight: 900;
-              font-size: 3rem;
-            }
-          }
+      .hero .hero_big .hero_info {
+        position: relative;
+        width: 40%;
+        z-index: 10;
+        h2 {
+          font-weight: 900;
+          font-size: 3rem;
         }
       }
     }
-
     .explorar_carroucel .explorar_carroucel_header {
       width: 80%;
     }
-
-    .explorar_carroucel {
-      .explorar_carroucel_header {
-        .titulo_container {
-          .titulo {
-            p:nth-child(1) {
-              font-size: 1.7rem;
-            }
-            p:nth-child(2) {
-              font-size: 0.9rem;
-            }
-          }
-        }
+    .explorar_carroucel .explorar_carroucel_header .titulo_container .titulo {
+      p:nth-child(1) {
+        font-size: 1.7rem;
+      }
+      p:nth-child(2) {
+        font-size: 0.9rem;
       }
     }
-  }
-}
-
-@keyframes showing {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes slideInFade {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-    width: 0%;
-  }
-  60% {
-    transform: scale(0);
-    opacity: 0;
-    width: 0%;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    width: 150%;
-  }
-}
-
-@keyframes fadeInZoom {
-  0% {
-    opacity: 0;
-    transform: scale(1.1);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

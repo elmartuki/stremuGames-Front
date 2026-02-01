@@ -2,16 +2,20 @@ import "../css/perfilPage.css";
 import grid_green from "../icons/grid_green.svg";
 import deseados from "../icons/deseados.svg";
 import next from "../icons/next.svg";
+import back from "../icons/back.svg";
+import more from "../icons/more.svg";
 import game_green from "../icons/games_green.svg";
 import JuegosDelUsuario from "../componets/perfil/JuegosDelUsuario";
 import { useObtenerUsuario } from "../services/obtenerUsuario.js";
 import { useCalcularNivel } from "../services/calcularNivel.js";
 import useMediaQuery from "../utils/changeDesk.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PerfilPageSkeleton } from "../componets/skeletons/Skeleton.jsx";
 
 export default function PerfilPage() {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const { usuario, cargando } = useObtenerUsuario(id);
   const { nivel, puntos } = useCalcularNivel(id);
@@ -32,6 +36,18 @@ export default function PerfilPage() {
 
   return (
     <section className="perfil_page_section">
+      {isDesktop ? (
+        <>
+          <nav className="navbar-phone desk">
+            <img onClick={() => navigate(-1)} src={back} alt="" />
+            <div></div>
+
+            <img src={more} alt="" />
+          </nav>
+        </>
+      ) : (
+        <></>
+      )}
       <section className="perfil">
         <img
           className="fondo_de_perfil"

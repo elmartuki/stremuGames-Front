@@ -46,12 +46,15 @@ export default function ExplorarPage() {
         {isDesktop ? (
           <section
             key="countdown-desk"
-            className="carroucel_section carroucel_section_desk"
+            className="carroucel_section carroucel_section_desk carroucel-corto"
           >
             <Carroucel />
           </section>
         ) : (
-          <section key="countdown-mobile" className="carroucel_section">
+          <section
+            key="countdown-mobile"
+            className="carroucel_section carroucel-corto"
+          >
             <Carroucel />
           </section>
         )}
@@ -80,12 +83,15 @@ export default function ExplorarPage() {
         {isDesktop ? (
           <section
             key="populares-desk"
-            className="carroucel_section carroucel_section_desk"
+            className="carroucel_section carroucel_section_desk carroucel-largo"
           >
             <CarroucelLargo filtrar={"Populares"} />
           </section>
         ) : (
-          <section key="populares-mobile" className="carroucel_section">
+          <section
+            key="populares-mobile"
+            className="carroucel_section carroucel-largo"
+          >
             <CarroucelLargo filtrar={"Populares"} />
           </section>
         )}
@@ -114,17 +120,21 @@ export default function ExplorarPage() {
         {isDesktop ? (
           <section
             key="recientes-desk"
-            className="carroucel_section carroucel_section_desk"
+            className="carroucel_section carroucel_section_desk carroucel-largo"
           >
             <CarroucelLargo filtrar={"Recientes"} />
           </section>
         ) : (
-          <section key="recientes-mobile" className="carroucel_section">
+          <section
+            key="recientes-mobile"
+            className="carroucel_section carroucel-largo"
+          >
             <CarroucelLargo filtrar={"Recientes"} />
           </section>
         )}
       </section>
 
+      {/* --- CARROUSEL LARGO (CARRERAS) --- */}
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div className="titulo_container">
@@ -148,17 +158,21 @@ export default function ExplorarPage() {
         {isDesktop ? (
           <section
             key="carreras-desk"
-            className="carroucel_section carroucel_section_desk"
+            className="carroucel_section carroucel_section_desk carroucel-largo"
           >
             <CarroucelLargo filtrar={"Carreras"} />
           </section>
         ) : (
-          <section key="carreras-mobile" className="carroucel_section">
+          <section
+            key="carreras-mobile"
+            className="carroucel_section carroucel-largo"
+          >
             <CarroucelLargo filtrar={"Carreras"} />
           </section>
         )}
       </section>
 
+      {/* --- CARROUSEL LARGO (TERROR) --- */}
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div className="titulo_container">
@@ -182,12 +196,15 @@ export default function ExplorarPage() {
         {isDesktop ? (
           <section
             key="terror-desk"
-            className="carroucel_section carroucel_section_desk"
+            className="carroucel_section carroucel_section_desk carroucel-largo"
           >
             <CarroucelLargo filtrar={"Terror"} />
           </section>
         ) : (
-          <section key="terror-mobile" className="carroucel_section">
+          <section
+            key="terror-mobile"
+            className="carroucel_section carroucel-largo"
+          >
             <CarroucelLargo filtrar={"Terror"} />
           </section>
         )}
