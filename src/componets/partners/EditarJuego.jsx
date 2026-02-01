@@ -8,7 +8,8 @@ import general from "../../icons/general.svg";
 import price from "../../icons/price.svg";
 import descripcion from "../../icons/descripcion.svg";
 import upload from "../../icons/upload.svg";
-import galeria from "../../icons/galeria.svg";
+import galeriaIcon from "../../icons/galeria.svg";
+import noImage from "../../icons/noimage.png";
 
 import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
@@ -35,6 +36,7 @@ export default function EditarJuego() {
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
+  const inputGaleriaRef = useRef(null);
 
   const {
     subirImagen: subirPortada,
@@ -48,6 +50,12 @@ export default function EditarJuego() {
     subiendo: subiendoBanner,
   } = useSubirImagen();
 
+  const {
+    subirImagen: subirGaleria,
+    imagenUrl: urlGaleria,
+    subiendo: subiendoGaleria,
+  } = useSubirImagen();
+
   const { juego, loading } = useObtenerUnJuego(id);
   const [tagInput, setTagInput] = useState("");
 
@@ -59,6 +67,7 @@ export default function EditarJuego() {
     precioDescuento: 0,
     imagenPortada: "",
     imagenBanner: "",
+    galeria: [],
     categorias: [],
     etiquetas: [],
     version: "",
@@ -67,6 +76,7 @@ export default function EditarJuego() {
 
   const triggerPortadaUpload = () => inputPortadaRef.current.click();
   const triggerBannerUpload = () => inputBannerRef.current.click();
+  const triggerGaleriaUpload = () => inputGaleriaRef.current.click();
 
   useEffect(() => {
     if (juego) {
@@ -80,6 +90,7 @@ export default function EditarJuego() {
         descripcion: juego.descripcion || "",
         imagenPortada: juego.imagenPortada || "",
         imagenBanner: juego.imagenBanner || "",
+        galeria: juego.galeria || [],
         slug: juego.slug || "",
         categorias: juego.categorias || [],
         etiquetas: juego.etiquetas || [],
@@ -99,6 +110,15 @@ export default function EditarJuego() {
     }
   }, [urlBanner]);
 
+  useEffect(() => {
+    if (urlGaleria) {
+      setForm((prev) => ({
+        ...prev,
+        galeria: [...prev.galeria, urlGaleria],
+      }));
+    }
+  }, [urlGaleria]);
+
   const handleFilePortada = (e) => {
     const file = e.target.files[0];
     if (file) subirPortada(file);
@@ -107,6 +127,22 @@ export default function EditarJuego() {
   const handleFileBanner = (e) => {
     const file = e.target.files[0];
     if (file) subirBanner(file);
+  };
+
+  const handleFileGaleria = (e) => {
+    const file = e.target.files[0];
+    if (file && form.galeria.length < 4) {
+      subirGaleria(file);
+    }
+
+    e.target.value = null;
+  };
+
+  const removeImageFromGallery = (indexToRemove) => {
+    setForm((prev) => ({
+      ...prev,
+      galeria: prev.galeria.filter((_, index) => index !== indexToRemove),
+    }));
   };
 
   const toggleCategoria = (categoria) => {
@@ -143,6 +179,11 @@ export default function EditarJuego() {
     }));
   };
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -153,7 +194,7 @@ export default function EditarJuego() {
     }
   };
 
-  if (loading || !juego) return <div>Cargando datos del juego...</div>;
+  if (loading || !juego) return <></>;
 
   return (
     <section className="edit-game">
@@ -239,8 +280,8 @@ export default function EditarJuego() {
 
         <section className="inputs_container">
           <p className="inputs_container_titulo">
-            <img src={galeria} alt="" />
-            Galeria de Imagenes
+            <img src={galeriaIcon} alt="" />
+            Imágenes Principales
           </p>
           <section className="preview_imagen_container">
             <div className="edit-game_preview-container">
@@ -265,7 +306,6 @@ export default function EditarJuego() {
 
               <div className="edit-game_input-group">
                 <p>Imagen Portada</p>
-
                 <div className="input-with-button">
                   <input
                     type="file"
@@ -274,14 +314,13 @@ export default function EditarJuego() {
                     accept="image/*"
                     onChange={handleFilePortada}
                   />
-
                   <button
                     type="button"
                     className="btn-upload"
                     onClick={triggerPortadaUpload}
                     disabled={subiendoPortada}
                   >
-                    <img src={upload} alt="" /> Subir
+                    <img src={upload} alt="" /> Subir Portada
                   </button>
                 </div>
               </div>
@@ -309,7 +348,6 @@ export default function EditarJuego() {
 
               <div className="edit-game_input-group">
                 <p>Imagen Banner</p>
-
                 <div className="input-with-button">
                   <input
                     type="file"
@@ -318,19 +356,80 @@ export default function EditarJuego() {
                     accept="image/*"
                     onChange={handleFileBanner}
                   />
-
                   <button
                     type="button"
                     className="btn-upload"
                     onClick={triggerBannerUpload}
                     disabled={subiendoBanner}
                   >
-                    <img src={upload} alt="" /> Subir
+                    <img src={upload} alt="" /> Subir Banner
                   </button>
                 </div>
               </div>
             </div>
           </section>
+        </section>
+
+        <section className="inputs_container">
+          <p className="inputs_container_titulo">
+            <img src={galeriaIcon} alt="" />
+            Galería (Máx 4)
+          </p>
+
+          <div className="galeria_container">
+            {form.galeria.map((imgUrl, index) => (
+              <div className="imagen" key={index}>
+                <img
+                  src={imgUrl || noImage}
+                  alt=""
+                  onError={handleImageError}
+                />
+                <button
+                  className="eliminar_imagen"
+                  type="button"
+                  onClick={() => removeImageFromGallery(index)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+
+            {form.galeria.length < 4 && (
+              <div
+                onClick={!subiendoGaleria ? triggerGaleriaUpload : undefined}
+                className="agregar_imagen"
+              >
+                {subiendoGaleria ? (
+                  <span style={{ fontSize: "0.8rem" }}>Subiendo...</span>
+                ) : (
+                  <>
+                    <img
+                      src={upload}
+                      alt="+"
+                      style={{
+                        width: "24px",
+                        marginBottom: "5px",
+                        opacity: 0.5,
+                      }}
+                    />
+                    <span style={{ fontSize: "0.8rem" }}>Agregar</span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          <input
+            type="file"
+            ref={inputGaleriaRef}
+            style={{ display: "none" }}
+            accept="image/*"
+            onChange={handleFileGaleria}
+          />
+
+          <p style={{ fontSize: "0.8rem", color: "#666", marginTop: "5px" }}>
+            {form.galeria.length} de 4 imágenes utilizadas.
+          </p>
         </section>
 
         <section className="inputs_container">
@@ -344,7 +443,10 @@ export default function EditarJuego() {
               <input
                 className="edit-game_input"
                 onChange={(event) =>
-                  setForm({ ...form, precioBase: Number(event.target.value) })
+                  setForm({
+                    ...form,
+                    precioBase: Number(event.target.value),
+                  })
                 }
                 type="number"
                 placeholder="0.00"

@@ -5,7 +5,7 @@ import "../css/studioPanel.css";
 
 import iconoBusqueda from "../icons/search.svg";
 import iconoJuegos from "../icons/games_green.svg";
-import iconoUpload from "../icons/settings.svg";
+import add_white from "../icons/add_white.svg";
 
 import iconoVentas from "../icons/shoping_green.svg";
 import iconoDinero from "../icons/ventas.svg";
@@ -20,8 +20,6 @@ export default function StudioPage() {
   const { usuario, cargando: cargandoUsuario } = useObtenerUsuario();
 
   const { listado, loading: cargandoJuegos } = useObtenerJuegos();
-
-  console.log(listado);
 
   const misJuegos = useMemo(() => {
     if (!usuario || !listado) return [];
@@ -57,7 +55,7 @@ export default function StudioPage() {
   );
 
   if (cargandoUsuario || cargandoJuegos || !usuario) {
-    return <section className="pagina_panel_admin">Cargando Studio...</section>;
+    return <section className="pagina_panel_admin"></section>;
   }
 
   const { foto_de_perfil, nombreUsuario } = usuario;
@@ -92,7 +90,7 @@ export default function StudioPage() {
 
           <div className="estadistica_card">
             <img src={iconoDinero || iconoEstrella} alt="" />
-            <span className="estadistica_numero" style={{ color: "#4caf50" }}>
+            <span className="estadistica_numero" style={{ color: "#66f61e" }}>
               ${stats.ingresos}
             </span>
             <span className="estadistica_nombre">Ingresos Generados</span>
@@ -106,18 +104,9 @@ export default function StudioPage() {
 
           <button
             onClick={() => navigate("/studio-panel/crear-juego")}
-            className="seccion_gestion_header_link"
-            style={{
-              backgroundColor: "#4caf50",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              padding: "8px 15px",
-              border: "none",
-            }}
+            className="btn_upload"
           >
-            Subir Nuevo Juego
+            Subir Nuevo Juego <img src={add_white} alt="" />
           </button>
         </div>
 

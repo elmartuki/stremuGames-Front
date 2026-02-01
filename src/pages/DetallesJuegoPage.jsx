@@ -22,9 +22,8 @@ export default function DetallesJuegoPage() {
     precioDescuento,
     descripcion,
     categorias,
-    imagenPortada,
     imagenBanner,
-    desarrolladora,
+    galeria,
   } = juego;
 
   const { nombreUsuario, foto_de_perfil } = usuario;
@@ -141,38 +140,24 @@ export default function DetallesJuegoPage() {
               Galería
             </p>
             <section className="galeria_flex">
-              <div className="galeria_item">
-                <img
-                  src={noImage}
-                  className="galeria_img"
-                  alt="galeria"
-                  onError={handleImageError}
-                />
-              </div>
-              <div className="galeria_item">
-                <img
-                  src={noImage}
-                  className="galeria_img"
-                  alt="galeria"
-                  onError={handleImageError}
-                />
-              </div>
-              <div className="galeria_item">
-                <img
-                  src={noImage}
-                  className="galeria_img"
-                  alt="galeria"
-                  onError={handleImageError}
-                />
-              </div>
-              <div className="galeria_item">
-                <img
-                  src={noImage}
-                  className="galeria_img"
-                  alt="galeria"
-                  onError={handleImageError}
-                />
-              </div>
+              {galeria.length === 0 ? (
+                <p>El Desarrollador no agregó imagenes.</p>
+              ) : (
+                <>
+                  {galeria.map((imagen) => {
+                    return (
+                      <div className="galeria_item">
+                        <img
+                          src={imagen || noImage}
+                          className="galeria_img"
+                          alt=""
+                          onError={handleImageError}
+                        />
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </section>
           </div>
 

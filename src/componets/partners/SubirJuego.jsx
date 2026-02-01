@@ -7,7 +7,7 @@ import general from "../../icons/general.svg";
 import price from "../../icons/price.svg";
 import descripcion from "../../icons/descripcion.svg";
 import upload from "../../icons/upload.svg";
-import galeria from "../../icons/galeria.svg";
+import galeriaIcon from "../../icons/galeria.svg";
 
 import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
@@ -32,6 +32,7 @@ export default function SubirJuego() {
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
+  const inputGaleriaRef = useRef(null);
 
   const {
     subirImagen: subirPortada,
@@ -45,6 +46,12 @@ export default function SubirJuego() {
     subiendo: subiendoBanner,
   } = useSubirImagen();
 
+  const {
+    subirImagen: subirGaleria,
+    imagenUrl: urlGaleria,
+    subiendo: subiendoGaleria,
+  } = useSubirImagen();
+
   const [tagInput, setTagInput] = useState("");
 
   const [form, setForm] = useState({
@@ -55,6 +62,7 @@ export default function SubirJuego() {
     precioDescuento: 0,
     imagenPortada: "",
     imagenBanner: "",
+    galeria: [],
     categorias: [],
     etiquetas: [],
     version: "1.0.0",
@@ -73,8 +81,18 @@ export default function SubirJuego() {
     }
   }, [urlBanner]);
 
+  useEffect(() => {
+    if (urlGaleria) {
+      setForm((prev) => ({
+        ...prev,
+        galeria: [...prev.galeria, urlGaleria],
+      }));
+    }
+  }, [urlGaleria]);
+
   const triggerPortadaUpload = () => inputPortadaRef.current.click();
   const triggerBannerUpload = () => inputBannerRef.current.click();
+  const triggerGaleriaUpload = () => inputGaleriaRef.current.click();
 
   const handleFilePortada = (e) => {
     const file = e.target.files[0];
@@ -84,6 +102,21 @@ export default function SubirJuego() {
   const handleFileBanner = (e) => {
     const file = e.target.files[0];
     if (file) subirBanner(file);
+  };
+
+  const handleFileGaleria = (e) => {
+    const file = e.target.files[0];
+    if (file && form.galeria.length < 4) {
+      subirGaleria(file);
+    }
+    e.target.value = null;
+  };
+
+  const removeImageFromGallery = (indexToRemove) => {
+    setForm((prev) => ({
+      ...prev,
+      galeria: prev.galeria.filter((_, index) => index !== indexToRemove),
+    }));
   };
 
   const toggleCategoria = (categoria) => {
@@ -217,8 +250,8 @@ export default function SubirJuego() {
 
         <section className="inputs_container">
           <p className="inputs_container_titulo">
-            <img src={galeria} alt="" />
-            Galeria de Imagenes
+            <img src={galeriaIcon} alt="" />
+            Imágenes Principales
           </p>
           <section className="preview_imagen_container">
             <div className="edit-game_preview-container">
@@ -257,7 +290,7 @@ export default function SubirJuego() {
                     onClick={triggerPortadaUpload}
                     disabled={subiendoPortada}
                   >
-                    <img src={upload} alt="" /> Subir
+                    <img src={upload} alt="" /> Subir Portada
                   </button>
                 </div>
               </div>
@@ -299,12 +332,66 @@ export default function SubirJuego() {
                     onClick={triggerBannerUpload}
                     disabled={subiendoBanner}
                   >
-                    <img src={upload} alt="" /> Subir
+                    <img src={upload} alt="" /> Subir Banner
                   </button>
                 </div>
               </div>
             </div>
           </section>
+        </section>
+
+        <section className="inputs_container">
+          <p className="inputs_container_titulo">
+            <img src={galeriaIcon} alt="" />
+            Galería (Máx 4)
+          </p>
+
+          <div className="galeria_container">
+            {form.galeria.map((imgUrl, index) => (
+              <div key={index} className="imagen">
+                <img
+                  src={imgUrl || noImage}
+                  alt=""
+                  onError={handleImageError}
+                />
+                <button
+                  type="button"
+                  className="eliminar_imagen"
+                  onClick={() => removeImageFromGallery(index)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+
+            {form.galeria.length < 4 && (
+              <div
+                className="agregar_imagen"
+                onClick={!subiendoGaleria ? triggerGaleriaUpload : undefined}
+                style={{ cursor: subiendoGaleria ? "wait" : "pointer" }}
+              >
+                {subiendoGaleria ? (
+                  <span style={{ fontSize: "0.8rem" }}>Subiendo...</span>
+                ) : (
+                  <>
+                    <img src={upload} alt="+" />
+                    <span>Agregar</span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+
+          <input
+            type="file"
+            ref={inputGaleriaRef}
+            style={{ display: "none" }}
+            accept="image/*"
+            onChange={handleFileGaleria}
+          />
+          <p style={{ fontSize: "0.8rem", color: "#666", marginTop: "5px" }}>
+            {form.galeria.length} de 4 imágenes utilizadas.
+          </p>
         </section>
 
         <section className="inputs_container">
