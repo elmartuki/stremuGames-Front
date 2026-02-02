@@ -86,7 +86,7 @@ export default function Carroucel() {
 
                   <button className="descuento">
                     <img src={sell} alt="" />
-                    AHORRA UN {porcentaje.toFixed(0)} %
+                    AHORRÁ UN {porcentaje.toFixed(0)} %
                   </button>
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
@@ -159,7 +159,7 @@ export default function Carroucel() {
 
                 <button className="descuento">
                   <img src={sell} alt="" />
-                  AHORRA UN {porcentaje.toFixed(0)} %
+                  AHORRÁ UN {porcentaje.toFixed(0)} %
                 </button>
 
                 <div className="juego_card_data">

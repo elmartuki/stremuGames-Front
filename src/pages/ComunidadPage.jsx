@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "../css/comunidadPage.css";
 import search from "../icons/search.svg";
 import usuariosIcon from "../icons/usuarios.svg";
@@ -9,14 +9,16 @@ import newIcon from "../icons/new.svg";
 import person_add from "../icons/person_add.svg";
 import visibility from "../icons/visibility.svg";
 import no_banner from "../icons/background-banner.png";
+
 import { useObtenerUsuarios } from "../services/obtenerUsuarios";
-import { useNavigate } from "react-router-dom";
+import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useCalcularNivel } from "../services/calcularNivel";
+
+import { useNavigate } from "react-router-dom";
 import { ComunidadSkeleton } from "../componets/skeletons/Skeleton";
 
 const PlayerCard = ({ usuario, navigate }) => {
   const { nivel } = useCalcularNivel(usuario._id);
-
   const iniciales = usuario.nombreUsuario
     ? usuario.nombreUsuario.toUpperCase().slice(0, 2)
     : "UN";
@@ -25,7 +27,7 @@ const PlayerCard = ({ usuario, navigate }) => {
     <div className="usuario_card">
       <div className="usuario_avatar">
         <div className="avatar">
-          {usuario.foto_de_perfil === "" || !usuario.foto_de_perfil ? (
+          {!usuario.foto_de_perfil ? (
             <div className="iniciales">
               <p>{iniciales}</p>
             </div>
@@ -36,19 +38,15 @@ const PlayerCard = ({ usuario, navigate }) => {
         <span className="badge">LVL {nivel + 1}</span>
       </div>
       <h5>{usuario.nombreUsuario}</h5>
-
       <div className="btn_container">
         <button className="btn-follow">
-          <img src={person_add} alt="" />
-          Seguir
+          <img src={person_add} alt="" /> Seguir
         </button>
-
         <button
           className="btn-follow"
           onClick={() => navigate(`/comunidad/usuario/${usuario._id}`)}
         >
-          <img src={visibility} alt="" />
-          Ver Perfil
+          <img src={visibility} alt="" /> Ver Perfil
         </button>
       </div>
     </div>
@@ -56,20 +54,15 @@ const PlayerCard = ({ usuario, navigate }) => {
 };
 
 export default function ComunidadPage() {
-  const { usuarios, cargando, usuariosComunes, empresas } =
-    useObtenerUsuarios();
+  const { cargando, usuariosComunes, empresas } = useObtenerUsuarios();
+  const { listado, loading: loadingJuegos } = useObtenerJuegos();
   const navigate = useNavigate();
 
   const [filtroActivo, setFiltroActivo] = useState("todos");
   const [busqueda, setBusqueda] = useState("");
-  const [mostrar, setMostrar] = useState(4);
+  const [mostrarEmpresasLimite, setMostrarEmpresasLimite] = useState(4);
+  const [mostrarJugadoresLimite, setMostrarJugadoresLimite] = useState(4);
   const [imgError, setImgError] = useState(false);
-
-  const calcularPuntajeOrdenamiento = (usuario) => {
-    const juegos = usuario.juegosComprados?.length || 0;
-    const deseados = usuario.juegosDeseados?.length || 0;
-    return juegos + deseados;
-  };
 
   const procesarLista = (lista) => {
     let resultado = lista.filter((item) =>
@@ -77,41 +70,33 @@ export default function ComunidadPage() {
     );
 
     if (filtroActivo === "nuevos") {
-      resultado = [...resultado].sort((a, b) => {
-        const fechaA = new Date(a.createdAt || 0);
-        const fechaB = new Date(b.createdAt || 0);
-        return fechaB - fechaA;
-      });
+      resultado = [...resultado].sort(
+        (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0),
+      );
     }
 
     if (filtroActivo === "populares") {
       resultado = [...resultado].sort((a, b) => {
-        const puntajeA = calcularPuntajeOrdenamiento(a);
-        const puntajeB = calcularPuntajeOrdenamiento(b);
-        return puntajeB - puntajeA;
+        const scoreA =
+          (a.juegosComprados?.length || 0) + (a.juegosDeseados?.length || 0);
+        const scoreB =
+          (b.juegosComprados?.length || 0) + (b.juegosDeseados?.length || 0);
+        return scoreB - scoreA;
       });
     }
-
     return resultado;
   };
 
-  const empresasFiltradas = procesarLista(empresas);
-  const usuariosFiltrados = procesarLista(usuariosComunes);
+  const empresasFiltradas = useMemo(
+    () => procesarLista(empresas),
+    [empresas, busqueda, filtroActivo],
+  );
+  const usuariosFiltrados = useMemo(
+    () => procesarLista(usuariosComunes),
+    [usuariosComunes, busqueda, filtroActivo],
+  );
 
-  const mostrarEmpresas =
-    filtroActivo === "todos" ||
-    filtroActivo === "empresas" ||
-    filtroActivo === "nuevos" ||
-    filtroActivo === "populares";
-  const mostrarJugadores =
-    filtroActivo === "todos" ||
-    filtroActivo === "jugadores" ||
-    filtroActivo === "nuevos" ||
-    filtroActivo === "populares";
-
-  if (cargando) {
-    return <ComunidadSkeleton />;
-  }
+  if (cargando || loadingJuegos) return <ComunidadSkeleton />;
 
   return (
     <section className="comunidad-page">
@@ -125,7 +110,6 @@ export default function ComunidadPage() {
           <p>
             Descubre el <span>Ecosistema</span> Gaming
           </p>
-
           <div className="search-box">
             <img src={search} alt="" />
             <input
@@ -135,7 +119,6 @@ export default function ComunidadPage() {
               onChange={(e) => setBusqueda(e.target.value)}
             />
           </div>
-
           <div className="filtros">
             <button
               className={filtroActivo === "todos" ? "active" : ""}
@@ -143,148 +126,145 @@ export default function ComunidadPage() {
             >
               <img src={global} alt="" /> Todas
             </button>
-
             <button
               className={filtroActivo === "empresas" ? "active" : ""}
               onClick={() => setFiltroActivo("empresas")}
             >
-              <img src={empresaIcon} alt="" />
-              Empresas
+              <img src={empresaIcon} alt="" /> Empresas
             </button>
-
             <button
               className={filtroActivo === "jugadores" ? "active" : ""}
               onClick={() => setFiltroActivo("jugadores")}
             >
-              <img src={usuariosIcon} alt="" />
-              Jugadores
+              <img src={usuariosIcon} alt="" /> Jugadores
             </button>
-
             <button
               className={filtroActivo === "populares" ? "active" : ""}
               onClick={() => setFiltroActivo("populares")}
             >
-              <img src={trending} alt="" />
-              Populares
+              <img src={trending} alt="" /> Populares
             </button>
-
             <button
               className={filtroActivo === "nuevos" ? "active" : ""}
               onClick={() => setFiltroActivo("nuevos")}
             >
-              <img src={newIcon} alt="" />
-              Nuevos
+              <img src={newIcon} alt="" /> Nuevos
             </button>
           </div>
         </div>
 
-        {mostrarEmpresas && (
+        {(filtroActivo === "todos" ||
+          filtroActivo === "empresas" ||
+          filtroActivo === "nuevos" ||
+          filtroActivo === "populares") && (
           <section className="seccion_1">
             <div className="seccion_1_header">
               <p>Explorar Empresas y Desarrolladoras</p>
             </div>
-
-            {empresasFiltradas.length === 0 && (
-              <p style={{ color: "#fff", opacity: 0.7 }}>
-                No se encontraron empresas con ese nombre.
-              </p>
-            )}
-
             <div className="empresas_container">
-              {empresasFiltradas.map((empresa) => {
-                console.log(empresa);
+              {empresasFiltradas
+                .slice(0, mostrarEmpresasLimite)
+                .map((empresa) => {
+                  const juegosReales = listado.filter((j) => {
+                    const sId =
+                      typeof j.studioId === "object"
+                        ? j.studioId?.$oid
+                        : j.studioId;
+                    return sId === empresa._id;
+                  }).length;
 
-                const iniciales = empresa.nombreUsuario
-                  .toUpperCase()
-                  .slice(0, 2);
-
-                return (
-                  <div key={empresa._id} className="empresa-card">
-                    <div className="empresa_icon">
-                      <img
-                        className="background_banner"
-                        src={no_banner}
-                        alt=""
-                      />
-
-                      <div className="empresa_perfil">
-                        {!imgError && empresa.foto_de_perfil ? (
-                          <div className="empresa_perfil_container">
-                            <img
-                              src={empresa.foto_de_perfil}
-                              alt=""
-                              onError={() => setImgError(true)}
-                            />
-                            <div className="empresa_info">
-                              <p>{empresa.nombreUsuario}</p>
+                  return (
+                    <div key={empresa._id} className="empresa-card">
+                      <div className="empresa_icon">
+                        <img
+                          className="background_banner"
+                          src={no_banner}
+                          alt=""
+                        />
+                        <div className="empresa_perfil">
+                          {empresa.foto_de_perfil && !imgError ? (
+                            <div className="empresa_perfil_container">
+                              <img
+                                src={empresa.foto_de_perfil}
+                                alt=""
+                                onError={() => setImgError(true)}
+                              />
+                              <div className="empresa_info">
+                                <p>{empresa.nombreUsuario}</p>
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div className="empresa_perfil_container">
-                            <p className="iniciales">{iniciales}</p>
-                            <div className="empresa_info">
-                              <h4>{empresa.nombreUsuario}</h4>
+                          ) : (
+                            <div className="empresa_perfil_container">
+                              <p className="iniciales">
+                                {empresa.nombreUsuario
+                                  .toUpperCase()
+                                  .slice(0, 2)}
+                              </p>
+                              <div className="empresa_info">
+                                <h4>{empresa.nombreUsuario}</h4>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
+                      </div>
+                      <div className="empresa_info_container">
+                        <span className="empresa_stats">
+                          {juegosReales} Juegos Publicados
+                        </span>
+                        <button
+                          onClick={() =>
+                            navigate(`/comunidad/estudio/${empresa._id}`)
+                          }
+                        >
+                          Ver Perfil
+                        </button>
                       </div>
                     </div>
-
-                    <div className="empresa_info_container">
-                      <span className="empresa_stats">
-                        {empresa.juegosSubidos?.length || 0} Juegos Publicados
-                      </span>
-                      <button
-                        onClick={() =>
-                          navigate(`/comunidad/estudio/${empresa._id}`)
-                        }
-                      >
-                        Ver Perfil
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
+            {empresasFiltradas.length > mostrarEmpresasLimite && (
+              <div className="btn_container">
+                <button
+                  className="ver_mas_btn"
+                  onClick={() => setMostrarEmpresasLimite((p) => p + 4)}
+                >
+                  Ver Más Empresas
+                </button>
+              </div>
+            )}
           </section>
         )}
 
-        {mostrarJugadores && (
-          <section
-            className={`seccion_1 ${
-              !mostrarEmpresas ? "players_section_spacing" : "mt-8"
-            }`}
-          >
+        {(filtroActivo === "todos" ||
+          filtroActivo === "jugadores" ||
+          filtroActivo === "nuevos" ||
+          filtroActivo === "populares") && (
+          <section className="seccion_1 mt-8">
             <div className="seccion_1_header">
               <p>Explorar Jugadores</p>
             </div>
-
-            {usuariosFiltrados.length === 0 && (
-              <p style={{ color: "#fff", opacity: 0.7 }}>
-                No se encontraron jugadores con ese nombre.
-              </p>
-            )}
-
             <div className="usuarios_container">
-              {usuariosFiltrados.slice(0, mostrar).map((usuario) => (
-                <PlayerCard
-                  key={usuario._id}
-                  usuario={usuario}
-                  navigate={navigate}
-                />
-              ))}
+              {usuariosFiltrados
+                .slice(0, mostrarJugadoresLimite)
+                .map((usuario) => (
+                  <PlayerCard
+                    key={usuario._id}
+                    usuario={usuario}
+                    navigate={navigate}
+                  />
+                ))}
             </div>
-
-            <div className="btn_container">
-              <button
-                className="ver_mas_btn"
-                onClick={() => {
-                  setMostrar(mostrar + 4);
-                }}
-              >
-                Ver Mas
-              </button>
-            </div>
+            {usuariosFiltrados.length > mostrarJugadoresLimite && (
+              <div className="btn_container">
+                <button
+                  className="ver_mas_btn"
+                  onClick={() => setMostrarJugadoresLimite((p) => p + 4)}
+                >
+                  Ver Más Jugadores
+                </button>
+              </div>
+            )}
           </section>
         )}
       </section>

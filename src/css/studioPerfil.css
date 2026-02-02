@@ -1,7 +1,7 @@
 .perfil_container_main {
   width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: 0 auto 60px auto;
   padding: 20px;
   color: #ffffff;
   display: flex;
@@ -342,13 +342,14 @@
       transition: 1s cubic-bezier(0.25, 0.8, 0.25, 1);
       position: relative;
       top: 0;
+      cursor: pointer;
 
       @media (min-width: 1025px) {
-        width: calc(33.333% - 14px);
+        width: calc(25% - 17px);
       }
 
       .card_img {
-        height: 150px;
+        height: 300px;
         position: relative;
         overflow: hidden;
 
@@ -388,22 +389,52 @@
         .cat_texto {
           font-size: 12px;
           color: #666;
-          margin-bottom: 15px;
+          margin-bottom: 5px;
         }
 
         .card_bottom {
           margin-top: auto;
           display: flex;
-          justify-content: space-between;
+          gap: 10px;
           align-items: center;
+
+          .precios_container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            .descuento {
+              background-color: #66f61e;
+              color: #161616;
+              padding: 0px 4px;
+              border-radius: 2px;
+            }
+
+            .precio_tachado {
+              text-decoration: line-through;
+              font-size: 0.9rem;
+              opacity: 70%;
+            }
+
+            .precio_actual {
+              font-size: 1.1rem;
+            }
+          }
 
           .precio_mini {
             color: #66f61e;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 1.2rem;
+          }
+
+          .precio_mini:nth-child(2) {
+            opacity: 70%;
+            color: white;
+            text-decoration: line-through;
+            font-size: 0.9rem;
           }
 
           .btn_carrito {
+            margin-left: auto;
             background-color: #262626;
             color: white;
             border: 1px solid transparent;
@@ -442,7 +473,11 @@
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1024px) {
+  .perfil_container_main {
+    margin: 0 auto auto auto;
+  }
+
   .perfil_sidebar {
     .sidebar_card {
       margin-top: 40px;

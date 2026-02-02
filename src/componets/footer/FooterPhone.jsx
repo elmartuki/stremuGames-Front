@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../../css/footer.css";
 
 import homeIcon from "../../icons/home.svg";
+import adminPanel from "../../icons/admin_panel.svg";
 import categoriasIcon from "../../icons/grid.svg";
 import comunidadIcon from "../../icons/usuarios.svg";
 import carritoIcon from "../../icons/carrito.svg";
@@ -40,6 +41,14 @@ export default function Footer() {
     { titulo: "", icono: perfilIcon, ruta: "/perfil" },
   ];
 
+  const opcionesAdmin = [
+    { titulo: "", icono: homeIcon, ruta: "/explorar" },
+    { titulo: "", icono: categoriasIcon, ruta: "/categorias" },
+    { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
+    { titulo: "", icono: adminPanel, ruta: "/admin-panel" },
+    { titulo: "", icono: perfilIcon, ruta: "/perfil" },
+  ];
+
   const opcionesInvitado = [
     { titulo: "", icono: homeIcon, ruta: "/explorar" },
     { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
@@ -52,7 +61,9 @@ export default function Footer() {
   let opcionesAMostrar;
   if (rolFinal === "empresa") {
     opcionesAMostrar = opcionesEmpresa;
-  } else if (rolFinal === "user" || rolFinal === "admin") {
+  } else if (rolFinal === "admin") {
+    opcionesAMostrar = opcionesAdmin;
+  } else if (rolFinal === "user") {
     opcionesAMostrar = opcionesUser;
   } else {
     opcionesAMostrar = opcionesInvitado;

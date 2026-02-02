@@ -1,8 +1,58 @@
 .listado_de_juegos_container {
+  width: 100%;
+  min-height: 100vh;
+  color: white;
+  background-color: #0f0f0f;
+
+  .listado_de_juegos_search {
+    width: 95%;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    background-color: #1a1a1a;
+    padding: 12px 15px;
+    border: 1px solid #2a2a2a;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.2s forwards;
+
+    &:focus-within {
+      border-color: #66f61e;
+      background-color: #121212;
+      box-shadow: 0 0 15px rgba(102, 246, 30, 0.15);
+      transform: scale(1.01);
+    }
+
+    img {
+      width: 20px;
+      opacity: 0.5;
+      margin-right: 10px;
+      transition: opacity 0.3s;
+    }
+
+    &:focus-within img {
+      opacity: 1;
+    }
+
+    input {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      font-size: 1rem;
+      color: white;
+      outline: none;
+
+      &::placeholder {
+        color: #666;
+      }
+    }
+  }
+
   .panel-juegos-container {
     width: 95%;
     margin: auto;
-    padding: 10px 0;
+    padding: 10px 0 50px 0;
     display: flex;
     flex-direction: column;
 
@@ -10,32 +60,40 @@
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
+      justify-content: flex-start;
 
       .card-game {
-        flex: 1 1 calc(25% - 16px);
-        min-width: 260px;
+        width: 100%;
         background-color: #1a1a1a;
         border: 1px solid #2a2a2a;
         border-radius: 16px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out forwards;
 
         &:hover {
-          transform: translateY(-5px);
+          transform: translateY(-8px);
           border-color: #444;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         }
 
         .card-game-header {
           position: relative;
-          height: 140px;
+          height: 180px;
+          overflow: hidden;
 
           .card-game-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s ease;
+          }
+
+          &:hover .card-game-img {
+            transform: scale(1.1);
           }
 
           .card-game-badge {
@@ -44,40 +102,35 @@
             right: 10px;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(4px);
-            color: #f1c40f;
             font-size: 11px;
-            font-weight: 700;
-            padding: 3px 10px;
+            font-weight: 800;
+            padding: 5px 12px;
             border-radius: 6px;
-            border: 1px solid rgba(241, 196, 15, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
+            text-transform: uppercase;
           }
         }
 
         .card-game-body {
           padding: 15px;
-          flex-grow: 1;
+          flex: 1;
 
           .card-game-title {
             margin: 0;
-            font-size: 16px;
+            font-size: 1.1rem;
             color: #fff;
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
           }
 
-          .card-game-subtitle {
-            color: #666;
-            font-size: 12px;
-            margin: 5px 0;
-          }
-
           .card-game-price {
-            margin-top: 10px;
+            margin-top: 8px;
             color: #2ecc71;
             font-weight: 800;
-            font-size: 18px;
+            font-size: 1.2rem;
           }
         }
 
@@ -85,36 +138,57 @@
           padding: 12px;
           display: flex;
           gap: 10px;
-          border-top: 1px solid #282828;
-          background-color: rgba(255, 255, 255, 0.02);
+          border-top: 1px solid #2a2a2a;
+          background-color: rgba(0, 0, 0, 0.2);
 
           button {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            border: none;
-            transition: 0.2s;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+
+            &:active {
+              transform: scale(0.95);
+            }
           }
 
           .btn-game-view {
             background-color: #262626;
-            color: #eee;
-            border: 1px solid #333;
+            color: #fff;
+            border-color: #333;
+
             &:hover {
-              background-color: #383838;
+              background-color: #333;
+              border-color: #555;
+            }
+          }
+
+          .btn-mostrar {
+            background-color: rgba(102, 246, 30, 0.1) !important;
+            color: #66f61e !important;
+            border-color: rgba(102, 246, 30, 0.3) !important;
+
+            &:hover {
+              background-color: #66f61e !important;
+              color: #000 !important;
+              box-shadow: 0 0 15px rgba(102, 246, 30, 0.4) !important;
             }
           }
 
           .btn-game-delete {
             background-color: rgba(231, 76, 60, 0.1);
             color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.2);
+            border-color: rgba(231, 76, 60, 0.3);
+
             &:hover {
-              background-color: rgba(231, 76, 60, 0.2);
-              transform: scale(1.02);
+              background-color: #e74c3c;
+              color: #fff;
+              box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
             }
           }
         }
@@ -124,32 +198,63 @@
     .no-games-message {
       width: 100%;
       text-align: center;
-      padding: 40px;
+      padding: 60px;
       color: #555;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      border: 2px dashed #222;
+      border-radius: 16px;
     }
   }
 
-  .listado_de_juegos_search {
-    width: 95%;
-    margin: auto;
+  .ver_mas_container {
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-top: 10px;
-    background-color: #282828;
-    border-radius: 8px;
-    padding: 0px 10px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #222;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out 0.5s forwards;
 
-    input {
-      width: 100%;
-      background-color: transparent;
-      border: none;
-      font-size: 1rem;
-      padding: 10px 10px;
+    .btn_ver_mas {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      padding: 10px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
 
-      &:focus {
-        outline: none;
+      &:hover:not(:disabled) {
+        border-color: #66f61e;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
       }
     }
+  }
+}
+
+@media (min-width: 1024px) {
+  .listado_de_juegos_container .panel-juegos-container .lista-games .card-game {
+    width: calc(20% - 13px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

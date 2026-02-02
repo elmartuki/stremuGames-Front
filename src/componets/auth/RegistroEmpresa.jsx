@@ -79,7 +79,7 @@ export default function RegistroEmpresa() {
       );
 
       setTimeout(() => {
-        navigate("/login-empresa");
+        navigate("/login");
       }, 1500);
     } catch (error) {
       let mensajeError = "Hubo un error al registrar";
