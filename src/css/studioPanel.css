@@ -155,7 +155,7 @@
 
         .estadistica_numero {
           display: block;
-          font-size: 28px;
+          font-size: 1.2rem;
           font-weight: 700;
           margin-bottom: 4px;
         }
@@ -194,7 +194,7 @@
         font-size: 1rem;
         color: #1a1a1a;
         background-color: #66f61e;
-        padding: 8px 12px;
+        padding: 6px 12px;
         border: none;
         font-size: 14px;
         cursor: pointer;
@@ -565,7 +565,13 @@
             }
           }
 
-          .eliminar {
+          .oculto {
+            background-color: #66f61ea8;
+
+            border: 1px solid #66f61e;
+          }
+
+          .mostrar {
             background: rgba(231, 76, 60, 0.1);
             color: #e74c3c;
             border: 1px solid rgba(231, 76, 60, 0.2);
@@ -761,6 +767,16 @@
 
 @media (min-width: 1024px) {
   .studio_panel_admin {
+    .seccion_estadisticas {
+      .estadisticas_container {
+        .estadistica_card {
+          .estadistica_numero {
+            font-size: 1.6rem;
+          }
+        }
+      }
+    }
+
     .seccion_gestion {
       .tarjetas_juegos_container {
         flex-direction: row;

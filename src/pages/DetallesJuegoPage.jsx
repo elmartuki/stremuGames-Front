@@ -4,7 +4,7 @@ import descIcon from "../icons/desc.svg";
 import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
 import noImage from "../icons/noimage.png";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
 
@@ -12,6 +12,8 @@ export default function DetallesJuegoPage() {
   const { id } = useParams();
   const { juego } = useObtenerUnJuego(id);
   const { usuario } = useObtenerUsuario(juego?.studioId);
+
+  const navigate = useNavigate();
 
   if (!juego) return <></>;
   if (!usuario) return <></>;
@@ -26,7 +28,7 @@ export default function DetallesJuegoPage() {
     galeria,
   } = juego;
 
-  const { nombreUsuario, foto_de_perfil } = usuario;
+  const { nombreUsuario, foto_de_perfil, _id } = usuario;
 
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
 
@@ -100,7 +102,10 @@ export default function DetallesJuegoPage() {
 
               <div className="juego_desarrollador">
                 <p className="section_subtitle">Desarrollador</p>
-                <div className="dev_card">
+                <div
+                  className="dev_card"
+                  onClick={() => navigate(`/comunidad/estudio/${_id}`)}
+                >
                   <div className="dev_logo">
                     {foto_de_perfil === "" ? (
                       <p className="iniciales">{iniciales}</p>

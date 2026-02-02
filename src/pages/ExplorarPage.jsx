@@ -134,7 +134,6 @@ export default function ExplorarPage() {
         )}
       </section>
 
-      {/* --- CARROUSEL LARGO (CARRERAS) --- */}
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div className="titulo_container">
@@ -172,7 +171,6 @@ export default function ExplorarPage() {
         )}
       </section>
 
-      {/* --- CARROUSEL LARGO (TERROR) --- */}
       <section className="explorar_carroucel">
         <div className="explorar_carroucel_header">
           <div className="titulo_container">

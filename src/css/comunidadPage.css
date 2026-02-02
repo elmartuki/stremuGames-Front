@@ -404,6 +404,13 @@
 }
 
 @media (min-width: 1024px) {
+  .empresas_container {
+    flex-wrap: wrap;
+
+    .empresa-card {
+      flex: 0;
+    }
+  }
   .comunidad-body {
     width: 80%;
     padding: 24px;

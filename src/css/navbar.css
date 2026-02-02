@@ -272,8 +272,8 @@
       .navbar_desk_links {
         width: 25%;
         display: flex;
-        justify-content: center;
-        gap: 30px;
+        justify-content: flex-start;
+        gap: 15px;
         transition: 1s;
 
         .active-link {
@@ -286,11 +286,13 @@
         button {
           color: rgba(255, 255, 255, 0.7);
           font-size: 1rem;
-
           background: transparent;
           border: none;
           cursor: pointer;
           transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
           &:hover {
             color: white;
@@ -445,6 +447,7 @@
                 height: 40px;
                 object-fit: cover;
                 border-radius: 8px;
+                border: 2px solid #66f61ec4;
               }
             }
           }

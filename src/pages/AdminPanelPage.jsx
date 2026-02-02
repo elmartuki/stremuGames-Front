@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/adminPanel.css";
 import iconoBusqueda from "../icons/search.svg";
 import iconoAjustes from "../icons/settings.svg";
-import iconoOjo from "../icons/eye.svg";
 import iconoBanear from "../icons/ban.svg";
 import iconoEmpresa from "../icons/empresa.svg";
 import iconoUsuarios from "../icons/usuarios.svg";
@@ -11,29 +10,70 @@ import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useNavigate } from "react-router-dom";
+import clientAxios from "../utils/clientAxios";
 
 export default function AdminPanelPage() {
+  const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
+  const [indice, setIndice] = useState(4);
 
   const { usuario } = useObtenerUsuario();
-  const { usuarios, cargando, usuariosComunes, empresas } =
-    useObtenerUsuarios();
+  const {
+    cargando,
+    usuariosComunes: dataUsuarios = [],
+    empresas: dataEmpresas = [],
+  } = useObtenerUsuarios();
   const { listado } = useObtenerJuegos();
 
-  const navigate = useNavigate();
+  const [listaUsuarios, setListaUsuarios] = useState([]);
+  const [listaEmpresas, setListaEmpresas] = useState([]);
+
+  useEffect(() => {
+    if (dataUsuarios.length > 0 && listaUsuarios.length === 0) {
+      setListaUsuarios(dataUsuarios);
+    }
+    if (dataEmpresas.length > 0 && listaEmpresas.length === 0) {
+      setListaEmpresas(dataEmpresas);
+    }
+  }, [dataUsuarios, dataEmpresas, listaUsuarios.length, listaEmpresas.length]);
 
   if (!usuario || cargando) {
-    return <section className="pagina_panel_admin">Cargando...</section>;
+    return <></>;
   }
 
   const { foto_de_perfil } = usuario;
+
+  const handleBannear = async (id, tipo) => {
+    try {
+      const response = await clientAxios.put(`/usuarios/banear/${id}`);
+      if (response.status === 200 || response.status === 201) {
+        const updater = (prev) =>
+          prev.map((item) =>
+            item._id === id ? { ...item, activo: !item.activo } : item,
+          );
+
+        if (tipo === "usuario") setListaUsuarios(updater);
+        else setListaEmpresas(updater);
+      }
+    } catch (error) {
+      console.error("Error al banear:", error);
+    }
+  };
+
+  const handleShow = () => {
+    setIndice(indice + 4);
+  };
 
   return (
     <section className="page_panel_admin">
       <header className="page_panel_admin_header">
         <div className="perfil_admin">
           <div className="perfil_admin_avatar">
-            <img src={foto_de_perfil} className="avatar_admin" />
+            <img
+              src={foto_de_perfil}
+              className="avatar_admin"
+              alt="Avatar Admin"
+            />
             <span className="admin">ADMIN</span>
           </div>
           <div className="info_admin">
@@ -42,7 +82,7 @@ export default function AdminPanelPage() {
           </div>
         </div>
         <button className="ajustes">
-          <img src={iconoAjustes} />
+          <img src={iconoAjustes} alt="Ajustes" />
         </button>
       </header>
 
@@ -62,12 +102,12 @@ export default function AdminPanelPage() {
         <div className="estadisticas_container">
           <div className="estadistica_card">
             <img src={iconoEmpresa} alt="" />
-            <span className="estadistica_numero">{empresas.length}</span>
+            <span className="estadistica_numero">{listaEmpresas.length}</span>
             <span className="estadistica_nombre">Desarrolladoras</span>
           </div>
           <div className="estadistica_card">
             <img src={iconoUsuarios} alt="" />
-            <span className="estadistica_numero">{usuariosComunes.length}</span>
+            <span className="estadistica_numero">{listaUsuarios.length}</span>
             <span className="estadistica_nombre">Usuarios</span>
           </div>
           <div className="estadistica_card">
@@ -80,7 +120,7 @@ export default function AdminPanelPage() {
 
       <section className="seccion_gestion">
         <div className="seccion_gestion_header">
-          <h3>Gestión de Juegos Activos</h3>
+          <h3>Gestión de Juegos</h3>
           <button
             onClick={() => navigate("/admin-panel/juegos")}
             className="seccion_gestion_header_link"
@@ -88,7 +128,6 @@ export default function AdminPanelPage() {
             Ver catálogo
           </button>
         </div>
-
         <div className="tarjetas_juegos_container">
           {listado.slice(0, 4).map((juego) => (
             <div className="tarjeta_juego" key={juego._id}>
@@ -106,7 +145,12 @@ export default function AdminPanelPage() {
                 </div>
               </div>
               <div className="tarjeta_juego_buttons">
-                <button className="ver">Editar</button>
+                <button
+                  onClick={() => navigate(`/juego/${juego._id}`)}
+                  className="ver"
+                >
+                  Ver
+                </button>
                 <button className="eliminar">Ocultar</button>
               </div>
             </div>
@@ -124,9 +168,8 @@ export default function AdminPanelPage() {
             Ver todas
           </button>
         </div>
-
         <div className="contenedor_tarjetas">
-          {empresas.map((empresa) => {
+          {listaEmpresas.slice(0, 4).map((empresa) => {
             const iniciales = empresa.nombreUsuario.toUpperCase().slice(0, 2);
             return (
               <div className="tarjeta_desarrolladora" key={empresa._id}>
@@ -140,9 +183,15 @@ export default function AdminPanelPage() {
                   </div>
                   <div className="desarrolladora_data">
                     <h4>{empresa.nombreUsuario}</h4>
-                    <p>Verificada • {empresa.juegosSubidos.length} Juegos</p>
+                    <p>
+                      Verificada • {empresa.juegosSubidos?.length || 0} Juegos
+                    </p>
                   </div>
-                  <span className="estado_etiqueta">ACTIVA</span>
+                  <span
+                    className={`estado_etiqueta ${!empresa.activo ? "banned" : ""}`}
+                  >
+                    {empresa.activo ? "ACTIVA" : "BANEADO"}
+                  </span>
                 </div>
                 <div className="desarrolladora_botones">
                   <button
@@ -153,8 +202,12 @@ export default function AdminPanelPage() {
                   >
                     Ver Perfil
                   </button>
-                  <button className="banear">
-                    <img src={iconoBanear} alt="" /> Banear
+                  <button
+                    className={empresa.activo ? "banear" : "desbanear"}
+                    onClick={() => handleBannear(empresa._id, "empresa")}
+                  >
+                    <img src={iconoBanear} alt="" />{" "}
+                    {empresa.activo ? "Banear" : "Activar"}
                   </button>
                 </div>
               </div>
@@ -166,48 +219,63 @@ export default function AdminPanelPage() {
       <section className="seccion_gestion">
         <div className="seccion_gestion_header">
           <h3>Gestión de Usuarios</h3>
+          <button
+            onClick={() => navigate("/admin-panel/usuarios")}
+            className="seccion_gestion_header_link"
+          >
+            Ver todos
+          </button>
         </div>
-        <div className="contenedor_lista_usuarios">
-          {usuariosComunes.map((u) => {
+        <div className="contenedor_tarjetas">
+          {listaUsuarios.slice(0, indice).map((u) => {
             const añoRegistro = new Date(u.createdAt).getFullYear();
             const iniciales = u.nombreUsuario.toUpperCase().slice(0, 2);
-            const idCorto = u._id.slice(-5).toUpperCase();
-
             return (
-              <div className="usuario_card_fila" key={u._id}>
-                <div className="usuario_card">
-                  <div className="usuario_card_perfil">
+              <div className="tarjeta_desarrolladora" key={u._id}>
+                <div className="tarjeta_desarrolladora_header">
+                  <div className="desarrolladora_logo">
                     {u.foto_de_perfil === "" ? (
-                      <span className="iniciales">{iniciales}</span>
+                      <p>{iniciales}</p>
                     ) : (
                       <img src={u.foto_de_perfil} alt={u.nombreUsuario} />
                     )}
                   </div>
-                  <div>
-                    <p className="usuario_nombre">{u.nombreUsuario}</p>
-                    <p className="usuario_fecha">
-                      ID: #{idCorto} • Registrado {añoRegistro}
-                    </p>
+                  <div className="desarrolladora_data">
+                    <h4>{u.nombreUsuario}</h4>
+                    <p>Usuario • Reg. {añoRegistro}</p>
                   </div>
+                  <span
+                    className={`estado_etiqueta ${!u.activo ? "baneado" : "user"}`}
+                  >
+                    {u.activo ? "ACTIVO" : "BANEADO"}
+                  </span>
                 </div>
-                <div className="usuario_card_buttons">
-                  <button className="ver">
-                    <img src={iconoOjo} />
+                <div className="desarrolladora_botones">
+                  <button
+                    className="ver_perfil"
+                    onClick={() => navigate(`/comunidad/usuario/${u._id}`)}
+                  >
+                    Ver Perfil
                   </button>
-                  <button className="bannear" title="Banear Usuario">
-                    <img src={iconoBanear} />
+                  <button
+                    className={u.activo ? "banear" : "desbanear"}
+                    onClick={() => handleBannear(u._id, "usuario")}
+                  >
+                    <img src={iconoBanear} alt="" />{" "}
+                    {u.activo ? "Banear" : "Activar"}
                   </button>
                 </div>
               </div>
             );
           })}
-          <button
-            onClick={() => navigate("/admin-panel/usuarios")}
-            className="boton_ver_mas"
-          >
-            Ver más usuarios
-          </button>
         </div>
+        {listaUsuarios.length > indice && (
+          <div className="ver_mas_container">
+            <button onClick={handleShow} className="btn_ver_mas">
+              Ver más usuarios ({listaUsuarios.length - indice} restantes)
+            </button>
+          </div>
+        )}
       </section>
     </section>
   );

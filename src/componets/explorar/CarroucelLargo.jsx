@@ -30,7 +30,7 @@ export default function CarroucelLargo({ filtrar }) {
   if (filtrar === "Populares") {
     juegosParaMostrar.sort((a, b) => b.cantidadVotos - a.cantidadVotos);
   } else if (filtrar === "Recientes") {
-    juegosParaMostrar.sort((a, b) => b.createdAt - a.createdAt);
+    juegosParaMostrar.reverse().sort((a, b) => b.createdAt - a.createdAt);
   } else if (filtrar) {
     juegosParaMostrar = juegosParaMostrar.filter((juego) =>
       juego.categorias.includes(filtrar),

@@ -124,7 +124,7 @@ export default function PerfilConfigPage() {
             <button
               onClick={() => {
                 localStorage.removeItem("TokenStremuGames");
-                navigate("/");
+                window.location.href = "/";
               }}
             >
               <img src={logout} alt="" />
