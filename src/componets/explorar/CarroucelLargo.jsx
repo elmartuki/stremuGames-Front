@@ -5,15 +5,25 @@ import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
 import back from "../../icons/back_arrow.svg";
 import next from "../../icons/next.svg";
+import noImage from "../../icons/noimage.png";
+import { useNavigate } from "react-router-dom";
+
+import CarroucelSkeleton, {
+  CarroucelLargoSkeleton,
+} from "../skeletons/Skeleton";
 
 export default function CarroucelLargo({ filtrar }) {
-  const { listado } = useObtenerJuegos();
+  const { listado, loading } = useObtenerJuegos();
 
+  const [previewId, setPreviewId] = useState(null);
+  const navigate = useNavigate();
   const [indice, setIndice] = useState(0);
-
   const isDesktop = useMediaQuery("(min-width: 1025px)");
-
   const elementosPorPagina = 5;
+
+  if (loading || !listado) {
+    return <CarroucelLargoSkeleton />;
+  }
 
   let juegosParaMostrar = listado ? [...listado] : [];
 
@@ -23,7 +33,7 @@ export default function CarroucelLargo({ filtrar }) {
     juegosParaMostrar.sort((a, b) => b.createdAt - a.createdAt);
   } else if (filtrar) {
     juegosParaMostrar = juegosParaMostrar.filter((juego) =>
-      juego.categorias.includes(filtrar)
+      juego.categorias.includes(filtrar),
     );
   }
 
@@ -41,11 +51,16 @@ export default function CarroucelLargo({ filtrar }) {
     }
   };
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <>
       {isDesktop ? (
         <>
-          <button onClick={() => handleChange("restar")}>
+          <button className="btn-page" onClick={() => handleChange("restar")}>
             <img src={back} alt="" />
           </button>
           {juegosParaMostrar
@@ -58,25 +73,41 @@ export default function CarroucelLargo({ filtrar }) {
                 desarrolladora,
                 precioDescuento,
                 precioBase,
+                descripcion,
               } = juego;
+
+              const porcentaje =
+                ((precioBase - precioDescuento) / precioBase) * 100;
 
               return (
                 <article
-                  onClick={() => useAgregarJuegoAlcarrito(_id)}
                   key={_id}
                   className="juego_card large"
+                  onClick={() => {
+                    useAgregarJuegoAlcarrito(_id);
+                    navigate(`/juego/${_id}`);
+                  }}
+                  onMouseEnter={() => setPreviewId(_id)}
+                  onMouseLeave={() => setPreviewId(null)}
                 >
                   <div className="juego_card_imagen">
-                    <img src={imagenPortada} alt={titulo} />
+                    <img
+                      src={imagenPortada || noImage}
+                      alt={titulo}
+                      onError={handleImageError}
+                    />
                   </div>
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
                     <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                     {precioDescuento !== precioBase ? (
-                      <div>
-                        <p>${precioDescuento}</p>
+                      <div className="precios_container">
+                        <div className="descuento">
+                          -{porcentaje.toFixed()}%
+                        </div>
                         <p>${precioBase}</p>
+                        <p>${precioDescuento}</p>
                       </div>
                     ) : (
                       <div>
@@ -84,10 +115,42 @@ export default function CarroucelLargo({ filtrar }) {
                       </div>
                     )}
                   </div>
+
+                  {previewId === _id && (
+                    <article className="preview-game">
+                      <div className="image">
+                        <img
+                          onError={handleImageError}
+                          src={imagenPortada || noImage}
+                          alt=""
+                        />
+                      </div>
+
+                      <div className="datos">
+                        <p className="titulo">{titulo}</p>
+
+                        <p>{desarrolladora}</p>
+
+                        <div className="precios_container">
+                          {precioDescuento !== precioBase ? (
+                            <div>
+                              <p>${precioDescuento}</p>
+                              <p>${precioBase}</p>
+                            </div>
+                          ) : (
+                            <div>
+                              <p>${precioBase}</p>
+                            </div>
+                          )}
+                        </div>
+                        <p className="descripcion">{descripcion}</p>
+                      </div>
+                    </article>
+                  )}
                 </article>
               );
             })}
-          <button onClick={() => handleChange("sumar")}>
+          <button className="btn-page" onClick={() => handleChange("sumar")}>
             <img src={next} alt="" />
           </button>
         </>
@@ -103,23 +166,33 @@ export default function CarroucelLargo({ filtrar }) {
               precioBase,
             } = juego;
 
+            const porcentaje =
+              ((precioBase - precioDescuento) / precioBase) * 100;
+
             return (
               <article
-                onClick={() => useAgregarJuegoAlcarrito(_id)}
+                onClick={() => {
+                  useAgregarJuegoAlcarrito(_id);
+                  navigate(`/juego/${_id}`);
+                }}
                 key={_id}
                 className="juego_card large"
               >
                 <div className="juego_card_imagen">
-                  <img src={imagenPortada} alt={titulo} />
+                  <img
+                    src={imagenPortada || noImage}
+                    alt={titulo}
+                    onError={handleImageError}
+                  />
                 </div>
                 <div className="juego_card_data">
                   <p className="juego_card_data_titulo">{titulo}</p>
-                  <p className="juego_card_data_empresa">{desarrolladora}</p>
 
                   {precioDescuento !== precioBase ? (
                     <div>
-                      <p>${precioDescuento}</p>
+                      <div className="descuento">-{porcentaje.toFixed()}%</div>
                       <p>${precioBase}</p>
+                      <p>${precioDescuento}</p>
                     </div>
                   ) : (
                     <div>

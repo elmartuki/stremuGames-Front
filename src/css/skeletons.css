@@ -1,0 +1,322 @@
+@keyframes skeleton-loading {
+  0% {
+    background-color: #282828;
+  }
+  50% {
+    background-color: #3f3f3f;
+  }
+  100% {
+    background-color: #282828;
+  }
+}
+
+.skeleton-card {
+  pointer-events: none;
+  cursor: default;
+  border-color: #3f3f3f !important;
+  min-width: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  overflow: hidden;
+}
+
+.skeleton-box {
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  border-radius: 4px;
+}
+
+.skeleton-box.image-box {
+  width: 100%;
+  height: 240px !important;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.skeleton-box.text-title {
+  width: 80%;
+  height: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.skeleton-box.text-subtitle {
+  width: 50%;
+  height: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.skeleton-box.text-price {
+  width: 40px;
+  height: 1rem;
+  margin-bottom: 10px;
+}
+
+.skeleton-box.button-box {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.skeleton-nav-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: default !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skeleton-card.large {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 380px;
+}
+
+.skeleton-card.large .image-box {
+  height: 300px !important;
+  border-radius: 10px;
+}
+
+.skeleton-card.large .juego_card_data {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-card.large .text-title {
+  width: 90%;
+  height: 1.4rem;
+  margin-top: 5px;
+}
+
+.skeleton-card.category {
+  padding: 25px;
+  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+  width: 100%;
+}
+
+.skeleton-box.icon-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.skeleton-card.category .text-title {
+  width: 70%;
+  height: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.skeleton-card.category .text-subtitle {
+  width: 40%;
+  height: 0.8rem;
+  margin-bottom: 0;
+}
+
+.skeleton-card.juegos {
+  display: flex;
+  flex-direction: column;
+  background-color: #161616;
+  border: 2px solid #3f3f3f !important;
+  min-height: 300px;
+}
+
+.skeleton-card.juegos .image-box {
+  width: 100%;
+  height: 100% !important;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.skeleton-card.juegos .juego_card_data,
+.skeleton-card.juegos .juegos_data {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-grow: 1;
+}
+
+.comunidad_hero.skeleton-hero-container {
+  background-color: #1a1a1a;
+  position: relative;
+}
+
+.title-box {
+  width: 40%;
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+.skeleton-search {
+  background-color: #282828 !important;
+  border: none !important;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+.filter-btn-box {
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.header-text-box {
+  width: 300px;
+  height: 24px;
+}
+
+.text-line {
+  height: 14px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+}
+
+.empresa-card.skeleton-card {
+  border: 1px solid #3f3f3f;
+  background-color: #161616;
+  pointer-events: none;
+}
+
+.banner-box {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px 8px 0 0;
+}
+
+.avatar-circle-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #161616;
+}
+
+.button-small {
+  width: 80px;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.usuario_card.skeleton-card {
+  background-color: #161616;
+  border: 1px solid #3f3f3f;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 10px;
+}
+
+.avatar-circle-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.text-title-center {
+  width: 70%;
+  height: 20px;
+  margin: 10px 0;
+}
+
+.btn-block {
+  width: 100%;
+  height: 35px;
+  border-radius: 8px;
+}
+
+.usuario_card.skeleton-card .btn_container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.sidebar_card.skeleton-card-base {
+  background-color: #161616;
+  border: 1px solid #252525;
+  pointer-events: none;
+}
+
+.banner_destacado.skeleton-banner {
+  background-color: #1a1a1a;
+  border: none !important;
+  pointer-events: none;
+}
+
+.card_mini.skeleton-card-mini {
+  background-color: #161616;
+  border: 1px solid #252525;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card_mini.skeleton-card-mini .card_img {
+  height: 150px;
+  width: 100%;
+}
+
+.text-line {
+  height: 14px;
+  border-radius: 4px;
+}
+
+.title-section {
+  border-left: 4px solid #3f3f3f;
+  padding-left: 10px;
+}
+
+.skeleton_anim {
+  background: linear-gradient(90deg, #1f1f1f 25%, #2a2a2a 50%, #1f1f1f 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.juego_tarjeta.skeleton_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  background-color: #121212;
+  border-radius: 8px;
+  border: 1px solid #282828;
+  margin-bottom: 10px;
+}
+
+.skeleton_img {
+  width: 60px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.skeleton_info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.skeleton_text {
+  height: 14px;
+
+  &.title {
+    width: 70%;
+    height: 16px;
+  }
+
+  &.developer {
+    width: 40%;
+    opacity: 0.6;
+  }
+}

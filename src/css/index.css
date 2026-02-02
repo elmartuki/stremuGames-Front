@@ -2,7 +2,6 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-
   color: #ffffff;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 700;
@@ -10,6 +9,9 @@
 
 body {
   background-color: #0f0f0f;
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 button {

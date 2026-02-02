@@ -1,4 +1,4 @@
-import "../../css/parthnerPage.css";
+import "../../css/studioPanel.css";
 import editIcon from "../../icons/edit.svg";
 import deleteIcon from "../../icons/delete.svg";
 import download from "../../icons/download.svg";
@@ -18,7 +18,7 @@ export default function ListadoDeJuegos() {
       {listado?.map((juego, index) => {
         const { titulo, imagenPortada, descargasTotales, precioBase, _id } =
           juego;
-        console.log(juego);
+
         return (
           <article key={index} className="juego-card">
             <div className="juego-card_imagen">

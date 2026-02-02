@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 const ROLES_PERMITIDOS = ["admin"];
@@ -13,24 +13,31 @@ export default function AdminRouter() {
       ? tokenLocalStorage.replace("Bearer ", "").trim()
       : null;
 
-  let rolUsuario = null;
-
-  if (token) {
+  const datosUsuario = useMemo(() => {
+    if (!token) return null;
     try {
-      const usuarioInfo = jwtDecode(token);
-      rolUsuario = usuarioInfo.rol;
+      return jwtDecode(token);
     } catch (error) {
-      console.error("Error al decodificar el token:", error);
+      console.error("Token inválido:", error);
+      return null;
     }
-  }
+  }, [token]);
 
-  const tieneAcceso = ROLES_PERMITIDOS.includes(rolUsuario);
+  const tieneRol = datosUsuario && ROLES_PERMITIDOS.includes(datosUsuario.rol);
+  const tokenNoExpirado = datosUsuario
+    ? datosUsuario.exp * 1000 > Date.now()
+    : false;
+
+  const tieneAcceso = tieneRol && tokenNoExpirado;
 
   useEffect(() => {
     if (!token || !tieneAcceso) {
-      navigate("/login-empresa", { replace: true });
+      if (token && !tokenNoExpirado) {
+        localStorage.removeItem("TokenStremuGames");
+      }
+      navigate("/login", { replace: true });
     }
-  }, [token, tieneAcceso, navigate]);
+  }, [token, tieneAcceso, navigate, tokenNoExpirado]);
 
   if (!token || !tieneAcceso) {
     return null;
