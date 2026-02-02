@@ -620,7 +620,7 @@
         animation: showing 0.5s ease-in forwards;
 
         &:hover {
-          z-index: 1000;
+          z-index: 1;
           transform: translateY(-10px);
         }
 
