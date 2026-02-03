@@ -166,6 +166,7 @@ export default function Register() {
                     <img src={person_green} alt="Usuario" />
                     <input
                       type="text"
+                      name="nombreUsuario"
                       className="login-form__input"
                       placeholder="Your username"
                       value={form.nombreUsuario}
@@ -180,6 +181,7 @@ export default function Register() {
                     <img src={arroba} alt="Email" />
                     <input
                       type="text"
+                      name="email"
                       className="login-form__input"
                       placeholder="alias@stremu.games"
                       value={form.email}
