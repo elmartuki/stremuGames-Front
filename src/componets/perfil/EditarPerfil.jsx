@@ -210,6 +210,7 @@ export default function EditarPerfil() {
             <div className="column_input">
               <input
                 type="text"
+                maxLength="20"
                 defaultValue={usuario.nombreUsuario}
                 onChange={(event) => {
                   setData({ ...data, nombreUsuario: event.target.value });
@@ -219,13 +220,18 @@ export default function EditarPerfil() {
             </div>
 
             <div className="column_input">
-              <label>Biografía</label>
+              <div className="label_container">
+                <label>Biografía </label>
+                <label htmlFor="">{data.biografia.length} / 300</label>
+              </div>
+
               <textarea
                 onChange={(event) =>
                   setData({ ...data, biografia: event.target.value })
                 }
                 defaultValue={usuario.biografia}
                 placeholder="Cuéntanos sobre ti..."
+                maxLength="300"
                 rows="3"
               />
             </div>

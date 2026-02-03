@@ -143,6 +143,15 @@
     align-items: center;
     text-align: center;
 
+    .biografia {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
     .iniciales {
       display: flex;
       align-items: center;
@@ -265,6 +274,12 @@
       position: relative;
       padding: 10px 0px;
       overflow: hidden;
+
+      .perfil_page_usuario {
+        .biografia {
+          width: 50%;
+        }
+      }
 
       .fondo_de_perfil {
         display: flex;

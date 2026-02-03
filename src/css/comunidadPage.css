@@ -439,8 +439,6 @@
   }
 
   .usuarios_container {
-    justify-content: center;
-
     .usuario_card {
       width: calc(25% - 15px);
     }
