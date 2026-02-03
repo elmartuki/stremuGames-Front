@@ -23,17 +23,20 @@ export default function CarritoPage() {
 
   const navigate = useNavigate();
 
+  const actualizarEstadoCarrito = (data) => {
+    setCarrito({
+      juegos: data?.carrito?.juegos || [],
+      total: data?.carrito?.total || 0,
+    });
+  };
+
   useEffect(() => {
     const fetchCarrito = async () => {
       try {
         const data = await obtenerCarrito();
-
-        setCarrito({
-          juegos: data?.carrito?.juegos || [],
-          total: data?.carrito?.total || 0,
-        });
+        actualizarEstadoCarrito(data);
       } catch (error) {
-        console.error(error);
+        console.error("Error al obtener el carrito:", error);
       } finally {
         setLoading(false);
       }
@@ -46,30 +49,29 @@ export default function CarritoPage() {
     try {
       await clientAxios.delete(`/carrito/${id}`);
       const data = await obtenerCarrito();
-
-      setCarrito({
-        juegos: data?.carrito?.juegos || [],
-        total: data?.carrito?.total || 0,
-      });
+      actualizarEstadoCarrito(data);
     } catch (error) {
-      console.error(error);
+      console.error("Error al eliminar el juego:", error);
     }
   };
 
   const subtotal = carrito.juegos.reduce(
-    (acc, item) => acc + (item.precio || 0),
-    0
+    (acc, item) => acc + (item.juegoId ? item.precio || 0 : 0),
+    0,
   );
 
   const total = subtotal;
   const descuento = 0;
 
   const handlePago = async () => {
-    if (carrito.juegos.length === 0) return;
+    const juegosValidos = carrito.juegos.filter(
+      (item) => item.juegoId !== null,
+    );
+    if (juegosValidos.length === 0) return;
 
     setProcesandoPago(true);
     try {
-      const data = await iniciarPago(carrito.juegos);
+      const data = await iniciarPago(juegosValidos);
 
       if (data.init_point) {
         window.location.href = data.init_point;
@@ -89,47 +91,57 @@ export default function CarritoPage() {
       <nav className="navbar-phone">
         <img onClick={() => navigate(-1)} src={back} alt="volver" />
         <div>
-          <p>Tu Carrito ({carrito.juegos.length})</p>
-          <p>Tu carrito de compras</p>
+          <p>Tu Carrito ({carrito.juegos.filter((i) => i.juegoId).length})</p>
+          <p>Gestiona tus compras</p>
         </div>
         <img src={more} alt="menu" />
       </nav>
 
       <section className="card-carrito_section">
         {loading ? (
-          <p>Cargando carrito...</p>
+          <p className="carrito_mensaje">Cargando carrito...</p>
         ) : carrito.juegos.length === 0 ? (
-          <p>🛒 El carrito está vacío</p>
+          <div className="carrito_vacio">
+            <p>🛒 El carrito está vacío</p>
+            <button onClick={() => navigate("/")}>Explorar Juegos</button>
+          </div>
         ) : (
-          carrito.juegos.map((item) => (
-            <article key={item.juegoId._id} className="card-carrito">
-              <div className="card-carrito_imagen">
-                <img
-                  src={item.juegoId.imagenPortada}
-                  alt={item.juegoId.titulo}
-                />
-              </div>
+          carrito.juegos.map((item) => {
+            if (!item.juegoId) return null;
 
-              <div className="card-carrito_body">
-                <div className="card-carrito_body_data">
-                  <h3>{item.juegoId.titulo}</h3>
-                  <p>{item.juegoId.desarrolladora}</p>
+            return (
+              <article key={item.juegoId._id} className="card-carrito">
+                <div className="card-carrito_imagen">
+                  <img
+                    src={item.juegoId.imagenPortada}
+                    alt={item.juegoId.titulo}
+                    onError={(e) => {
+                      e.target.src = "/noimage.png";
+                    }}
+                  />
                 </div>
 
-                <div className="card-carrito_body_data_2">
-                  <div className="card-carrito_body_data_precios_sin_descuento">
-                    <p>${item.precio}</p>
+                <div className="card-carrito_body">
+                  <div className="card-carrito_body_data">
+                    <h3>{item.juegoId.titulo}</h3>
+                    <p>{item.juegoId.desarrolladora}</p>
                   </div>
 
-                  <div className="card-carrito_body_data_button">
-                    <button onClick={() => handleDelete(item.juegoId._id)}>
-                      <img src={deleteIcon} alt="eliminar" />
-                    </button>
+                  <div className="card-carrito_body_data_2">
+                    <div className="card-carrito_body_data_precios_sin_descuento">
+                      <p>${item.precio}</p>
+                    </div>
+
+                    <div className="card-carrito_body_data_button">
+                      <button onClick={() => handleDelete(item.juegoId._id)}>
+                        <img src={deleteIcon} alt="eliminar" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))
+              </article>
+            );
+          })
         )}
       </section>
 
@@ -144,17 +156,16 @@ export default function CarritoPage() {
         <div className="ticket_body">
           <div>
             <p>
-              Subtotal ({carrito.juegos.length}{" "}
-              {carrito.juegos.length === 1 ? "artículo" : "artículos"})
+              Subtotal ({carrito.juegos.filter((i) => i.juegoId).length}{" "}
+              artículos)
             </p>
-            <p>${subtotal}</p>
+            <p>${subtotal.toFixed(2)}</p>
           </div>
 
           {descuento > 0 && (
             <div className="subtotal_desc">
               <p>
-                <img src={sell_yellow} alt="" />
-                Descuentos
+                <img src={sell_yellow} alt="" /> Descuentos
               </p>
               <p>- ${descuento}</p>
             </div>
@@ -162,7 +173,7 @@ export default function CarritoPage() {
         </div>
 
         <div className="ticket_footer">
-          <h3>Total: ${total}</h3>
+          <h3>Total: ${total.toFixed(2)}</h3>
         </div>
       </section>
 
@@ -172,7 +183,6 @@ export default function CarritoPage() {
             <img src={sell_yellow} alt="" /> ¿Tienes un código de promoción?
           </p>
         </div>
-
         <div className="desc-codigo">
           <div>
             <img src={cupondepago} alt="" />
@@ -191,11 +201,11 @@ export default function CarritoPage() {
         >
           <div className="boton_pago_total_precio">
             <p>TOTAL</p>
-            <p>${total}</p>
+            <p>${total.toFixed(2)}</p>
           </div>
           <div className="boton_pago_total_proceder">
             <p>
-              {procesandoPago ? "Cargando..." : "Proceder al Pago"}
+              {procesandoPago ? "Procesando..." : "Proceder al Pago"}
               {!procesandoPago && <img src={arrowRigth} alt="->" />}
             </p>
           </div>

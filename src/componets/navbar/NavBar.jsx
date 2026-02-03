@@ -1,280 +1,237 @@
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../css/navbar.css";
 import lupa from "../../icons/search.svg";
 import terminal from "../../icons/terminal_green.svg";
 import carrito from "../../icons/shopping.svg";
 import cerrar from "../../icons/close.svg";
 import noImage from "../../icons/noimage.png";
+
 import { useObtenerUsuario } from "../../services/obtenerUsuario";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useObtenerToken } from "../../services/obtenerToken";
 
 export default function NavBar() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
   const [openSearch, setOpenSearch] = useState(false);
   const [buscar, setBuscar] = useState("");
 
+  const searchRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { usuarioInfo } = useObtenerToken();
   const { usuario } = useObtenerUsuario();
   const { listado } = useObtenerJuegos();
 
-  const juegosDisponibles = listado || [];
+  const rolFinal = usuarioInfo?.rol || usuario?.rol;
 
-  const listadoFiltrado = juegosDisponibles.filter((juego) => {
-    return juego.titulo.toUpperCase().includes(buscar.toUpperCase());
-  });
+  const listadoFiltrado = (listado || []).filter((juego) =>
+    juego.titulo.toUpperCase().includes(buscar.toUpperCase()),
+  );
 
-  const foto_de_perfil = usuario?.foto_de_perfil || "";
   const nombreUsuario = usuario?.nombreUsuario || "";
+  const foto_de_perfil = usuario?.foto_de_perfil || "";
   const iniciales = nombreUsuario
     ? nombreUsuario.toUpperCase().slice(0, 2)
     : "";
 
-  const isActive = (path) => {
-    return location.pathname === path ? "active-link" : "";
-  };
+  const isActive = (path) => (location.pathname === path ? "active-link" : "");
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setOpenSearch(false);
+        setBuscar("");
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const opcionesUser = [
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Ofertas", ruta: "/ofertas" },
+    { titulo: "Categorías", ruta: "/categorias" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+  ];
+
+  const opcionesEmpresa = [
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+    { titulo: "Studio Panel", ruta: "/studio-panel" },
+  ];
+
+  const opcionesAdmin = [
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+    { titulo: "Admin Panel", ruta: "/admin-panel" },
+  ];
+
+  const opcionesInvitado = [
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Categorías", ruta: "/categorias" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+  ];
+
+  let opcionesAMostrar;
+  if (rolFinal === "admin") opcionesAMostrar = opcionesAdmin;
+  else if (rolFinal === "empresa") opcionesAMostrar = opcionesEmpresa;
+  else if (rolFinal === "user") opcionesAMostrar = opcionesUser;
+  else opcionesAMostrar = opcionesInvitado;
 
   return (
     <>
       {!usuario ? (
-        <>
-          <header className="navbar_init_container">
-            <nav className="navbar_init">
-              <div className="logo">
-                <p>
-                  <img src={terminal} alt="" />
-                  Stremugames
-                </p>
-              </div>
-
-              <div className="links">
-                {isDesktop ? (
-                  <>
-                    <button
-                      className={isActive("/explorar")}
-                      onClick={() => navigate("/explorar")}
-                    >
-                      Explorar
-                    </button>
-                    <button
-                      className={isActive("/categorias")}
-                      onClick={() => navigate("/categorias")}
-                    >
-                      Categorias
-                    </button>
-                    <button
-                      className={isActive("/comunidad")}
-                      onClick={() => navigate("/comunidad")}
-                    >
-                      Comunidad
-                    </button>
-                    <button
-                      className={isActive("/ofertas")}
-                      onClick={() => navigate("/ofertas")}
-                    >
-                      Ofertas
-                    </button>
-                  </>
-                ) : (
-                  <></>
-                )}
-                <button onClick={() => navigate("/login")}>Login</button>
-              </div>
-            </nav>
-          </header>
-        </>
+        <header className="navbar_init_container">
+          <nav className="navbar_init">
+            <div className="logo" onClick={() => navigate("/")}>
+              <p>
+                <img src={terminal} alt="logo" /> Stremugames
+              </p>
+            </div>
+            <div className="links">
+              {isDesktop &&
+                opcionesAMostrar.map((op, i) => (
+                  <button
+                    key={i}
+                    className={isActive(op.ruta)}
+                    onClick={() => navigate(op.ruta)}
+                  >
+                    {op.titulo}
+                  </button>
+                ))}
+              <button className="btn-login" onClick={() => navigate("/login")}>
+                Login
+              </button>
+            </div>
+          </nav>
+        </header>
       ) : (
         <>
           {isDesktop ? (
-            <>
-              <header className="navbar_desk_container">
-                <nav className="navbar_desk">
-                  <div className="navbar_desk_logo">
-                    <p>
-                      <img src={terminal} alt="" /> StremuGames
-                    </p>
-                  </div>
-                  <div className="navbar_desk_links">
-                    <button
-                      className={isActive("/explorar")}
-                      onClick={() => navigate("/explorar")}
-                    >
-                      <img src="" alt="" />
-                      Explorar
-                    </button>
-                    <button
-                      className={isActive("/categorias")}
-                      onClick={() => navigate("/categorias")}
-                    >
-                      <img src="" alt="" />
-                      Categorias
-                    </button>
-                    <button
-                      className={isActive("/ofertas")}
-                      onClick={() => navigate("/ofertas")}
-                    >
-                      <img src="" alt="" />
-                      Ofertas
-                    </button>
-                    <button
-                      className={isActive("/comunidad")}
-                      onClick={() => navigate("/comunidad")}
-                    >
-                      <img src="" alt="" />
-                      Comunidad
-                    </button>
-                  </div>
+            <header className="navbar_desk_container">
+              <nav className="navbar_desk">
+                <div
+                  className="navbar_desk_logo"
+                  onClick={() => navigate("/explorar")}
+                >
+                  <p>
+                    <img src={terminal} alt="" /> StremuGames
+                  </p>
+                </div>
 
-                  <div className="navbar_desk_perfil">
-                    <div
-                      className={`navbar_desk_perfil_search ${openSearch ? "open" : "closed"}`}
+                <div className="navbar_desk_links">
+                  {opcionesAMostrar.map((op, i) => (
+                    <button
+                      key={i}
+                      className={isActive(op.ruta)}
+                      onClick={() => navigate(op.ruta)}
                     >
-                      <div className="search">
-                        <img
-                          onClick={() => setOpenSearch(!openSearch)}
-                          src={lupa}
-                          alt="Buscar"
-                        />
-                        {openSearch && (
-                          <>
-                            <input
-                              onChange={(e) => setBuscar(e.target.value)}
-                              value={buscar}
-                              type="text"
-                              placeholder="Buscar juegos..."
-                              autoFocus
-                            />
-                            <img
-                              onClick={() => {
-                                setOpenSearch(false);
-                                setBuscar("");
-                              }}
-                              src={cerrar}
-                              alt="Cerrar"
-                            />
-                          </>
-                        )}
-                      </div>
+                      {op.titulo}
+                    </button>
+                  ))}
+                </div>
 
-                      {buscar !== "" && openSearch ? (
-                        <section className="resultados_section">
-                          <div className="resultados_finded">
-                            <span>RESULTADOS RAPIDOS</span>
-                            <span>
-                              {listadoFiltrado.length} JUEGOS ENCONTRADOS
-                            </span>
-                          </div>
-
-                          {listadoFiltrado.slice(0, 4).map((juego) => {
-                            const {
-                              imagenPortada,
-                              titulo,
-                              precioBase,
-                              precioDescuento,
-                              _id,
-                            } = juego;
-                            const porcentaje =
-                              ((precioBase - precioDescuento) / precioBase) *
-                              100;
-
-                            return (
-                              <article
-                                key={_id}
-                                className="resultado"
-                                onClick={() => {
-                                  navigate(`/juego/${_id}`);
-                                  setBuscar("");
-                                  setOpenSearch(false);
-                                }}
-                              >
-                                <div className="resultado_imagen">
-                                  <img
-                                    src={imagenPortada || noImage}
-                                    alt={titulo}
-                                    onError={(e) => {
-                                      e.target.src = noImage;
-                                    }}
-                                  />
-                                </div>
-                                <div className="resultado_data">
-                                  <p>{titulo}</p>
-                                  {precioBase !== precioDescuento ? (
-                                    <div>
-                                      <span className="descuento">
-                                        -{porcentaje.toFixed(0)}%
-                                      </span>
-                                      <span>${precioDescuento}</span>
-                                      <span>${precioBase}</span>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <span>${precioBase}</span>
-                                    </div>
-                                  )}
-                                </div>
-                              </article>
-                            );
-                          })}
-                          <div className="ver_mas">
-                            <p>Ver todos los resultados</p>
-                          </div>
-                        </section>
-                      ) : (
-                        <></>
+                <div className="navbar_desk_perfil">
+                  <div
+                    ref={searchRef}
+                    className={`navbar_desk_perfil_search ${openSearch ? "open" : "closed"}`}
+                  >
+                    <div className="search">
+                      <img
+                        onClick={() => setOpenSearch(!openSearch)}
+                        src={lupa}
+                        alt="Buscar"
+                      />
+                      {openSearch && (
+                        <>
+                          <input
+                            onChange={(e) => setBuscar(e.target.value)}
+                            value={buscar}
+                            type="text"
+                            placeholder="Buscar juegos..."
+                            autoFocus
+                          />
+                          <img
+                            onClick={() => {
+                              setOpenSearch(false);
+                              setBuscar("");
+                            }}
+                            src={cerrar}
+                            alt="Cerrar"
+                          />
+                        </>
                       )}
                     </div>
 
-                    <div className="navbar_desk_perfil_avatar">
-                      <div className="favoritos">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24px"
-                          viewBox="0 -960 960 960"
-                          width="24px"
-                          fill="white"
-                        >
-                          <path d="m480-120-58-52q-101-91-167-157T150-447q-39-52-54.5-103T80-658q0-106 71-177t177-71q59 0 113 25.5T534-810q13-15 27-28t31-23.5q53-48 119-48 106 0 177 71t71 177q0 57-15.5 108T860-447q-39 52-105 118T588-172l-58 52q-11 10-25 10t-25-10Z" />
-                        </svg>
-                      </div>
-                      <div className="perfil_info_wrapper">
-                        <div className="perfil_message">
-                          <p>Nos encanta verte,</p>
-                          <p>{nombreUsuario}</p>
+                    {buscar !== "" && openSearch && (
+                      <section className="resultados_section">
+                        <div className="resultados_finded">
+                          <span>RESULTADOS RÁPIDOS</span>
+                          <span>{listadoFiltrado.length} ENCONTRADOS</span>
                         </div>
-                        <div
-                          className="perfil"
-                          onClick={() => navigate("/perfil")}
-                        >
-                          {foto_de_perfil === "" ? (
-                            <p className="iniciales">{iniciales}</p>
-                          ) : (
-                            <img src={foto_de_perfil} alt="User" />
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        className="btn-carrito"
-                        onClick={() => navigate("/carrito")}
-                      >
-                        <img src={carrito} alt="" />
-                        Carrito
-                      </button>
-                    </div>
+                        {listadoFiltrado.slice(0, 4).map((juego) => {
+                          const porcentaje =
+                            ((juego.precioBase - juego.precioDescuento) /
+                              juego.precioBase) *
+                            100;
+                          return (
+                            <article
+                              key={juego._id}
+                              className="resultado"
+                              onClick={() => {
+                                navigate(`/juego/${juego._id}`);
+                                setBuscar("");
+                                setOpenSearch(false);
+                              }}
+                            >
+                              <div className="resultado_imagen">
+                                <img
+                                  src={juego.imagenPortada || noImage}
+                                  alt={juego.titulo}
+                                />
+                              </div>
+                              <div className="resultado_data">
+                                <p>{juego.titulo}</p>
+                                {juego.precioDescuento < juego.precioBase ? (
+                                  <>
+                                    <div className="precios_container">
+                                      <span className="descuento">
+                                        - {porcentaje.toFixed()}%
+                                      </span>
+                                      <span className="precio_base">
+                                        ${juego.precioBase}
+                                      </span>
+                                      <span className="precio_desscuento">
+                                        ${juego.precioDescuento}
+                                      </span>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="precios_container">
+                                      <span className="precio_descuento">
+                                        ${juego.precioBase}
+                                      </span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </article>
+                          );
+                        })}
+                      </section>
+                    )}
                   </div>
-                </nav>
-              </header>
-            </>
-          ) : (
-            <>
-              <header className="navbar_phone_container">
-                <nav className="navbar_phone">
-                  {openSearch ? (
-                    <></>
-                  ) : (
-                    <div className="navbar_phone_perfil">
+
+                  <div className="navbar_desk_perfil_avatar">
+                    <div className="perfil_info_wrapper">
+                      <div className="perfil_message">
+                        <p>Nos encanta verte,</p>
+                        <p>{nombreUsuario}</p>
+                      </div>
                       <div
                         className="perfil"
                         onClick={() => navigate("/perfil")}
@@ -282,109 +239,131 @@ export default function NavBar() {
                         {foto_de_perfil === "" ? (
                           <p className="iniciales">{iniciales}</p>
                         ) : (
-                          <img src={foto_de_perfil} alt="" />
+                          <img src={foto_de_perfil} alt="User" />
                         )}
                       </div>
-                      <div className="perfil_message">
-                        <p>Nos encanta verte,</p>
-                        <p>{nombreUsuario}</p>
-                      </div>
                     </div>
-                  )}
-
-                  <div
-                    style={{ width: openSearch ? "100%" : "60%" }}
-                    className="navbar_phone_search"
-                  >
-                    {openSearch ? (
-                      <div className="search_show">
-                        <img src={lupa} alt="" />
-                        <input
-                          onChange={(e) => setBuscar(e.target.value)}
-                          value={buscar}
-                          type="text"
-                          placeholder="Buscar juego..."
-                          autoFocus
-                        />
-                        <img
-                          onClick={() => {
-                            setOpenSearch(false);
-                            setBuscar("");
-                          }}
-                          src={cerrar}
-                          alt="Cerrar"
-                          style={{ marginLeft: "10px" }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="search-hidden">
-                        <img
-                          onClick={() => setOpenSearch(true)}
-                          src={lupa}
-                          alt=""
-                        />
-                      </div>
+                    {rolFinal === "user" && (
+                      <button
+                        className="btn-carrito"
+                        onClick={() => navigate("/carrito")}
+                      >
+                        <img src={carrito} alt="" /> Carrito
+                      </button>
                     )}
                   </div>
-                </nav>
-
-                {buscar !== "" && openSearch ? (
-                  <section className="resultados_section">
-                    {listadoFiltrado.slice(0, 4).map((juego) => {
-                      const {
-                        imagenPortada,
-                        titulo,
-                        precioBase,
-                        precioDescuento,
-                        _id,
-                      } = juego;
-                      const porcentaje =
-                        ((precioBase - precioDescuento) / precioBase) * 100;
-
-                      return (
-                        <article
-                          key={_id}
-                          className="resultado"
-                          onClick={() => {
-                            navigate(`/juego/${_id}`);
-                            setBuscar("");
-                            setOpenSearch(false);
-                          }}
-                        >
-                          <div className="resultado_imagen">
-                            <img
-                              src={imagenPortada || noImage}
-                              alt={titulo}
-                              onError={(e) => {
-                                e.target.src = noImage;
-                              }}
-                            />
-                          </div>
-                          <div className="resultado_data">
-                            <p>{titulo}</p>
-                            {precioBase !== precioDescuento ? (
-                              <div>
-                                <span className="descuento">
-                                  -{porcentaje.toFixed(0)}%
-                                </span>
-                                <span>${precioDescuento}</span>
-                                <span>${precioBase}</span>
-                              </div>
-                            ) : (
-                              <div>
-                                <span>${precioBase}</span>
-                              </div>
-                            )}
-                          </div>
-                        </article>
-                      );
-                    })}
-                  </section>
-                ) : (
-                  <></>
+                </div>
+              </nav>
+            </header>
+          ) : (
+            <header className="navbar_phone_container">
+              <nav className="navbar_phone" ref={searchRef}>
+                {!openSearch && (
+                  <div className="navbar_phone_perfil">
+                    <div className="perfil" onClick={() => navigate("/perfil")}>
+                      {foto_de_perfil === "" ? (
+                        <p className="iniciales">{iniciales}</p>
+                      ) : (
+                        <img src={foto_de_perfil} alt="" />
+                      )}
+                    </div>
+                    <div className="message_container">
+                      <p>Nos encanta verte,</p>
+                      <p>{nombreUsuario}</p>
+                    </div>
+                  </div>
                 )}
-              </header>
-            </>
+                <div
+                  style={{ width: openSearch ? "100%" : "auto" }}
+                  className="navbar_phone_search"
+                >
+                  {openSearch ? (
+                    <div className="search_show">
+                      <img src={lupa} alt="" />
+                      <input
+                        onChange={(e) => setBuscar(e.target.value)}
+                        value={buscar}
+                        type="text"
+                        placeholder="Buscar..."
+                        autoFocus
+                      />
+                      <img
+                        onClick={() => {
+                          setOpenSearch(false);
+                          setBuscar("");
+                        }}
+                        src={cerrar}
+                        alt="Cerrar"
+                      />
+
+                      {buscar !== "" && (
+                        <section className="resultados_section">
+                          <div className="resultados_finded">
+                            <span>{listadoFiltrado.length} ENCONTRADOS</span>
+                          </div>
+                          {listadoFiltrado.slice(0, 5).map((juego) => {
+                            const porcentaje =
+                              ((juego.precioBase - juego.precioDescuento) /
+                                juego.precioBase) *
+                              100;
+                            return (
+                              <article
+                                key={juego._id}
+                                className="resultado"
+                                onClick={() => {
+                                  navigate(`/juego/${juego._id}`);
+                                  setBuscar("");
+                                  setOpenSearch(false);
+                                }}
+                              >
+                                <div className="resultado_imagen">
+                                  <img
+                                    src={juego.imagenPortada || noImage}
+                                    alt={juego.titulo}
+                                  />
+                                </div>
+                                <div className="resultado_data">
+                                  <p>{juego.titulo}</p>
+                                  {juego.precioDescuento < juego.precioBase ? (
+                                    <>
+                                      <div className="precios_container">
+                                        <span className="descuento">
+                                          - {porcentaje.toFixed()}%
+                                        </span>
+                                        <span className="precio_base">
+                                          ${juego.precioBase}
+                                        </span>
+                                        <span className="precio_desscuento">
+                                          ${juego.precioDescuento}
+                                        </span>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="precios_container">
+                                        <span className="precio_descuento">
+                                          ${juego.precioBase}
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </article>
+                            );
+                          })}
+                        </section>
+                      )}
+                    </div>
+                  ) : (
+                    <img
+                      onClick={() => setOpenSearch(true)}
+                      src={lupa}
+                      alt="Buscar"
+                    />
+                  )}
+                </div>
+              </nav>
+            </header>
           )}
         </>
       )}

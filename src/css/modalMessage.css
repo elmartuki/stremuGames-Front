@@ -6,7 +6,7 @@
   top: 10px;
   animation: mostrar 2s ease 1;
   pointer-events: none;
-  z-index: 101;
+  z-index: 20000;
 
   .modal {
     display: flex;

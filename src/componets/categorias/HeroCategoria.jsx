@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react"; 
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useNavigate, useParams } from "react-router-dom";
 import favorito from "../../icons/fav.svg";
@@ -9,15 +9,38 @@ export default function HeroCategoria() {
   const { listado } = useObtenerJuegos();
   const { id } = useParams();
   const [indiceHero, setIndiceHero] = useState(0);
-
   const navigate = useNavigate();
 
-  const juegosParaMostrar = listado
-    ? listado
-        .filter((juego) => juego.categorias.includes(id))
-        .sort((a, b) => b.cantidadVotos - a.cantidadVotos)
-        .slice(0, 6)
-    : [];
+  const juegosParaMostrar = useMemo(() => {
+    if (!listado) return [];
+    let copia = [...listado];
+
+    if (id === "Populares") {
+      return copia
+        .sort((a, b) => (b.cantidadVotos || 0) - (a.cantidadVotos || 0))
+        .slice(0, 6);
+    }
+
+    if (id === "Recientes") {
+      return copia
+        .reverse()
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 6);
+    }
+
+    if (id === "ofertas") {
+      return copia
+        .filter(
+          (j) => j.precioDescuento < j.precioBase && j.precioDescuento > 0,
+        )
+        .slice(0, 6);
+    }
+
+    return copia
+      .filter((juego) => juego.categorias.includes(id))
+      .sort((a, b) => (b.cantidadVotos || 0) - (a.cantidadVotos || 0))
+      .slice(0, 6);
+  }, [listado, id]);
 
   useEffect(() => {
     if (juegosParaMostrar.length <= 1) return;
@@ -31,15 +54,15 @@ export default function HeroCategoria() {
     return () => clearInterval(intervalo);
   }, [juegosParaMostrar.length]);
 
+  useEffect(() => {
+    setIndiceHero(0);
+  }, [id]);
+
   if (juegosParaMostrar.length === 0) {
     return <div className="loading"></div>;
   }
 
   const juegoActual = juegosParaMostrar[indiceHero];
-  const porcentaje =
-    ((juegoActual.precioBase - juegoActual.precioDescuento) /
-      juegoActual.precioBase) *
-    100;
 
   const handleImageError = (e) => {
     e.target.onerror = null;
@@ -50,49 +73,35 @@ export default function HeroCategoria() {
     <article className="hero">
       <div
         className="hero_big"
-        onClick={() => {
-          navigate(`/juego/${juegoActual._id}`);
-        }}
+        onClick={() => navigate(`/juego/${juegoActual?._id}`)}
         style={{ position: "relative", overflow: "hidden" }}
       >
         <img
-          key={juegoActual._id}
+          key={juegoActual?._id}
           className="background animate-fade"
-          src={juegoActual.imagenPortada || noImage}
-          alt={juegoActual.titulo}
+          src={juegoActual?.imagenBanner || noImage}
+          alt={juegoActual?.titulo}
           onError={handleImageError}
         />
 
         <div className="hero_info">
-          {porcentaje > 0 && (
-            <span className="badge_descuento animate-slideUp">
-              -{porcentaje.toFixed()}%
-            </span>
-          )}
-
-          <h2 key={`title-${juegoActual._id}`} className="animate-slideUp">
-            {juegoActual.titulo}
+          <h2 key={`title-${juegoActual?._id}`} className="animate-slideUp">
+            {juegoActual?.titulo}
           </h2>
 
           <p
-            key={`dev-${juegoActual._id}`}
+            key={`dev-${juegoActual?._id}`}
             className="juegos_data_empresa animate-slideUp delay-100"
           >
-            {juegoActual.desarrolladora}
+            {juegoActual?.desarrolladora}
           </p>
 
-          <div className="hero_precios animate-slideUp delay-100">
-            {juegoActual.precioDescuento !== juegoActual.precioBase ? (
-              <>
-                <span className="precio_actual">
-                  ${juegoActual.precioDescuento}
-                </span>
-                <span className="precio_viejo">${juegoActual.precioBase}</span>
-              </>
-            ) : (
-              <span className="precio_actual">${juegoActual.precioBase}</span>
-            )}
-          </div>
+          <p
+            key={`desc-${juegoActual?._id}`}
+            className="animate-slideUp delay-100 descripcion"
+          >
+            {juegoActual?.descripcion}
+          </p>
 
           <div className="hero_buttons">
             <button
@@ -127,7 +136,6 @@ export default function HeroCategoria() {
               src={juego.imagenPortada || noImage}
               alt="miniatura"
             />
-
             <div className="thumb_info_overlay"></div>
           </div>
         ))}

@@ -4,17 +4,22 @@ import descIcon from "../icons/desc.svg";
 import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
 import noImage from "../icons/noimage.png";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
+import clientAxios from "../utils/clientAxios";
+import { useMessageStore } from "../services/MessageModal";
 
 export default function DetallesJuegoPage() {
   const { id } = useParams();
   const { juego } = useObtenerUnJuego(id);
   const { usuario } = useObtenerUsuario(juego?.studioId);
 
-  if (!juego) return <></>;
-  if (!usuario) return <></>;
+  const showMessage = useMessageStore((state) => state.showMessage);
+
+  const navigate = useNavigate();
+
+  if (!juego || !usuario) return <div className="loading_screen"></div>;
 
   const {
     titulo,
@@ -26,15 +31,33 @@ export default function DetallesJuegoPage() {
     galeria,
   } = juego;
 
-  const { nombreUsuario, foto_de_perfil } = usuario;
-
+  const { nombreUsuario, foto_de_perfil, _id } = usuario;
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
 
-  const descuento = ((precioBase - precioDescuento) / precioBase) * 100;
+  const descuento =
+    precioBase > 0 ? ((precioBase - precioDescuento) / precioBase) * 100 : 0;
 
   const handleImageError = (e) => {
     e.target.onerror = null;
     e.target.src = noImage;
+  };
+
+  const handleCarrito = async (juegoId) => {
+    try {
+      const response = await clientAxios.post(`/carrito/${juegoId}`);
+
+      if (response.data.message === "El juego ya está en el carrito")
+        return showMessage(`${response.data.message}.`, "error");
+
+      if (response.status === 200) {
+        showMessage(`${response.data.message}.`, "success");
+      }
+    } catch (error) {
+      console.error(error);
+      const errorMsg =
+        error.response?.data?.message || "No se pudo agregar al carrito.";
+      showMessage(`Atención ${errorMsg}`, "error");
+    }
   };
 
   return (
@@ -53,15 +76,12 @@ export default function DetallesJuegoPage() {
             <div className="juego_info_card">
               <div className="juego_generos">
                 <div className="badge_categoria_container">
-                  {categorias?.map((categoria, index) => {
-                    return (
-                      <span key={index} className="badge_categoria">
-                        {categoria}
-                      </span>
-                    );
-                  })}
+                  {categorias?.map((categoria, index) => (
+                    <span key={index} className="badge_categoria">
+                      {categoria}
+                    </span>
+                  ))}
                 </div>
-
                 <h1 className="juego_titulo">{titulo}</h1>
               </div>
 
@@ -70,18 +90,20 @@ export default function DetallesJuegoPage() {
                 <div className="precios_wrapper">
                   {precioBase !== precioDescuento ? (
                     <>
-                      <span className="precio_oferta">${precioDescuento}</span>
+                      <span className="precio_oferta">
+                        {precioDescuento === 0
+                          ? "Gratis"
+                          : `$${precioDescuento}`}
+                      </span>
                       <span className="precio_original">${precioBase}</span>
                     </>
                   ) : (
-                    <>
-                      <span className="precio_oferta">${precioBase}</span>
-                    </>
+                    <span className="precio_oferta">
+                      {precioBase === 0 ? "Gratis" : `$${precioBase}`}
+                    </span>
                   )}
 
-                  {descuento === 0 ? (
-                    <></>
-                  ) : (
+                  {descuento > 0 && (
                     <span className="descuento_tag">
                       -{descuento.toFixed()}%
                     </span>
@@ -90,22 +112,36 @@ export default function DetallesJuegoPage() {
               </div>
 
               <div className="juego_acciones">
-                <button className="btn_comprar">
+                <button
+                  onClick={() => handleCarrito(juego._id)}
+                  className="btn_comprar"
+                >
                   Añadir al carrito <img src={shop} alt="" />
                 </button>
-                <button className="btn_favorito">
+                <button
+                  className="btn_favorito"
+                  onClick={() =>
+                    showMessage(
+                      "La lista de deseos estará disponible pronto.",
+                      "info",
+                    )
+                  }
+                >
                   <img src={favIcon} alt="" />
                 </button>
               </div>
 
               <div className="juego_desarrollador">
                 <p className="section_subtitle">Desarrollador</p>
-                <div className="dev_card">
+                <div
+                  className="dev_card"
+                  onClick={() => navigate(`/comunidad/estudio/${_id}`)}
+                >
                   <div className="dev_logo">
                     {foto_de_perfil === "" ? (
                       <p className="iniciales">{iniciales}</p>
                     ) : (
-                      <img src={foto_de_perfil} alt="" />
+                      <img src={foto_de_perfil} alt={nombreUsuario} />
                     )}
                   </div>
                   <div className="dev_info">
@@ -122,11 +158,9 @@ export default function DetallesJuegoPage() {
                 </div>
                 <div className="spec_item">
                   <span className="spec_label">Procesador</span>
-                  <span className="spec_value">AMD Ryzen 5 5600g</span>
-                </div>
-                <div className="spec_item">
-                  <span className="spec_label">Gráficos</span>
-                  <span className="spec_value">AMD RX 6600XT 8gb</span>
+                  <span className="spec_value">
+                    Nivel recomendado para {titulo}
+                  </span>
                 </div>
               </div>
             </div>
@@ -140,23 +174,21 @@ export default function DetallesJuegoPage() {
               Galería
             </p>
             <section className="galeria_flex">
-              {galeria.length === 0 ? (
-                <p>El Desarrollador no agregó imagenes.</p>
+              {galeria?.length === 0 ? (
+                <p className="no_data_msg">
+                  El desarrollador no agregó imágenes.
+                </p>
               ) : (
-                <>
-                  {galeria.map((imagen) => {
-                    return (
-                      <div className="galeria_item">
-                        <img
-                          src={imagen || noImage}
-                          className="galeria_img"
-                          alt=""
-                          onError={handleImageError}
-                        />
-                      </div>
-                    );
-                  })}
-                </>
+                galeria?.map((imagen, index) => (
+                  <div key={index} className="galeria_item">
+                    <img
+                      src={imagen || noImage}
+                      className="galeria_img"
+                      alt=""
+                      onError={handleImageError}
+                    />
+                  </div>
+                ))
               )}
             </section>
           </div>

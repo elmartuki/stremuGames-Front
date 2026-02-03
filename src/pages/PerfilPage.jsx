@@ -65,7 +65,7 @@ export default function PerfilPage() {
           {biografia === "" ? (
             <p>"Este usuario aun no puso una biografia."</p>
           ) : (
-            <p>"{biografia}."</p>
+            <p className="biografia">"{biografia}."</p>
           )}
         </div>
 

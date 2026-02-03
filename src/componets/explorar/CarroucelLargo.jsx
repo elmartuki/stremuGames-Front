@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../../css/explorarPage.css";
-import { useAgregarJuegoAlcarrito } from "../../services/agregarAlCarrito";
+
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import useMediaQuery from "../../utils/changeDesk";
 import back from "../../icons/back_arrow.svg";
@@ -8,9 +8,7 @@ import next from "../../icons/next.svg";
 import noImage from "../../icons/noimage.png";
 import { useNavigate } from "react-router-dom";
 
-import CarroucelSkeleton, {
-  CarroucelLargoSkeleton,
-} from "../skeletons/Skeleton";
+import { CarroucelLargoSkeleton } from "../skeletons/Skeleton";
 
 export default function CarroucelLargo({ filtrar }) {
   const { listado, loading } = useObtenerJuegos();
@@ -30,24 +28,22 @@ export default function CarroucelLargo({ filtrar }) {
   if (filtrar === "Populares") {
     juegosParaMostrar.sort((a, b) => b.cantidadVotos - a.cantidadVotos);
   } else if (filtrar === "Recientes") {
-    juegosParaMostrar.sort((a, b) => b.createdAt - a.createdAt);
+    juegosParaMostrar.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
   } else if (filtrar) {
     juegosParaMostrar = juegosParaMostrar.filter((juego) =>
-      juego.categorias.includes(filtrar),
+      juego.categorias?.includes(filtrar),
     );
   }
 
   const handleChange = (dato) => {
     if (dato === "restar") {
-      if (indice > 0) {
-        setIndice(indice - 1);
-      }
+      if (indice > 0) setIndice(indice - 1);
     }
-
     if (dato === "sumar") {
-      if (indice + elementosPorPagina < juegosParaMostrar.length) {
+      if (indice + elementosPorPagina < juegosParaMostrar.length)
         setIndice(indice + 1);
-      }
     }
   };
 
@@ -60,9 +56,14 @@ export default function CarroucelLargo({ filtrar }) {
     <>
       {isDesktop ? (
         <>
-          <button className="btn-page" onClick={() => handleChange("restar")}>
-            <img src={back} alt="" />
+          <button
+            className="btn-page"
+            onClick={() => handleChange("restar")}
+            disabled={indice === 0}
+          >
+            <img src={back} alt="Anterior" />
           </button>
+
           {juegosParaMostrar
             .slice(indice, indice + elementosPorPagina)
             .map((juego) => {
@@ -70,23 +71,25 @@ export default function CarroucelLargo({ filtrar }) {
                 _id,
                 titulo,
                 imagenPortada,
+                imagenBanner,
                 desarrolladora,
                 precioDescuento,
                 precioBase,
                 descripcion,
+                categorias,
+                galeria,
               } = juego;
 
               const porcentaje =
-                ((precioBase - precioDescuento) / precioBase) * 100;
+                precioBase > 0
+                  ? ((precioBase - precioDescuento) / precioBase) * 100
+                  : 0;
 
               return (
                 <article
                   key={_id}
                   className="juego_card large"
-                  onClick={() => {
-                    useAgregarJuegoAlcarrito(_id);
-                    navigate(`/juego/${_id}`);
-                  }}
+                  onClick={() => navigate(`/juego/${_id}`)}
                   onMouseEnter={() => setPreviewId(_id)}
                   onMouseLeave={() => setPreviewId(null)}
                 >
@@ -107,74 +110,111 @@ export default function CarroucelLargo({ filtrar }) {
                           -{porcentaje.toFixed()}%
                         </div>
                         <p>${precioBase}</p>
-                        <p>${precioDescuento}</p>
+                        <p>
+                          {precioDescuento === 0
+                            ? "Gratis"
+                            : `$${precioDescuento}`}
+                        </p>
                       </div>
                     ) : (
                       <div>
-                        <p>${precioBase}</p>
+                        <p>{precioBase === 0 ? "Gratis" : `$${precioBase}`}</p>
                       </div>
                     )}
                   </div>
 
                   {previewId === _id && (
-                    <article className="preview-game">
+                    <div className="preview-game">
                       <div className="image">
                         <img
                           onError={handleImageError}
-                          src={imagenPortada || noImage}
-                          alt=""
+                          src={imagenBanner || imagenPortada || noImage}
+                          alt="Preview"
                         />
                       </div>
 
                       <div className="datos">
                         <p className="titulo">{titulo}</p>
+                        <p className="empresa">{desarrolladora}</p>
 
-                        <p>{desarrolladora}</p>
+                        {categorias && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "5px",
+                              flexWrap: "wrap",
+                              marginBottom: "5px",
+                            }}
+                          >
+                            {categorias.slice(0, 3).map((cat, idx) => (
+                              <span
+                                key={idx}
+                                style={{
+                                  fontSize: "0.7rem",
+                                  background: "#333",
+                                  padding: "2px 6px",
+                                  borderRadius: "4px",
+                                  color: "#ccc",
+                                }}
+                              >
+                                {cat}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
                         <div className="precios_container">
                           {precioDescuento !== precioBase ? (
                             <div>
-                              <p>${precioDescuento}</p>
+                              <span className="descuento">
+                                - {porcentaje.toFixed(0)}%
+                              </span>
+                              <p>
+                                {precioDescuento === 0
+                                  ? "Gratis"
+                                  : `$${precioDescuento}`}
+                              </p>
                               <p>${precioBase}</p>
                             </div>
                           ) : (
                             <div>
-                              <p>${precioBase}</p>
+                              <p>
+                                {precioBase === 0 ? "Gratis" : `$${precioBase}`}
+                              </p>
                             </div>
                           )}
                         </div>
+
                         <p className="descripcion">{descripcion}</p>
                       </div>
-                    </article>
+                    </div>
                   )}
                 </article>
               );
             })}
-          <button className="btn-page" onClick={() => handleChange("sumar")}>
-            <img src={next} alt="" />
+
+          <button
+            className="btn-page"
+            onClick={() => handleChange("sumar")}
+            disabled={indice + elementosPorPagina >= juegosParaMostrar.length}
+          >
+            <img src={next} alt="Siguiente" />
           </button>
         </>
       ) : (
         <>
           {juegosParaMostrar?.map((juego) => {
-            const {
-              _id,
-              titulo,
-              imagenPortada,
-              desarrolladora,
-              precioDescuento,
-              precioBase,
-            } = juego;
+            const { _id, titulo, imagenPortada, precioDescuento, precioBase } =
+              juego;
 
             const porcentaje =
-              ((precioBase - precioDescuento) / precioBase) * 100;
+              precioBase > 0
+                ? ((precioBase - precioDescuento) / precioBase) * 100
+                : 0;
 
             return (
               <article
-                onClick={() => {
-                  useAgregarJuegoAlcarrito(_id);
-                  navigate(`/juego/${_id}`);
-                }}
+                onClick={() => navigate(`/juego/${_id}`)}
                 key={_id}
                 className="juego_card large"
               >
@@ -192,11 +232,15 @@ export default function CarroucelLargo({ filtrar }) {
                     <div>
                       <div className="descuento">-{porcentaje.toFixed()}%</div>
                       <p>${precioBase}</p>
-                      <p>${precioDescuento}</p>
+                      <p>
+                        {precioDescuento === 0
+                          ? "Gratis"
+                          : `$${precioDescuento}`}
+                      </p>
                     </div>
                   ) : (
                     <div>
-                      <p>${precioBase}</p>
+                      <p>{precioBase === 0 ? "Gratis" : `$${precioBase}`}</p>
                     </div>
                   )}
                 </div>

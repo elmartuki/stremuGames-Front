@@ -46,7 +46,7 @@ export default function HeroJuegos({ filtrar }) {
           <img
             key={juegoActual?._id}
             className="background animate-fade"
-            src={juegoActual?.imagenPortada || noImage}
+            src={juegoActual?.imagenBanner || noImage}
             alt={juegoActual?.titulo}
             onError={handleImageError}
           />

@@ -1,31 +1,38 @@
-import "../../css/adminPanel.css";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useObtenerUsuarios } from "../../services/obtenerUsuarios";
+import clientAxios from "../../utils/clientAxios";
+
+import "../../css/adminPanel.css";
+
 import back from "../../icons/back.svg";
 import more from "../../icons/more.svg";
 import lupa from "../../icons/search.svg";
-import ojo from "../../icons/eye.svg";
 import ban from "../../icons/ban.svg";
-import { useObtenerUsuarios } from "../../services/obtenerUsuarios";
-import { useState } from "react";
 
 export default function Empresas() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
-
   const [paginaActual, setPaginaActual] = useState(1);
   const empresasPorPagina = 10;
 
-  const { empresas = [] } = useObtenerUsuarios();
+  const { empresas: empresasData = [] } = useObtenerUsuarios();
 
-  const listadoFiltrado = empresas.filter((empresa) => {
-    return empresa.nombreUsuario.toLowerCase().includes(busqueda.toLowerCase());
-  });
+  const [listaEmpresas, setListaEmpresas] = useState([]);
+
+  useEffect(() => {
+    if (empresasData.length > 0 && listaEmpresas.length === 0) {
+      setListaEmpresas(empresasData);
+    }
+  }, [empresasData, listaEmpresas.length]);
+
+  const listadoFiltrado = listaEmpresas.filter((empresa) =>
+    empresa.nombreUsuario.toLowerCase().includes(busqueda.toLowerCase()),
+  );
 
   const ultimoIndice = paginaActual * empresasPorPagina;
   const primerIndice = ultimoIndice - empresasPorPagina;
-
   const empresasPaginadas = listadoFiltrado.slice(primerIndice, ultimoIndice);
-
   const totalPaginas = Math.ceil(listadoFiltrado.length / empresasPorPagina);
 
   const manejarBusqueda = (e) => {
@@ -33,98 +40,150 @@ export default function Empresas() {
     setPaginaActual(1);
   };
 
+  const handleBannear = async (id) => {
+    try {
+      const response = await clientAxios.put(`/usuarios/banear/${id}`);
+
+      console.log(response);
+
+      if (response.status === 200) {
+        setListaEmpresas((prevEmpresas) =>
+          prevEmpresas.map((emp) =>
+            emp._id === id ? { ...emp, activo: !emp.activo } : emp,
+          ),
+        );
+        console.log("Estado de usuario actualizado correctamente");
+      }
+    } catch (error) {
+      console.error("Error al banear/activar:", error);
+      alert("No se pudo realizar la acción. Inténtalo de nuevo.");
+    }
+  };
+
   return (
-    <section className="listado_de_usuarios_section">
-      <nav className="navbar-phone">
-        <img onClick={() => navigate(-1)} src={back} alt="Volver" />
-        <div>
-          <p>Administrador de Empresas</p>
-          <p>Gestiona las cuentas de empresas.</p>
-        </div>
-        <img src={more} alt="Más" />
-      </nav>
+    <>
+      <header className="navbar_admin">
+        <img
+          onClick={() => navigate(-1)}
+          src={back}
+          className="btn_back"
+          alt="Volver"
+        />
 
-      <section className="listado_de_usuarios">
-        <div className="listado_de_usuarios_search">
-          <img src={lupa} alt="Buscar" />
-          <input
-            onChange={manejarBusqueda}
-            type="text"
-            placeholder="Buscar empresa..."
-          />
+        <div className="text_container">
+          <span className="subtitulo">Gestión</span>
+          <h1 className="titulo">Listado de Empresas</h1>
         </div>
 
-        <section className="listado_de_usuarios">
-          {empresasPaginadas.map((empresa) => {
-            const { nombreUsuario, foto_de_perfil, _id, createdAt } = empresa;
-            const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
-            const año = new Date(createdAt).getFullYear();
-            const idCorto = _id.slice(-5).toUpperCase();
+        <img className="more" src={more} alt="" />
+      </header>
 
-            return (
-              <article className="usuario_card" key={_id}>
-                <div className="usuario_card_data">
-                  <div className="usuario_card_data_imagen">
-                    {foto_de_perfil === "" ? (
-                      <span className="iniciales">{iniciales}</span>
-                    ) : (
-                      <img src={foto_de_perfil} alt={nombreUsuario} />
-                    )}
-                  </div>
-                  <div className="usuario_datos">
-                    <p className="usuario_datos_nombre">{nombreUsuario}</p>
-                    <p className="usuario_datos_año">
-                      ID: #{idCorto} • {año}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="usuario_card_buttons">
-                  <button
-                    className="btn_ver"
-                    onClick={() =>
-                      navigate(`/comunidad/estudio/${empresa._id}`)
-                    }
-                  >
-                    <img src={ojo} alt="Ver" />
-                  </button>
-                  <button className="btn_ban">
-                    <img src={ban} alt="Banear" />
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-
-          {listadoFiltrado.length === 0 && (
-            <p className="sin_resultados">
-              No se encontraron empresas con ese nombre.
-            </p>
-          )}
+      <section className="page_panel_admin">
+        <section className="seccion_busqueda_admin">
+          <div className="input_buscador">
+            <img src={lupa} alt="Buscar" />
+            <input
+              onChange={manejarBusqueda}
+              type="text"
+              placeholder="Buscar empresa por nombre..."
+              value={busqueda}
+            />
+          </div>
         </section>
 
-        {totalPaginas > 1 && (
-          <div className="paginacion_controles">
-            <button
-              disabled={paginaActual === 1}
-              onClick={() => setPaginaActual(paginaActual - 1)}
-            >
-              Anterior
-            </button>
+        <section className="seccion_gestion">
+          <div className="contenedor_tarjetas">
+            {empresasPaginadas.length > 0 ? (
+              empresasPaginadas.map((empresa) => {
+                const {
+                  nombreUsuario,
+                  foto_de_perfil,
+                  _id,
+                  createdAt,
+                  activo,
+                } = empresa;
+                const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
+                const año = new Date(createdAt).getFullYear();
 
-            <span>
-              {paginaActual} / {totalPaginas}
-            </span>
+                return (
+                  <div className="tarjeta_desarrolladora" key={_id}>
+                    <div className="tarjeta_desarrolladora_header">
+                      <div className="desarrolladora_logo">
+                        {foto_de_perfil === "" ? (
+                          <p>{iniciales}</p>
+                        ) : (
+                          <img src={foto_de_perfil} alt={nombreUsuario} />
+                        )}
+                      </div>
+                      <div className="desarrolladora_data">
+                        <h4>{nombreUsuario}</h4>
+                        <p>Empresa • Reg. {año}</p>
+                      </div>
 
-            <button
-              disabled={paginaActual === totalPaginas}
-              onClick={() => setPaginaActual(paginaActual + 1)}
-            >
-              Siguiente
-            </button>
+                      <span
+                        className={`estado_etiqueta ${!activo ? "banned" : ""}`}
+                      >
+                        {activo ? "ACTIVA" : "BANEADO"}
+                      </span>
+                    </div>
+
+                    <div className="desarrolladora_botones">
+                      <button
+                        className="ver_perfil"
+                        onClick={() => navigate(`/comunidad/estudio/${_id}`)}
+                      >
+                        Ver Perfil
+                      </button>
+                      <button
+                        className={activo ? "banear" : "desbanear"}
+                        onClick={() => handleBannear(_id)}
+                      >
+                        <img src={ban} alt="Banear" />
+                        {activo ? "Banear" : "Activar"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  padding: "40px",
+                  color: "#666",
+                }}
+              >
+                <p>No se encontraron empresas con ese nombre.</p>
+              </div>
+            )}
           </div>
-        )}
+
+          {totalPaginas > 1 && (
+            <div className="ver_mas_container" style={{ gap: "20px" }}>
+              <button
+                onClick={() => setPaginaActual(paginaActual - 1)}
+                disabled={paginaActual === 1}
+                className="btn_ver_mas"
+              >
+                Anterior
+              </button>
+
+              <span style={{ color: "white", fontWeight: "bold" }}>
+                {paginaActual} / {totalPaginas}
+              </span>
+
+              <button
+                onClick={() => setPaginaActual(paginaActual + 1)}
+                disabled={paginaActual === totalPaginas}
+                className="btn_ver_mas"
+              >
+                Siguiente
+              </button>
+            </div>
+          )}
+        </section>
       </section>
-    </section>
+    </>
   );
 }

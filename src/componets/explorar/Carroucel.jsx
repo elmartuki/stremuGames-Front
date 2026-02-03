@@ -29,11 +29,8 @@ export default function Carroucel() {
 
   const handleChange = (dato) => {
     if (dato === "restar") {
-      if (indice > 0) {
-        setIndice(indice - 1);
-      }
+      if (indice > 0) setIndice(indice - 1);
     }
-
     if (dato === "sumar") {
       if (indice + elementosPorPagina < listadoFiltrado.length) {
         setIndice(indice + 1);
@@ -50,28 +47,37 @@ export default function Carroucel() {
     <>
       {isDesktop ? (
         <>
-          <button className="btn-page" onClick={() => handleChange("restar")}>
+          <button
+            className="btn-page"
+            onClick={() => handleChange("restar")}
+            disabled={indice === 0}
+          >
             <img src={back} alt="" />
           </button>
+
           {listadoFiltrado
             .slice(indice, indice + elementosPorPagina)
             .map((juego) => {
               const {
                 titulo,
                 imagenPortada,
+                imagenBanner,
                 desarrolladora,
                 precioDescuento,
                 precioBase,
                 descripcion,
+                categorias,
+                galeria,
                 _id,
               } = juego;
 
               const porcentaje =
                 ((precioBase - precioDescuento) / precioBase) * 100;
+
               return (
                 <article
                   key={_id}
-                  className="juego_card"
+                  className="juego_card large"
                   onClick={() => navigate(`/juego/${_id}`)}
                   onMouseEnter={() => setPreviewId(_id)}
                   onMouseLeave={() => setPreviewId(null)}
@@ -86,8 +92,9 @@ export default function Carroucel() {
 
                   <button className="descuento">
                     <img src={sell} alt="" />
-                    AHORRA UN {porcentaje.toFixed(0)} %
+                    AHORRÁ UN {porcentaje.toFixed(0)} %
                   </button>
+
                   <div className="juego_card_data">
                     <p className="juego_card_data_titulo">{titulo}</p>
 
@@ -98,55 +105,88 @@ export default function Carroucel() {
                   </div>
 
                   {previewId === _id && (
-                    <article className="preview-game">
+                    <div className="preview-game">
                       <div className="image">
                         <img
                           onError={handleImageError}
-                          src={imagenPortada || noImage}
-                          alt=""
+                          src={imagenBanner || imagenPortada || noImage}
+                          alt="Preview"
                         />
                       </div>
 
                       <div className="datos">
                         <p className="titulo">{titulo}</p>
+                        <p className="empresa">{desarrolladora}</p>
 
-                        <p>{desarrolladora}</p>
+                        {categorias && (
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "5px",
+                              flexWrap: "wrap",
+                              marginBottom: "5px",
+                            }}
+                          >
+                            {categorias.slice(0, 3).map((cat, idx) => (
+                              <span
+                                key={idx}
+                                style={{
+                                  fontSize: "0.7rem",
+                                  background: "#333",
+                                  padding: "2px 6px",
+                                  borderRadius: "4px",
+                                  color: "#ccc",
+                                }}
+                              >
+                                {cat}
+                              </span>
+                            ))}
+                          </div>
+                        )}
 
                         <div className="precios_container">
                           <div>
-                            <p>${precioDescuento}</p>
+                            <div className="tag_descuento">
+                              -{porcentaje.toFixed()}%
+                            </div>
+                            <p>
+                              {precioDescuento === 0
+                                ? "Gratis"
+                                : `$${precioDescuento}`}
+                            </p>
+
                             <p>${precioBase}</p>
                           </div>
                         </div>
+
                         <p className="descripcion">{descripcion}</p>
                       </div>
-                    </article>
+                    </div>
                   )}
                 </article>
               );
             })}
-          <button className="btn-page" onClick={() => handleChange("sumar")}>
+
+          <button
+            className="btn-page"
+            onClick={() => handleChange("sumar")}
+            disabled={indice + elementosPorPagina >= listadoFiltrado.length}
+          >
             <img src={next} alt="" />
           </button>
         </>
       ) : (
         <>
           {listadoFiltrado?.map((juego) => {
-            const {
-              titulo,
-              imagenPortada,
-              desarrolladora,
-              precioDescuento,
-              precioBase,
-              _id,
-            } = juego;
+            const { titulo, imagenPortada, precioDescuento, precioBase, _id } =
+              juego;
 
             const porcentaje =
               ((precioBase - precioDescuento) / precioBase) * 100;
             return (
               <article
                 key={_id}
-                className="juego_card "
+                className="juego_card"
                 onClick={() => navigate(`/juego/${_id}`)}
               >
                 <div className="juego_card_imagen">
@@ -159,7 +199,7 @@ export default function Carroucel() {
 
                 <button className="descuento">
                   <img src={sell} alt="" />
-                  AHORRA UN {porcentaje.toFixed(0)} %
+                  AHORRÁ UN {porcentaje.toFixed(0)} %
                 </button>
 
                 <div className="juego_card_data">

@@ -8,6 +8,7 @@ import price from "../../icons/price.svg";
 import descripcion from "../../icons/descripcion.svg";
 import upload from "../../icons/upload.svg";
 import galeriaIcon from "../../icons/galeria.svg";
+import noImage from "../../icons/noimage.png";
 
 import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
@@ -164,6 +165,11 @@ export default function SubirJuego() {
       console.error(error);
       alert("Hubo un error al crear el juego");
     }
+  };
+
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
   };
 
   return (
