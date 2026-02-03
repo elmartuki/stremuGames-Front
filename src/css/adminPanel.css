@@ -502,6 +502,17 @@
               background-color: #555;
             }
           }
+
+          .btn-mostrar {
+            background-color: #66f61e9d !important;
+            color: #000000ce !important;
+            border: 1px solid #66f61e !important;
+
+            &:hover {
+              background-color: #66f61e !important;
+            }
+          }
+
           .eliminar {
             background: rgba(231, 76, 60, 0.1);
             color: #e74c3c;

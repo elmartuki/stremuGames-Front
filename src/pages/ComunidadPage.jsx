@@ -16,6 +16,7 @@ import { useCalcularNivel } from "../services/calcularNivel";
 
 import { useNavigate } from "react-router-dom";
 import { ComunidadSkeleton } from "../componets/skeletons/Skeleton";
+import useMediaQuery from "../utils/changeDesk";
 
 const PlayerCard = ({ usuario, navigate }) => {
   const { nivel } = useCalcularNivel(usuario._id);
@@ -63,6 +64,8 @@ export default function ComunidadPage() {
   const [mostrarEmpresasLimite, setMostrarEmpresasLimite] = useState(4);
   const [mostrarJugadoresLimite, setMostrarJugadoresLimite] = useState(4);
   const [imgError, setImgError] = useState(false);
+
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const procesarLista = (lista) => {
     let resultado = lista.filter((item) =>
@@ -161,77 +164,151 @@ export default function ComunidadPage() {
             <div className="seccion_1_header">
               <p>Explorar Empresas y Desarrolladoras</p>
             </div>
-            <div className="empresas_container">
-              {empresasFiltradas
-                .slice(0, mostrarEmpresasLimite)
-                .map((empresa) => {
-                  const juegosReales = listado.filter((j) => {
-                    const sId =
-                      typeof j.studioId === "object"
-                        ? j.studioId?.$oid
-                        : j.studioId;
-                    return sId === empresa._id;
-                  }).length;
+            {isDesktop ? (
+              <>
+                <div className="empresas_container">
+                  {empresasFiltradas
+                    .slice(0, mostrarEmpresasLimite)
+                    .map((empresa) => {
+                      const juegosReales = listado.filter((j) => {
+                        const sId =
+                          typeof j.studioId === "object"
+                            ? j.studioId?.$oid
+                            : j.studioId;
+                        return sId === empresa._id;
+                      }).length;
 
-                  return (
-                    <div key={empresa._id} className="empresa-card">
-                      <div className="empresa_icon">
-                        <img
-                          className="background_banner"
-                          src={no_banner}
-                          alt=""
-                        />
-                        <div className="empresa_perfil">
-                          {empresa.foto_de_perfil && !imgError ? (
-                            <div className="empresa_perfil_container">
-                              <img
-                                src={empresa.foto_de_perfil}
-                                alt=""
-                                onError={() => setImgError(true)}
-                              />
-                              <div className="empresa_info">
-                                <p>{empresa.nombreUsuario}</p>
-                              </div>
+                      return (
+                        <div key={empresa._id} className="empresa-card">
+                          <div className="empresa_icon">
+                            <img
+                              className="background_banner"
+                              src={no_banner}
+                              alt=""
+                            />
+                            <div className="empresa_perfil">
+                              {empresa.foto_de_perfil && !imgError ? (
+                                <div className="empresa_perfil_container">
+                                  <img
+                                    src={empresa.foto_de_perfil}
+                                    alt=""
+                                    onError={() => setImgError(true)}
+                                  />
+                                  <div className="empresa_info">
+                                    <p>{empresa.nombreUsuario}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="empresa_perfil_container">
+                                  <p className="iniciales">
+                                    {empresa.nombreUsuario
+                                      .toUpperCase()
+                                      .slice(0, 2)}
+                                  </p>
+                                  <div className="empresa_info">
+                                    <h4>{empresa.nombreUsuario}</h4>
+                                  </div>
+                                </div>
+                              )}
                             </div>
-                          ) : (
-                            <div className="empresa_perfil_container">
-                              <p className="iniciales">
-                                {empresa.nombreUsuario
-                                  .toUpperCase()
-                                  .slice(0, 2)}
-                              </p>
-                              <div className="empresa_info">
-                                <h4>{empresa.nombreUsuario}</h4>
+                          </div>
+                          <div className="empresa_info_container">
+                            <span className="empresa_stats">
+                              {juegosReales} Juegos Publicados
+                            </span>
+                            <button
+                              onClick={() =>
+                                navigate(`/comunidad/estudio/${empresa._id}`)
+                              }
+                            >
+                              Ver Perfil
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="empresas_container">
+                  {empresasFiltradas.map((empresa) => {
+                    const juegosReales = listado.filter((j) => {
+                      const sId =
+                        typeof j.studioId === "object"
+                          ? j.studioId?.$oid
+                          : j.studioId;
+                      return sId === empresa._id;
+                    }).length;
+
+                    return (
+                      <div key={empresa._id} className="empresa-card">
+                        <div className="empresa_icon">
+                          <img
+                            className="background_banner"
+                            src={no_banner}
+                            alt=""
+                          />
+                          <div className="empresa_perfil">
+                            {empresa.foto_de_perfil && !imgError ? (
+                              <div className="empresa_perfil_container">
+                                <img
+                                  src={empresa.foto_de_perfil}
+                                  alt=""
+                                  onError={() => setImgError(true)}
+                                />
+                                <div className="empresa_info">
+                                  <p>{empresa.nombreUsuario}</p>
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            ) : (
+                              <div className="empresa_perfil_container">
+                                <p className="iniciales">
+                                  {empresa.nombreUsuario
+                                    .toUpperCase()
+                                    .slice(0, 2)}
+                                </p>
+                                <div className="empresa_info">
+                                  <h4>{empresa.nombreUsuario}</h4>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="empresa_info_container">
+                          <span className="empresa_stats">
+                            {juegosReales} Juegos Publicados
+                          </span>
+                          <button
+                            onClick={() =>
+                              navigate(`/comunidad/estudio/${empresa._id}`)
+                            }
+                          >
+                            Ver Perfil
+                          </button>
                         </div>
                       </div>
-                      <div className="empresa_info_container">
-                        <span className="empresa_stats">
-                          {juegosReales} Juegos Publicados
-                        </span>
-                        <button
-                          onClick={() =>
-                            navigate(`/comunidad/estudio/${empresa._id}`)
-                          }
-                        >
-                          Ver Perfil
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
-            {empresasFiltradas.length > mostrarEmpresasLimite && (
-              <div className="btn_container">
-                <button
-                  className="ver_mas_btn"
-                  onClick={() => setMostrarEmpresasLimite((p) => p + 4)}
-                >
-                  Ver Más Empresas
-                </button>
-              </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+
+            {isDesktop ? (
+              <>
+                {empresasFiltradas.length > mostrarEmpresasLimite && (
+                  <div className="btn_container">
+                    <button
+                      className="ver_mas_btn"
+                      onClick={() => setMostrarEmpresasLimite((p) => p + 4)}
+                    >
+                      Ver Más Empresas
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <></>
             )}
           </section>
         )}

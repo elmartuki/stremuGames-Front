@@ -18,7 +18,6 @@ export default function NavBar() {
   const [buscar, setBuscar] = useState("");
 
   const searchRef = useRef(null);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,37 +46,33 @@ export default function NavBar() {
         setBuscar("");
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openSearch]);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const opcionesUser = [
-    { titulo: "Explorar", ruta: "/explorar", icono: "" },
-    { titulo: "Ofertas", ruta: "/ofertas", icono: "" },
-    { titulo: "Categorías", ruta: "/categorias", icono: "" },
-    { titulo: "Comunidad", ruta: "/comunidad", icono: "" },
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Ofertas", ruta: "/ofertas" },
+    { titulo: "Categorías", ruta: "/categorias" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
   ];
 
   const opcionesEmpresa = [
-    { titulo: "Explorar", ruta: "/explorar", icono: "" },
-    { titulo: "Comunidad", ruta: "/comunidad", icono: "" },
-    { titulo: "Studio Panel", ruta: "/studio-panel", icono: "" },
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+    { titulo: "Studio Panel", ruta: "/studio-panel" },
   ];
 
   const opcionesAdmin = [
-    { titulo: "Explorar", ruta: "/explorar", icono: "" },
-    { titulo: "Comunidad", ruta: "/comunidad", icono: "" },
-    { titulo: "Admin Panel", ruta: "/admin-panel", icono: "" },
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
+    { titulo: "Admin Panel", ruta: "/admin-panel" },
   ];
 
   const opcionesInvitado = [
-    { titulo: "Explorar", ruta: "/explorar", icono: "" },
-    { titulo: "Categorías", ruta: "/categorias", icono: "" },
-    { titulo: "Comunidad", ruta: "/comunidad", icono: "" },
+    { titulo: "Explorar", ruta: "/explorar" },
+    { titulo: "Categorías", ruta: "/categorias" },
+    { titulo: "Comunidad", ruta: "/comunidad" },
   ];
 
   let opcionesAMostrar;
@@ -177,30 +172,56 @@ export default function NavBar() {
                           <span>RESULTADOS RÁPIDOS</span>
                           <span>{listadoFiltrado.length} ENCONTRADOS</span>
                         </div>
-                        {listadoFiltrado.slice(0, 4).map((juego) => (
-                          <article
-                            key={juego._id}
-                            className="resultado"
-                            onClick={() => {
-                              navigate(`/juego/${juego._id}`);
-                              setBuscar("");
-                              setOpenSearch(false);
-                            }}
-                          >
-                            <div className="resultado_imagen">
-                              <img
-                                src={juego.imagenPortada || noImage}
-                                alt={juego.titulo}
-                              />
-                            </div>
-                            <div className="resultado_data">
-                              <p>{juego.titulo}</p>
-                              <span>
-                                ${juego.precioDescuento || juego.precioBase}
-                              </span>
-                            </div>
-                          </article>
-                        ))}
+                        {listadoFiltrado.slice(0, 4).map((juego) => {
+                          const porcentaje =
+                            ((juego.precioBase - juego.precioDescuento) /
+                              juego.precioBase) *
+                            100;
+                          return (
+                            <article
+                              key={juego._id}
+                              className="resultado"
+                              onClick={() => {
+                                navigate(`/juego/${juego._id}`);
+                                setBuscar("");
+                                setOpenSearch(false);
+                              }}
+                            >
+                              <div className="resultado_imagen">
+                                <img
+                                  src={juego.imagenPortada || noImage}
+                                  alt={juego.titulo}
+                                />
+                              </div>
+                              <div className="resultado_data">
+                                <p>{juego.titulo}</p>
+                                {juego.precioDescuento < juego.precioBase ? (
+                                  <>
+                                    <div className="precios_container">
+                                      <span className="descuento">
+                                        - {porcentaje.toFixed()}%
+                                      </span>
+                                      <span className="precio_base">
+                                        ${juego.precioBase}
+                                      </span>
+                                      <span className="precio_desscuento">
+                                        ${juego.precioDescuento}
+                                      </span>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <div className="precios_container">
+                                      <span className="precio_descuento">
+                                        ${juego.precioBase}
+                                      </span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            </article>
+                          );
+                        })}
                       </section>
                     )}
                   </div>
@@ -246,7 +267,10 @@ export default function NavBar() {
                         <img src={foto_de_perfil} alt="" />
                       )}
                     </div>
-                    <p>{nombreUsuario}</p>
+                    <div className="message_container">
+                      <p>Nos encanta verte,</p>
+                      <p>{nombreUsuario}</p>
+                    </div>
                   </div>
                 )}
                 <div
@@ -271,6 +295,64 @@ export default function NavBar() {
                         src={cerrar}
                         alt="Cerrar"
                       />
+
+                      {buscar !== "" && (
+                        <section className="resultados_section">
+                          <div className="resultados_finded">
+                            <span>{listadoFiltrado.length} ENCONTRADOS</span>
+                          </div>
+                          {listadoFiltrado.slice(0, 5).map((juego) => {
+                            const porcentaje =
+                              ((juego.precioBase - juego.precioDescuento) /
+                                juego.precioBase) *
+                              100;
+                            return (
+                              <article
+                                key={juego._id}
+                                className="resultado"
+                                onClick={() => {
+                                  navigate(`/juego/${juego._id}`);
+                                  setBuscar("");
+                                  setOpenSearch(false);
+                                }}
+                              >
+                                <div className="resultado_imagen">
+                                  <img
+                                    src={juego.imagenPortada || noImage}
+                                    alt={juego.titulo}
+                                  />
+                                </div>
+                                <div className="resultado_data">
+                                  <p>{juego.titulo}</p>
+                                  {juego.precioDescuento < juego.precioBase ? (
+                                    <>
+                                      <div className="precios_container">
+                                        <span className="descuento">
+                                          - {porcentaje.toFixed()}%
+                                        </span>
+                                        <span className="precio_base">
+                                          ${juego.precioBase}
+                                        </span>
+                                        <span className="precio_desscuento">
+                                          ${juego.precioDescuento}
+                                        </span>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <div className="precios_container">
+                                        <span className="precio_descuento">
+                                          ${juego.precioBase}
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </article>
+                            );
+                          })}
+                        </section>
+                      )}
                     </div>
                   ) : (
                     <img

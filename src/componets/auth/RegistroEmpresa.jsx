@@ -16,9 +16,7 @@ import useMediaQuery from "../../utils/changeDesk";
 
 export default function RegistroEmpresa() {
   const navigate = useNavigate();
-
   const showMessage = useMessageStore((state) => state.showMessage);
-
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const [show, setShow] = useState(false);
@@ -33,35 +31,49 @@ export default function RegistroEmpresa() {
   });
 
   const handleSubmit = async () => {
-    if (
-      !form.nombreUsuario.trim() ||
-      !form.email.trim() ||
-      !form.password ||
-      !form.repeatpassword
-    ) {
+    if (loading) return;
+
+    const nombre = form.nombreUsuario.trim();
+    const email = form.email.trim();
+    const password = form.password;
+    const repeatpassword = form.repeatpassword;
+
+    if (!nombre || !email || !password || !repeatpassword) {
       return showMessage("Todos los campos son obligatorios", "error");
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      return showMessage("Ingresa un correo electrónico válido", "error");
+    if (nombre.length < 3) {
+      return showMessage("El nombre debe tener al menos 3 caracteres", "error");
     }
-
-    if (form.password.length < 6) {
+    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+    if (!nameRegex.test(nombre)) {
       return showMessage(
-        "La contraseña debe tener al menos 6 caracteres",
+        "El nombre solo puede contener letras y números",
         "error",
       );
     }
 
-    if (form.password !== form.repeatpassword) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(email)) {
+      return showMessage("Ingresa un correo electrónico válido", "error");
+    }
+
+    const passRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passRegex.test(password)) {
+      return showMessage(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.",
+        "error",
+      );
+    }
+
+    if (password !== repeatpassword) {
       return showMessage("Las contraseñas no coinciden", "error");
     }
 
     const datosParaEnviar = {
-      nombreUsuario: form.nombreUsuario.trim(),
-      email: form.email.trim(),
-      password: form.password,
+      nombreUsuario: nombre,
+      email: email,
+      password: password,
       rol: "empresa",
     };
 
@@ -112,7 +124,7 @@ export default function RegistroEmpresa() {
             <p>Registro de estudios</p>
 
             <p>
-              El hogar de tus <p className="highligth">Creaciones</p>
+              El hogar de tus <span className="highligth">Creaciones</span>
             </p>
 
             <p>
@@ -142,7 +154,6 @@ export default function RegistroEmpresa() {
 
           <div className="titulos_container">
             <p>Publica tus juegos</p>
-
             <p>Crea una cuenta para tu estudio.</p>
           </div>
         </div>
@@ -158,11 +169,13 @@ export default function RegistroEmpresa() {
               setForm({ ...form, nombreUsuario: event.target.value })
             }
             type="text"
+            maxLength="25"
             placeholder="Ej. PixelGames"
+            value={form.nombreUsuario}
           />
         </div>
 
-        <p>Correo Electronico</p>
+        <p>Correo Electrónico</p>
 
         <div className="input_container">
           <img src={mail} alt="" />
@@ -171,7 +184,9 @@ export default function RegistroEmpresa() {
               setForm({ ...form, email: event.target.value })
             }
             type="text"
+            maxLength="60"
             placeholder="Ej. pixelgames@gmail.com"
+            value={form.email}
           />
         </div>
 
@@ -184,12 +199,24 @@ export default function RegistroEmpresa() {
               setForm({ ...form, password: event.target.value })
             }
             type={show ? "text" : "password"}
-            placeholder="Ingrese una contraseña"
+            maxLength="60"
+            placeholder="Mínimo 8 caracteres, 1 mayúscula y 1 número"
+            value={form.password}
           />
           {show ? (
-            <img onClick={() => setShow(!show)} src={visibility_off} alt="" />
+            <img
+              onClick={() => setShow(!show)}
+              src={visibility_off}
+              alt=""
+              style={{ cursor: "pointer" }}
+            />
           ) : (
-            <img onClick={() => setShow(!show)} src={visibility} alt="" />
+            <img
+              onClick={() => setShow(!show)}
+              src={visibility}
+              alt=""
+              style={{ cursor: "pointer" }}
+            />
           )}
         </div>
 
@@ -203,21 +230,45 @@ export default function RegistroEmpresa() {
             }
             type={show2 ? "text" : "password"}
             placeholder="Repita la contraseña"
+            maxLength="60"
+            value={form.repeatpassword}
           />
           {show2 ? (
-            <img onClick={() => setShow2(!show2)} src={visibility_off} alt="" />
+            <img
+              onClick={() => setShow2(!show2)}
+              src={visibility_off}
+              alt=""
+              style={{ cursor: "pointer" }}
+            />
           ) : (
-            <img onClick={() => setShow2(!show2)} src={visibility} alt="" />
+            <img
+              onClick={() => setShow2(!show2)}
+              src={visibility}
+              alt=""
+              style={{ cursor: "pointer" }}
+            />
           )}
         </div>
 
-        <button onClick={() => handleSubmit()}>Registrar Desarrolladora</button>
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          style={{
+            opacity: loading ? 0.7 : 1,
+            cursor: loading ? "not-allowed" : "pointer",
+          }}
+        >
+          {loading ? "Registrando..." : "Registrar Desarrolladora"}
+        </button>
 
         <div className="formulario_login_footer">
           <p>¿Ya tienes registrado tu estudio?</p>
           <div>
             <p>Inicia sesión</p>
-            <p onClick={() => navigate("/login")}>
+            <p
+              onClick={() => !loading && navigate("/login")}
+              style={{ cursor: "pointer" }}
+            >
               haciendo click acá <img src={link} alt="" />
             </p>
           </div>

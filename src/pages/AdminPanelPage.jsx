@@ -23,10 +23,12 @@ export default function AdminPanelPage() {
     usuariosComunes: dataUsuarios = [],
     empresas: dataEmpresas = [],
   } = useObtenerUsuarios();
-  const { listado } = useObtenerJuegos();
+
+  const { listado: dataJuegos } = useObtenerJuegos();
 
   const [listaUsuarios, setListaUsuarios] = useState([]);
   const [listaEmpresas, setListaEmpresas] = useState([]);
+  const [listaJuegos, setListaJuegos] = useState([]);
 
   useEffect(() => {
     if (dataUsuarios.length > 0 && listaUsuarios.length === 0) {
@@ -35,7 +37,17 @@ export default function AdminPanelPage() {
     if (dataEmpresas.length > 0 && listaEmpresas.length === 0) {
       setListaEmpresas(dataEmpresas);
     }
-  }, [dataUsuarios, dataEmpresas, listaUsuarios.length, listaEmpresas.length]);
+    if (dataJuegos && dataJuegos.length > 0 && listaJuegos.length === 0) {
+      setListaJuegos(dataJuegos);
+    }
+  }, [
+    dataUsuarios,
+    dataEmpresas,
+    dataJuegos,
+    listaUsuarios.length,
+    listaEmpresas.length,
+    listaJuegos.length,
+  ]);
 
   if (!usuario || cargando) {
     return <></>;
@@ -57,6 +69,23 @@ export default function AdminPanelPage() {
       }
     } catch (error) {
       console.error("Error al banear:", error);
+    }
+  };
+
+  const actualizarEstadoJuego = async (id) => {
+    try {
+      const response = await clientAxios.put(`/juegos/estado/${id}`);
+
+      if (response.status === 200 || response.status === 201) {
+        setListaJuegos((prev) =>
+          prev.map((juego) =>
+            juego._id === id ? { ...juego, mostrar: !juego.mostrar } : juego,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("Error al actualizar estado del juego:", error);
+      alert("No se pudo cambiar la visibilidad del juego");
     }
   };
 
@@ -112,7 +141,7 @@ export default function AdminPanelPage() {
           </div>
           <div className="estadistica_card">
             <img src={iconoJuegos} alt="" />
-            <span className="estadistica_numero">{listado.length}</span>
+            <span className="estadistica_numero">{listaJuegos.length}</span>
             <span className="estadistica_nombre">Juegos Activos</span>
           </div>
         </div>
@@ -129,12 +158,21 @@ export default function AdminPanelPage() {
           </button>
         </div>
         <div className="tarjetas_juegos_container">
-          {listado.slice(0, 4).map((juego) => (
-            <div className="tarjeta_juego" key={juego._id}>
+          {listaJuegos.slice(0, 4).map((juego) => (
+            <div
+              className={`tarjeta_juego ${!juego.mostrar ? "oculto" : ""}`}
+              key={juego._id}
+            >
               <div className="tarjeta_juego_imagen">
                 <img src={juego.imagenPortada || ""} alt={juego.titulo} />
                 <span className="tarjeta_juego_categorias">
                   {juego.categorias.join(", ")}
+                </span>
+
+                <span
+                  className={`estado_badge ${juego.mostrar ? "publico" : "privado"}`}
+                >
+                  {juego.mostrar ? "Público" : "Oculto"}
                 </span>
               </div>
               <div className="tarjeta_juego_data">
@@ -151,7 +189,12 @@ export default function AdminPanelPage() {
                 >
                   Ver
                 </button>
-                <button className="eliminar">Ocultar</button>
+                <button
+                  className={`eliminar ${juego.mostrar ? "" : "btn-mostrar"}`}
+                  onClick={() => actualizarEstadoJuego(juego._id)}
+                >
+                  {juego.mostrar ? "Ocultar" : "Mostrar"}
+                </button>
               </div>
             </div>
           ))}
