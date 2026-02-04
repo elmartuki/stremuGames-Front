@@ -28,6 +28,9 @@ import NavBar from "../componets/navbar/NavBar.jsx";
 import InitPage from "../pages/InitPage.jsx";
 import FooterWeb from "../componets/footer/FooterWeb.jsx";
 import ComunidadPage from "../pages/ComunidadPage.jsx";
+import Exitoso from "../componets/payments/Exitoso.jsx";
+import Fallido from "../componets/payments/Fallido.jsx";
+import Pendiente from "../componets/payments/Pendiente.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -42,6 +45,8 @@ export default function AppRouter() {
       "/login",
       "/registro",
       "/registro-empresa",
+      "/pago/exitoso/",
+      "/pago/fallido/",
     ];
 
     const mostrarNavbar =
@@ -168,6 +173,33 @@ export default function AppRouter() {
               <>
                 <CarritoPage />
                 {!isDesktop && <Footer />}
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/exitoso/"
+            element={
+              <>
+                <Exitoso />
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/fallido/"
+            element={
+              <>
+                <Fallido />
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/pendiente/"
+            element={
+              <>
+                <Pendiente />
               </>
             }
           />
