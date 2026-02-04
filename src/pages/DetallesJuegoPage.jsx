@@ -1,9 +1,12 @@
+import { useState, useEffect } from "react";
 import "../css/juegosDetalle.css";
+
 import favIcon from "../icons/fav.svg";
 import descIcon from "../icons/desc.svg";
 import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
 import noImage from "../icons/noimage.png";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
@@ -13,13 +16,35 @@ import { useMessageStore } from "../services/MessageModal";
 export default function DetallesJuegoPage() {
   const { id } = useParams();
   const { juego } = useObtenerUnJuego(id);
-  const { usuario } = useObtenerUsuario(juego?.studioId);
-
+  const { usuario: desarrollador } = useObtenerUsuario(juego?.studioId);
   const showMessage = useMessageStore((state) => state.showMessage);
-
   const navigate = useNavigate();
 
-  if (!juego || !usuario) return <div className="loading_screen"></div>;
+  const [esFavorito, setEsFavorito] = useState(false);
+  const [contadorLikes, setContadorLikes] = useState(0);
+  const [loadingAction, setLoadingAction] = useState(false);
+
+  useEffect(() => {
+    if (!juego) return;
+
+    const likes = juego.usuarios_likes || [];
+    setContadorLikes(likes.length);
+
+    const verificarEstadoLike = async () => {
+      try {
+        const { data } = await clientAxios.get(
+          `/juegos/favoritos/verificar/${juego._id}`,
+        );
+        setEsFavorito(data.esFavorito);
+      } catch (error) {
+        setEsFavorito(false);
+      }
+    };
+
+    verificarEstadoLike();
+  }, [juego]);
+
+  if (!juego || !desarrollador) return <div className="loading_screen"></div>;
 
   const {
     titulo,
@@ -31,8 +56,10 @@ export default function DetallesJuegoPage() {
     galeria,
   } = juego;
 
-  const { nombreUsuario, foto_de_perfil, _id } = usuario;
-  const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
+  const { nombreUsuario, foto_de_perfil, _id: studioId } = desarrollador;
+  const iniciales = nombreUsuario
+    ? nombreUsuario.toUpperCase().slice(0, 2)
+    : "NN";
 
   const descuento =
     precioBase > 0 ? ((precioBase - precioDescuento) / precioBase) * 100 : 0;
@@ -45,18 +72,38 @@ export default function DetallesJuegoPage() {
   const handleCarrito = async (juegoId) => {
     try {
       const response = await clientAxios.post(`/carrito/${juegoId}`);
-
-      if (response.data.message === "El juego ya está en el carrito")
-        return showMessage(`${response.data.message}.`, "error");
-
       if (response.status === 200) {
         showMessage(`${response.data.message}.`, "success");
       }
     } catch (error) {
-      console.error(error);
       const errorMsg =
         error.response?.data?.message || "No se pudo agregar al carrito.";
-      showMessage(`Atención ${errorMsg}`, "error");
+      showMessage(errorMsg, "error");
+    }
+  };
+
+  const handleFavorito = async () => {
+    if (loadingAction) return;
+    setLoadingAction(true);
+
+    try {
+      const { data } = await clientAxios.put(`/juegos/favoritos/${juego._id}`);
+
+      setEsFavorito(data.esFavorito);
+      setContadorLikes(data.cantidadFavoritos);
+      showMessage(data.message, "success");
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showMessage("Debes iniciar sesión para dar like", "error");
+      } else {
+        const msg =
+          error.response?.data?.message || "Error al gestionar favoritos";
+        showMessage(msg, "error");
+      }
+    } finally {
+      setLoadingAction(false);
     }
   };
 
@@ -102,7 +149,6 @@ export default function DetallesJuegoPage() {
                       {precioBase === 0 ? "Gratis" : `$${precioBase}`}
                     </span>
                   )}
-
                   {descuento > 0 && (
                     <span className="descuento_tag">
                       -{descuento.toFixed()}%
@@ -118,16 +164,31 @@ export default function DetallesJuegoPage() {
                 >
                   Añadir al carrito <img src={shop} alt="" />
                 </button>
+
                 <button
-                  className="btn_favorito"
-                  onClick={() =>
-                    showMessage(
-                      "La lista de deseos estará disponible pronto.",
-                      "info",
-                    )
+                  className={`btn_favorito ${esFavorito ? "btn_activado" : ""}`}
+                  onClick={handleFavorito}
+                  disabled={loadingAction}
+                  title={
+                    esFavorito ? "Quitar de favoritos" : "Agregar a favoritos"
                   }
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    opacity: loadingAction ? 0.6 : 1,
+                    cursor: loadingAction ? "wait" : "pointer",
+                    transition: "all 0.3s ease",
+                  }}
                 >
-                  <img src={favIcon} alt="" />
+                  <img
+                    src={favIcon}
+                    alt="Favorito"
+                    className={esFavorito ? "activo" : ""}
+                  />
+                  <span style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
+                    {contadorLikes}
+                  </span>
                 </button>
               </div>
 
@@ -135,7 +196,7 @@ export default function DetallesJuegoPage() {
                 <p className="section_subtitle">Desarrollador</p>
                 <div
                   className="dev_card"
-                  onClick={() => navigate(`/comunidad/estudio/${_id}`)}
+                  onClick={() => navigate(`/comunidad/estudio/${studioId}`)}
                 >
                   <div className="dev_logo">
                     {foto_de_perfil === "" ? (

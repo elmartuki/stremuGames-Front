@@ -71,7 +71,7 @@ export default function EditarPerfil() {
 
     const datosParaEnviar = {
       foto_de_perfil: urlPerfil || usuario.foto_de_perfil,
-      fondo_perfil: urlBg || usuario.fondo_perfil,
+      foto_banner: urlBg || usuario.foto_banner,
       nombreUsuario: data.nombreUsuario || usuario.nombreUsuario,
       biografia: data.biografia || usuario.biografia,
     };
@@ -102,10 +102,11 @@ export default function EditarPerfil() {
 
   const iniciales = usuario.nombreUsuario?.toUpperCase().slice(0, 2);
   const imagenFinal = previewPerfil || urlPerfil || usuario.foto_de_perfil;
+
   const backgroundFinal =
     previewBg ||
     urlBg ||
-    usuario.fondo_perfil ||
+    usuario.foto_banner ||
     "https://via.placeholder.com/800x400?text=Sin+Fondo";
 
   const displayName = data.nombreUsuario || usuario.nombreUsuario;

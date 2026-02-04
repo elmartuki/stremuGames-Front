@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
-import favorito from "../../icons/fav.svg";
+import favoritoIcon from "../../icons/fav.svg";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../icons/noimage.png";
+
+import clientAxios from "../../utils/clientAxios";
+import { useMessageStore } from "../../services/MessageModal";
 
 export default function HeroJuegos({ filtrar }) {
   const { listado } = useObtenerJuegos();
   const [indiceHero, setIndiceHero] = useState(0);
 
+  const [esFavorito, setEsFavorito] = useState(false);
+  const [loadingAction, setLoadingAction] = useState(false);
+
+  const showMessage = useMessageStore((state) => state.showMessage);
   const navigate = useNavigate();
 
   const juegosParaMostrar = listado
     ? [...listado].sort((a, b) => b.cantidadVotos - a.cantidadVotos).slice(0, 6)
     : [];
+
+  const juegoActual = juegosParaMostrar[indiceHero];
 
   useEffect(() => {
     if (juegosParaMostrar.length === 0) return;
@@ -26,6 +35,56 @@ export default function HeroJuegos({ filtrar }) {
     return () => clearInterval(intervalo);
   }, [juegosParaMostrar.length]);
 
+  useEffect(() => {
+    if (!juegoActual) return;
+
+    setEsFavorito(false);
+
+    const verificarEstadoLike = async () => {
+      try {
+        const { data } = await clientAxios.get(
+          `/juegos/favoritos/verificar/${juegoActual._id}`,
+        );
+        setEsFavorito(data.esFavorito);
+      } catch (error) {
+        setEsFavorito(false);
+      }
+    };
+
+    verificarEstadoLike();
+  }, [juegoActual]);
+
+  const handleFavorito = async (e) => {
+    e.stopPropagation();
+
+    if (loadingAction || !juegoActual) return;
+    setLoadingAction(true);
+
+    try {
+      const { data } = await clientAxios.put(
+        `/juegos/favoritos/${juegoActual._id}`,
+      );
+
+      setEsFavorito(data.esFavorito);
+      showMessage(data.message, "success");
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showMessage("Debes iniciar sesión para dar like", "error");
+      } else {
+        showMessage("Error al gestionar favoritos", "error");
+      }
+    } finally {
+      setLoadingAction(false);
+    }
+  };
+
+  const handleComprar = (e) => {
+    e.stopPropagation();
+
+    console.log("Agregar al carrito:", juegoActual.titulo);
+  };
+
   if (juegosParaMostrar.length === 0) return <div className="loading"></div>;
 
   const handleImageError = (e) => {
@@ -33,15 +92,17 @@ export default function HeroJuegos({ filtrar }) {
     e.target.src = noImage;
   };
 
-  const juegoActual = juegosParaMostrar[indiceHero];
-
   return (
     <>
       <article className="hero">
         <div
           className="hero_big"
           onClick={() => navigate(`/juego/${juegoActual?._id}`)}
-          style={{ position: "relative", overflow: "hidden" }}
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            cursor: "pointer",
+          }}
         >
           <img
             key={juegoActual?._id}
@@ -63,15 +124,22 @@ export default function HeroJuegos({ filtrar }) {
             </p>
 
             <div className="btn_container">
+              <button onClick={handleComprar}>Comprar Ahora</button>
+
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
+                onClick={handleFavorito}
+                className={esFavorito ? "btn_favorito_activo" : ""}
+                disabled={loadingAction}
               >
-                Comprar Ahora
-              </button>
-              <button onClick={(e) => {}}>
-                <img src={favorito} alt="" />
+                <img
+                  src={favoritoIcon}
+                  alt=""
+                  className={esFavorito ? "activo" : ""}
+                  style={{
+                    filter: esFavorito ? "var(--filter-rojo)" : "none",
+                    transition: "all 0.3s ease",
+                  }}
+                />
               </button>
             </div>
           </div>
@@ -85,7 +153,10 @@ export default function HeroJuegos({ filtrar }) {
                 src={juego.imagenPortada || noImage}
                 onError={handleImageError}
                 className={i === indiceHero ? "active" : ""}
-                onClick={() => setIndiceHero(i)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIndiceHero(i);
+                }}
                 alt="miniatura"
               />
             );

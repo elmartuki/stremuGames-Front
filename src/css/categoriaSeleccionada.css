@@ -141,6 +141,18 @@
               font-weight: 600;
             }
 
+            .btn_favorito_activo {
+              background-color: #e50914 !important;
+              box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+              transform: scale(1.05);
+              border: 1px solid #ff4f58;
+
+              .activo {
+                filter: brightness(0) invert(1) !important;
+                opacity: 1 !important;
+              }
+            }
+
             .btn_fav {
               display: flex;
               align-items: center;

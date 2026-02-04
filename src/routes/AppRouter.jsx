@@ -120,7 +120,7 @@ export default function AppRouter() {
           element={
             <>
               <PerfilPage />
-              <Footer />
+              {isDesktop ? <FooterWeb /> : <Footer />}
             </>
           }
         />

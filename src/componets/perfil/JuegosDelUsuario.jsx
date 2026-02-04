@@ -1,8 +1,12 @@
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { JuegosDelUsuarioSkeleton } from "../skeletons/Skeleton";
+import noImage from "../../icons/noimage.png";
+import { useNavigate } from "react-router-dom";
 
 export default function JuegosDelUsuario({ juegosComprados = [] }) {
   const { listado, loading } = useObtenerJuegos();
+
+  const navigate = useNavigate();
 
   if (loading || !listado) {
     return <JuegosDelUsuarioSkeleton />;
@@ -20,16 +24,28 @@ export default function JuegosDelUsuario({ juegosComprados = [] }) {
     );
   }
 
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
+
   return (
     <>
       {juegosEncontrados.map((juego) => (
-        <article key={juego._id} className="juego_tarjeta">
+        <article
+          onClick={() => navigate(`/juego/${juego._id}`)}
+          key={juego._id}
+          className="juego_tarjeta"
+        >
           <div>
-            <img src={juego.imagenPortada} alt={juego.titulo} />
+            <img
+              onError={handleImageError}
+              src={juego.imagenPortada || noImage}
+              alt={juego.titulo}
+            />
           </div>
           <div>
             <p>{juego.titulo}</p>
-            <p className="juego_desarrolladora">{juego.desarrolladora}</p>
           </div>
         </article>
       ))}
