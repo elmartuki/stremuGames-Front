@@ -4,9 +4,11 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import "./css/index.css";
 import ModalMessage from "./componets/messages/ModalMessage.jsx";
+import ScrollToTop from "./utils/ScrollTop.js";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+    <ScrollToTop />
     <ModalMessage />
     <App />
   </BrowserRouter>,
