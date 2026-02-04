@@ -7,14 +7,91 @@ import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useNavigate, useParams } from "react-router-dom";
 import useMediaQuery from "../utils/changeDesk";
+import clientAxios from "../utils/clientAxios";
+import { useState, useEffect, useRef } from "react";
+import { useMessageStore } from "../services/MessageModal";
 
 export default function PerfilEmpresaPage() {
   const { empresas, cargando } = useObtenerUsuarios();
   const { listado, loading: loadingJuegos } = useObtenerJuegos();
   const { id } = useParams();
   const navigate = useNavigate();
+  const showMessage = useMessageStore((state) => state.showMessage);
+
+  const [esSeguidor, setEsSeguidor] = useState(false);
+  const [contadorSeguidores, setContadorSeguidores] = useState(0);
+  const [loadingAction, setLoadingAction] = useState(false);
+
+  const interactuadoRef = useRef(false);
 
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+  useEffect(() => {
+    if (empresas && id) {
+      const empresa = empresas.find((e) => e._id === id);
+
+      if (empresa && !interactuadoRef.current) {
+        setContadorSeguidores(empresa.seguidores.length);
+
+        const verificarEstado = async () => {
+          try {
+            const token = localStorage.getItem("TokenStremuGames");
+            if (!token) return;
+
+            const { data } = await clientAxios.get(
+              `/usuarios/seguir/verificar/${id}`,
+            );
+
+            setEsSeguidor(data.esSeguidor);
+          } catch (error) {
+            setEsSeguidor(false);
+          }
+        };
+
+        verificarEstado();
+      }
+    }
+  }, [empresas, id]);
+
+  const handleSeguir = async () => {
+    if (loadingAction) return;
+
+    interactuadoRef.current = true;
+
+    const estadoAnterior = esSeguidor;
+    const contadorAnterior = contadorSeguidores;
+
+    setLoadingAction(true);
+
+    setEsSeguidor(!estadoAnterior);
+    setContadorSeguidores((prev) => (estadoAnterior ? prev - 1 : prev + 1));
+
+    try {
+      const { data } = await clientAxios.put(`/usuarios/seguir/${id}`);
+
+      if (data && typeof data.cantidadSeguidores === "number") {
+        setContadorSeguidores(data.cantidadSeguidores);
+        setEsSeguidor(data.esSeguidor);
+      }
+
+      showMessage(data.message, "success");
+    } catch (error) {
+      console.error(error);
+
+      setEsSeguidor(estadoAnterior);
+      setContadorSeguidores(contadorAnterior);
+
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        showMessage("Debes iniciar sesión para seguir estudios", "error");
+      } else {
+        const msg =
+          error.response?.data?.message || "Error al conectar con el servidor";
+        showMessage(msg, "error");
+      }
+    } finally {
+      setLoadingAction(false);
+    }
+  };
 
   if (cargando || !empresas || loadingJuegos || !listado) {
     return <PerfilEmpresaSkeleton />;
@@ -36,7 +113,12 @@ export default function PerfilEmpresaPage() {
     );
   }
 
-  const { foto_de_perfil, nombreUsuario, biografia = "" } = empresaEncontrada;
+  const {
+    foto_de_perfil,
+    nombreUsuario,
+    biografia = "",
+    _id,
+  } = empresaEncontrada;
 
   const juegosDelEstudio = listado.filter((juego) => {
     const sId =
@@ -47,10 +129,8 @@ export default function PerfilEmpresaPage() {
   });
 
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
-
   const destacado =
     juegosDelEstudio.reverse().length > 0 ? juegosDelEstudio[0] : null;
-
   const catalogo = juegosDelEstudio.length > 1 ? juegosDelEstudio.slice(1) : [];
 
   return (
@@ -82,7 +162,7 @@ export default function PerfilEmpresaPage() {
 
               <div className="stats_flex">
                 <div className="stat_box">
-                  <strong>400</strong>
+                  <strong>{contadorSeguidores}</strong>
                   <span>Seguidores</span>
                 </div>
                 <div className="stat_divider"></div>
@@ -100,7 +180,17 @@ export default function PerfilEmpresaPage() {
               </p>
 
               <div className="botones_accion">
-                <button className="btn_seguir">Seguir</button>
+                <button
+                  onClick={handleSeguir}
+                  disabled={loadingAction}
+                  className={`btn_seguir ${esSeguidor ? "siguiendo" : "nosiguiendo"}`}
+                  style={{
+                    opacity: loadingAction ? 0.7 : 1,
+                    cursor: loadingAction ? "wait" : "pointer",
+                  }}
+                >
+                  {esSeguidor ? "Siguiendo" : "Seguir"}
+                </button>
                 <button className="btn_contacto">
                   <img src={mail} alt="Contacto" />
                 </button>

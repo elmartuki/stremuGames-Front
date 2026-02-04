@@ -4,6 +4,7 @@ import Categorias from "../componets/explorar/Categorias";
 import HeroJuegos from "../componets/explorar/HeroJuegos";
 import "../css/explorarPage.css";
 import rigth_green from "../icons/rigth_green.svg";
+import likes from "../icons/fav.svg";
 import time from "../icons/time.svg";
 import fire from "../icons/fire.svg";
 import newIcon from "../icons/new.svg";
@@ -93,6 +94,43 @@ export default function ExplorarPage() {
             className="carroucel_section carroucel-largo"
           >
             <CarroucelLargo filtrar={"Populares"} />
+          </section>
+        )}
+      </section>
+
+      <section className="explorar_carroucel">
+        <div className="explorar_carroucel_header">
+          <div className="titulo_container">
+            <img src={likes} alt="" />
+            <div className="titulo">
+              <p>Juegos Favoritos</p>
+              <p>Los juegos mas queridos por la comunidad</p>
+            </div>
+          </div>
+
+          <div
+            className="btn_ver_mas"
+            onClick={() => navigate("/categorias/Favoritos")}
+          >
+            <p>
+              Ver todo <img src={rigth_green} alt="" />
+            </p>
+          </div>
+        </div>
+
+        {isDesktop ? (
+          <section
+            key="populares-desk"
+            className="carroucel_section carroucel_section_desk carroucel-largo"
+          >
+            <CarroucelLargo filtrar={"Favoritos"} />
+          </section>
+        ) : (
+          <section
+            key="populares-mobile"
+            className="carroucel_section carroucel-largo"
+          >
+            <CarroucelLargo filtrar={"Favoritos"} />
           </section>
         )}
       </section>

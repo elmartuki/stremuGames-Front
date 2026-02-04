@@ -22,6 +22,11 @@ export default function Categoria() {
       listadoFiltrado = [...listado].sort(
         (a, b) => (b.cantidadVotos || 0) - (a.cantidadVotos || 0),
       );
+    } else if (id === "Favoritos") {
+      listadoFiltrado = [...listado].sort(
+        (a, b) =>
+          (b.usuarios_likes?.length || 0) - (a.usuarios_likes?.length || 0),
+      );
     } else if (id === "Recientes") {
       listadoFiltrado = [...listado.reverse()].sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
