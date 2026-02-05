@@ -31,6 +31,8 @@ import ComunidadPage from "../pages/ComunidadPage.jsx";
 import Exitoso from "../componets/payments/Exitoso.jsx";
 import Fallido from "../componets/payments/Fallido.jsx";
 import Pendiente from "../componets/payments/Pendiente.jsx";
+import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
+import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -47,6 +49,7 @@ export default function AppRouter() {
       "/registro-empresa",
       "/pago/exitoso/",
       "/pago/fallido/",
+      "/perfil/recuperar/",
     ];
 
     const mostrarNavbar =
@@ -200,6 +203,15 @@ export default function AppRouter() {
             element={
               <>
                 <Pendiente />
+              </>
+            }
+          />
+
+          <Route
+            path="/perfil/recuperar"
+            element={
+              <>
+                <RecoverPassword />
               </>
             }
           />
