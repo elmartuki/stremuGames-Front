@@ -49,7 +49,7 @@ export default function AppRouter() {
       "/registro-empresa",
       "/pago/exitoso/",
       "/pago/fallido/",
-      "/perfil/recuperar/",
+      "/perfil/recuperar",
     ];
 
     const mostrarNavbar =

@@ -43,8 +43,8 @@ export default function RecuperarPassword() {
           <img onClick={() => navigate(-1)} src={back} alt="" />
         </nav>
       ) : (
-        <nav>
-          <img src={back} alt="" />
+        <nav className="back_btn">
+          <img onClick={() => navigate(-1)} src={back} alt="" />
         </nav>
       )}
 

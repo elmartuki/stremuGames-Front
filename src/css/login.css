@@ -45,6 +45,13 @@
   }
 }
 
+.formulario_section.recovery {
+  height: 100dvh;
+  min-height: unset !important;
+  overflow: hidden;
+  margin: auto;
+}
+
 .formulario_section {
   display: flex;
   flex-direction: column;
@@ -71,6 +78,7 @@
     flex-direction: column;
     width: 100%;
     animation: fadeInUp 1s ease-out;
+    gap: 8px;
 
     .icon {
       padding: 8px 10px;
