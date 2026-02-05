@@ -1,5 +1,7 @@
 import "../../css/login.css";
 import code from "../../icons/code.svg";
+import headphone from "../../icons/headset.svg";
+import rocket from "../../icons/rocket.svg";
 import empresa from "../../icons/empresa.svg";
 import mail from "../../icons/mail.svg";
 import lock from "../../icons/lock.svg";
@@ -115,16 +117,24 @@ export default function RegistroEmpresa() {
   return (
     <section className="formulario_section">
       {isDesktop ? (
-        <div className="formulario_header">
-          <div className="icon">
-            <img src={code} alt="" />
-          </div>
+        <>
+          <img
+            className="background"
+            src="https://lh3.googleusercontent.com/rd-gg-dl/AOI_d_9fEUbKRLlzFwH57-iamR7xE8C5j0dghLXDzpxRB2zO2h-6_C1nbzMRu6B7B2tpccLTx3JgPtUv75v-6TUyMfEKD-lfHG_OHNmq7YxTHFkVryVMvTIn1MplFbyZEt6t7Cdy2xfg6831RTvSMHjfL2vDovOUFi4m-S4T53pdq6oU4xSE3_yKd9gJZgAgapl47BBzcbogJxCpSbrtbvJxJxoaOFi3ZbBRBMrgCHu5-_xaIoOAa7r_tHPJM76BBgKZU3mxW_Mh-uTulbNlVU4UkCe_98Ef9VsLGgzdkCGtFPJyrQE-fsSLbA__lXnqnI_ZFAPxhaJzkPO2HYPF7zDOxfY2cnw-NTxrLs5ryI1bsoD7LNifmcw0c40MRt1vqhaIMSTHo_8w5eg5wgKC59CQhDWH3cuIxxZ9si_nlXxcayTGVs7SmfP_7qeMigQS5sLGmk7Z5tKnIh-zHgV8IoGjW3LaiHDjf4o6OZGCjpX0l6pDQ8mXExBY4OGHTntwt1-0rtpgLPvPNpRTj6RI0I9RR4k5sJAcOQ00xzsuBxa3iqhaUqOidW3erqWADvub8XtpqOkqUdN4vRGYPG1GTCT_tKr8gvHdunwUOrlGujoPDwUynFH7g5paBgk7CyCR0Xmd7iJaPiWA4r_Ahxdv_qPg-CSgRiqnueMi9ChFijbpupy_SK57P2S9Ax9lp3Tbr3iZAn-BQmt6-rKqYPFvRRVB0H3l0edxHANXQKDwc9UHHUB9ADFzGT-JHaQ3PgUgfnnpZej6R9qvFAz7l9cUCphkaDkJe8ksCZngS1vPU1RpaD1w6upvxa9oMGBXDkE-YrvsFxELBcyD2ztwqsenWIxaA08fnvegXguUPOhf9HFCU3S5pmjo5Xm4GFI3HFhlJkwvKsyj4QnEkUs3m64vqnE0Na0VkLH2wIQ8tgBMlIU9zEO-M0iPNHY23kV0V2QHl9CXGnS4CQEuNMIefLGy8Rpl1KrCvLofR9szAIpjqcNV4kObirQNVQuggWoC3_8Z3p7E_k_O2Bodiiy6Vb-0xf5i5Gx1jO0oOz9xfKVu2zQT-BVEmD6Loxhtw_bZK3UooGFn81Ln8q279ZdPi3pMnwy5tuUx8BXrPhbUHe3BJKkq2sJ2daTQ4G_KYSHmzAj-P_KGZkbV5dOShG4YBILVXSM3vwJtYie6s9V961pZyqk44tuHVFPhpZ04MGb4B90DHJvbZJ6hvT3NAox2yg5Nr3KV3pT9CtkIGHJri15haz4FHiuYKMIrf1v6sRAZ4j7a8w=s1024-rj"
+            alt=""
+          />
+        </>
+      ) : (
+        <></>
+      )}
 
+      {isDesktop ? (
+        <div className="formulario_header">
           <div className="titulos_container">
-            <p>Registro de estudios</p>
+            <p className="badge_text">Registro de estudios</p>
 
             <p>
-              El hogar de tus <span className="highligth">Creaciones</span>
+              El hogar de tus <p className="highligth">Creaciones</p>
             </p>
 
             <p>
@@ -136,13 +146,25 @@ export default function RegistroEmpresa() {
 
           <div className="card_container">
             <div className="card">
-              <p>Incrementa </p>
-              <p>Tus ganancias</p>
+              <div className="card_icon">
+                <img src={rocket} alt="" />
+                <p>Incrementa tus ganancias </p>
+              </div>
+
+              <p className="card_text">
+                Monetización líder y alcance global inmediato.
+              </p>
             </div>
 
             <div className="card">
-              <p>Soporte </p>
-              <p>24/7</p>
+              <div className="card_icon">
+                <img src={headphone} alt="" />
+                <p>Soporte 24/7 </p>
+              </div>
+
+              <p className="card_text">
+                Asistencia técnica directa en tiempo real.
+              </p>
             </div>
           </div>
         </div>
@@ -160,7 +182,17 @@ export default function RegistroEmpresa() {
       )}
 
       <section className="formulario_body">
-        <p>Nombre del estudio</p>
+        {isDesktop ? (
+          <>
+            <div className="formulario_header">
+              <p>REGISTRO</p>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+
+        <p className="labels">Nombre del estudio</p>
 
         <div className="input_container">
           <img src={empresa} alt="" />
@@ -175,7 +207,7 @@ export default function RegistroEmpresa() {
           />
         </div>
 
-        <p>Correo Electrónico</p>
+        <p className="labels">Correo Electrónico</p>
 
         <div className="input_container">
           <img src={mail} alt="" />
@@ -190,7 +222,7 @@ export default function RegistroEmpresa() {
           />
         </div>
 
-        <p>Contraseña</p>
+        <p className="labels">Contraseña</p>
 
         <div className="input_container">
           <img src={lock} alt="" />
@@ -220,7 +252,7 @@ export default function RegistroEmpresa() {
           )}
         </div>
 
-        <p>Repetir contraseña</p>
+        <p className="labels">Repetir contraseña</p>
 
         <div className="input_container">
           <img src={lock_repeat} alt="" />
