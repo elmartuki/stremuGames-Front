@@ -101,7 +101,10 @@ export default function PerfilConfigPage() {
               <img src={arrowRigth} alt="" />
             </article>
 
-            <article className="perfil_config_body_button">
+            <article
+              className="perfil_config_body_button"
+              onClick={() => navigate("/perfil/recuperar")}
+            >
               <img src={seguridad} alt="" />
               <div>
                 <p>Seguridad</p>

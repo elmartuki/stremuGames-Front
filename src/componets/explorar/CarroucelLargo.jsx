@@ -26,11 +26,16 @@ export default function CarroucelLargo({ filtrar }) {
   let juegosParaMostrar = listado ? [...listado] : [];
 
   if (filtrar === "Populares") {
-    juegosParaMostrar.sort((a, b) => b.cantidadVotos - a.cantidadVotos);
-  } else if (filtrar === "Recientes") {
+    juegosParaMostrar.sort((a, b) => b.ventasTotales - a.ventasTotales);
+  } else if (filtrar === "Favoritos") {
     juegosParaMostrar.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      (a, b) =>
+        (b.usuarios_likes?.length || 0) - (a.usuarios_likes?.length || 0),
     );
+  } else if (filtrar === "Recientes") {
+    juegosParaMostrar
+      .reverse()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } else if (filtrar) {
     juegosParaMostrar = juegosParaMostrar.filter((juego) =>
       juego.categorias?.includes(filtrar),

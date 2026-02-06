@@ -28,6 +28,11 @@ import NavBar from "../componets/navbar/NavBar.jsx";
 import InitPage from "../pages/InitPage.jsx";
 import FooterWeb from "../componets/footer/FooterWeb.jsx";
 import ComunidadPage from "../pages/ComunidadPage.jsx";
+import Exitoso from "../componets/payments/Exitoso.jsx";
+import Fallido from "../componets/payments/Fallido.jsx";
+import Pendiente from "../componets/payments/Pendiente.jsx";
+import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
+import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -42,6 +47,9 @@ export default function AppRouter() {
       "/login",
       "/registro",
       "/registro-empresa",
+      "/pago/exitoso/",
+      "/pago/fallido/",
+      "/perfil/recuperar",
     ];
 
     const mostrarNavbar =
@@ -120,7 +128,7 @@ export default function AppRouter() {
           element={
             <>
               <PerfilPage />
-              <Footer />
+              {isDesktop ? <FooterWeb /> : <Footer />}
             </>
           }
         />
@@ -168,6 +176,42 @@ export default function AppRouter() {
               <>
                 <CarritoPage />
                 {!isDesktop && <Footer />}
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/exitoso/"
+            element={
+              <>
+                <Exitoso />
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/fallido/"
+            element={
+              <>
+                <Fallido />
+              </>
+            }
+          />
+
+          <Route
+            path="/pago/pendiente/"
+            element={
+              <>
+                <Pendiente />
+              </>
+            }
+          />
+
+          <Route
+            path="/perfil/recuperar"
+            element={
+              <>
+                <RecoverPassword />
               </>
             }
           />

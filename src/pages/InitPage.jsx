@@ -10,24 +10,6 @@ import money from "../icons/paid.svg";
 import analitic from "../icons/analitics.svg";
 import { useNavigate } from "react-router-dom";
 
-const fadeIn = ({ children, delay = 0, className = "", id = "" }) => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.15,
-  });
-
-  return (
-    <div
-      ref={ref}
-      id={id}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`fade-wrapper ${className} ${inView ? "visible" : ""}`}
-    >
-      {children}
-    </div>
-  );
-};
-
 export default function InitPage() {
   const [ocultar, setOcultar] = useState(false);
   const navigate = useNavigate();

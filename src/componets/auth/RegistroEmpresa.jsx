@@ -1,5 +1,7 @@
 import "../../css/login.css";
 import code from "../../icons/code.svg";
+import headphone from "../../icons/headset.svg";
+import rocket from "../../icons/rocket.svg";
 import empresa from "../../icons/empresa.svg";
 import mail from "../../icons/mail.svg";
 import lock from "../../icons/lock.svg";
@@ -7,6 +9,7 @@ import lock_repeat from "../../icons/lock-repeat.svg";
 import link from "../../icons/link.svg";
 import visibility from "../../icons/visibility.svg";
 import visibility_off from "../../icons/visibility_off.svg";
+import background from "../../icons/background_2.png";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -115,16 +118,20 @@ export default function RegistroEmpresa() {
   return (
     <section className="formulario_section">
       {isDesktop ? (
-        <div className="formulario_header">
-          <div className="icon">
-            <img src={code} alt="" />
-          </div>
+        <>
+          <img className="background" src={background} alt="" />
+        </>
+      ) : (
+        <></>
+      )}
 
+      {isDesktop ? (
+        <div className="formulario_header">
           <div className="titulos_container">
-            <p>Registro de estudios</p>
+            <p className="badge_text">Registro de estudios</p>
 
             <p>
-              El hogar de tus <span className="highligth">Creaciones</span>
+              El hogar de tus <p className="highligth">Creaciones</p>
             </p>
 
             <p>
@@ -136,13 +143,25 @@ export default function RegistroEmpresa() {
 
           <div className="card_container">
             <div className="card">
-              <p>Incrementa </p>
-              <p>Tus ganancias</p>
+              <div className="card_icon">
+                <img src={rocket} alt="" />
+                <p>Incrementa tus ganancias </p>
+              </div>
+
+              <p className="card_text">
+                Monetización líder y alcance global inmediato.
+              </p>
             </div>
 
             <div className="card">
-              <p>Soporte </p>
-              <p>24/7</p>
+              <div className="card_icon">
+                <img src={headphone} alt="" />
+                <p>Soporte 24/7 </p>
+              </div>
+
+              <p className="card_text">
+                Asistencia técnica directa en tiempo real.
+              </p>
             </div>
           </div>
         </div>
@@ -160,7 +179,17 @@ export default function RegistroEmpresa() {
       )}
 
       <section className="formulario_body">
-        <p>Nombre del estudio</p>
+        {isDesktop ? (
+          <>
+            <div className="formulario_header">
+              <p>REGISTRO</p>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+
+        <p className="labels">Nombre del estudio</p>
 
         <div className="input_container">
           <img src={empresa} alt="" />
@@ -175,7 +204,7 @@ export default function RegistroEmpresa() {
           />
         </div>
 
-        <p>Correo Electrónico</p>
+        <p className="labels">Correo Electrónico</p>
 
         <div className="input_container">
           <img src={mail} alt="" />
@@ -190,7 +219,7 @@ export default function RegistroEmpresa() {
           />
         </div>
 
-        <p>Contraseña</p>
+        <p className="labels">Contraseña</p>
 
         <div className="input_container">
           <img src={lock} alt="" />
@@ -220,7 +249,7 @@ export default function RegistroEmpresa() {
           )}
         </div>
 
-        <p>Repetir contraseña</p>
+        <p className="labels">Repetir contraseña</p>
 
         <div className="input_container">
           <img src={lock_repeat} alt="" />

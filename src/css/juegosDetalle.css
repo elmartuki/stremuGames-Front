@@ -139,11 +139,28 @@
             }
           }
 
+          .btn_activado {
+            background-color: #e50914 !important;
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            transform: scale(1.05);
+            border: 1px solid #ff4f58;
+
+            .activo {
+              filter: brightness(0) invert(1) !important;
+              opacity: 1 !important;
+            }
+          }
+
           .btn_favorito {
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: #ffffff1c;
+
+            .activo {
+              filter: invert(26%) sepia(73%) saturate(7484%) hue-rotate(356deg)
+                brightness(96%) contrast(115%) opacity(60%);
+            }
 
             &:hover {
               background-color: #ffffff30;

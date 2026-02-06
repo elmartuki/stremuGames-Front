@@ -40,9 +40,6 @@ const PlayerCard = ({ usuario, navigate }) => {
       </div>
       <h5>{usuario.nombreUsuario}</h5>
       <div className="btn_container">
-        <button className="btn-follow">
-          <img src={person_add} alt="" /> Seguir
-        </button>
         <button
           className="btn-follow"
           onClick={() => navigate(`/comunidad/usuario/${usuario._id}`)}
