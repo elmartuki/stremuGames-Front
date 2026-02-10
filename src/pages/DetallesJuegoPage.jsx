@@ -6,6 +6,7 @@ import descIcon from "../icons/desc.svg";
 import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
 import noImage from "../icons/noimage.png";
+import back from "../icons/back.svg";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
@@ -109,6 +110,11 @@ export default function DetallesJuegoPage() {
 
   return (
     <>
+      <nav className="navbar-phone desk">
+        <img onClick={() => navigate(-1)} src={back} alt="Volver" />
+        <div></div>
+      </nav>
+
       <section className="detalles_juego_container">
         <section className="juego_header_portada">
           <img
