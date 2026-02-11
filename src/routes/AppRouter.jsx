@@ -33,6 +33,7 @@ import Fallido from "../componets/payments/Fallido.jsx";
 import Pendiente from "../componets/payments/Pendiente.jsx";
 import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
 import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
+import FavoritosPage from "../pages/FavoritosPage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -160,6 +161,15 @@ export default function AppRouter() {
                 <Footer />
               </>
             }
+          />{" "}
+          <Route
+            path="/perfil/favoritos"
+            element={
+              <>
+                <FavoritosPage />
+                <Footer />
+              </>
+            }
           />
           <Route
             path="/biblioteca"
@@ -179,7 +189,6 @@ export default function AppRouter() {
               </>
             }
           />
-
           <Route
             path="/pago/exitoso/"
             element={
@@ -188,7 +197,6 @@ export default function AppRouter() {
               </>
             }
           />
-
           <Route
             path="/pago/fallido/"
             element={
@@ -197,7 +205,6 @@ export default function AppRouter() {
               </>
             }
           />
-
           <Route
             path="/pago/pendiente/"
             element={
@@ -206,7 +213,6 @@ export default function AppRouter() {
               </>
             }
           />
-
           <Route
             path="/perfil/recuperar"
             element={

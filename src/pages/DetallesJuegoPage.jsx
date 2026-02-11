@@ -34,7 +34,7 @@ export default function DetallesJuegoPage() {
     const verificarEstadoLike = async () => {
       try {
         const { data } = await clientAxios.get(
-          `/juegos/favoritos/verificar/${juego._id}`,
+          `/usuarios/favoritos/verificar/${juego._id}`,
         );
         setEsFavorito(data.esFavorito);
       } catch (error) {
@@ -43,7 +43,7 @@ export default function DetallesJuegoPage() {
     };
 
     verificarEstadoLike();
-  }, [juego]);
+  }, [juego?._id]);
 
   if (!juego || !desarrollador) return <div className="loading_screen"></div>;
 
@@ -88,16 +88,17 @@ export default function DetallesJuegoPage() {
     setLoadingAction(true);
 
     try {
-      const { data } = await clientAxios.put(`/juegos/favoritos/${juego._id}`);
+      const { data } = await clientAxios.put(
+        `/usuarios/favoritos/${juego._id}`,
+      );
 
       setEsFavorito(data.esFavorito);
       setContadorLikes(data.cantidadFavoritos);
       showMessage(data.message, "success");
     } catch (error) {
       console.error(error);
-
       if (error.response?.status === 401 || error.response?.status === 403) {
-        showMessage("Debes iniciar sesión para dar like", "error");
+        showMessage("Debes iniciar sesión para guardar favoritos", "error");
       } else {
         const msg =
           error.response?.data?.message || "Error al gestionar favoritos";
