@@ -49,7 +49,11 @@ export default function Login() {
       const response = await clientAxios.post("/usuarios/login", form);
 
       if (response.status === 200) {
+        
         localStorage.setItem("TokenStremuGames", response.data.token);
+
+        localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
+
         navigate("/explorar");
       }
     } catch (error) {

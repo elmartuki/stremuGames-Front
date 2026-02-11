@@ -6,14 +6,17 @@ import { useMessageStore } from "./MessageModal";
 export const useObtenerJuegos = () => {
   const [listado, setListado] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { showMessage } = useMessageStore.getState();
+  const showMessage = useMessageStore((state) => state.showMessage);
 
   const recargarJuegos = async () => {
     try {
       const response = await clientAxios.get("/juegos/");
       setListado(response.data.datos);
     } catch (error) {
-      showMessage(error.response?.data?.message, "error");
+      showMessage(
+        error.response?.data?.message || "Error al cargar juegos",
+        "error",
+      );
     } finally {
       setLoading(false);
     }
@@ -22,10 +25,10 @@ export const useObtenerJuegos = () => {
   const handleEliminar = async (id) => {
     try {
       await eliminarUnJuego(id);
-
       await recargarJuegos();
+      showMessage("Juego eliminado correctamente", "success");
     } catch (error) {
-      alert("Error al eliminar");
+      showMessage("Error al eliminar el juego", "error");
     }
   };
 

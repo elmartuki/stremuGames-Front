@@ -11,6 +11,8 @@ import logout from "../icons/logout.svg";
 import "../css/perfilConfig.css";
 import useMediaQuery from "../utils/changeDesk";
 
+import favoritos from "../icons/fav.svg";
+
 const imagenesDecorativas = [
   "https://i0.wp.com/www.pcmrace.com/wp-content/uploads/2019/10/nTm7kHj.jpg",
   "https://www.10wallpaper.com/wallpaper/3840x2160/1803/Rainbow_Six_Siege_4K_Ultra_HD_Game_3840x2160.jpg",
@@ -112,7 +114,17 @@ export default function PerfilConfigPage() {
               </div>
               <img src={arrowRigth} alt="" />
             </article>
-
+            <article
+              className="perfil_config_body_button"
+              onClick={() => navigate("/perfil/favoritos")}
+            >
+              <img src={favoritos} alt="" />
+              <div>
+                <p>Favoritos</p>
+                <p>Ver tus juegos favoritos</p>
+              </div>
+              <img src={arrowRigth} alt="" />
+            </article>
             <article className="perfil_config_body_button">
               <img src={compras} alt="" />
               <div>
