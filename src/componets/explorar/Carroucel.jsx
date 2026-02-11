@@ -149,13 +149,12 @@ export default function Carroucel() {
                             <div className="tag_descuento">
                               -{porcentaje.toFixed()}%
                             </div>
+                            <p>${precioBase}</p>
                             <p>
                               {precioDescuento === 0
                                 ? "Gratis"
                                 : `$${precioDescuento}`}
                             </p>
-
-                            <p>${precioBase}</p>
                           </div>
                         </div>
 

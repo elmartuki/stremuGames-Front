@@ -233,7 +233,7 @@ export default function PerfilPage() {
           </div>
 
           <div className="perfil_page_tarjetas">
-            <div className="card_links">
+            <div className="card_links" onClick={() => navigate("/biblioteca")}>
               <img src={grid_green} alt="Biblioteca" />
               <div>
                 <p>Biblioteca</p>

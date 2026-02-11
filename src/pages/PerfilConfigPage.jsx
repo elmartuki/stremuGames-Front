@@ -5,7 +5,7 @@ import { useCalcularNivel } from "../services/calcularNivel";
 
 import editIcon from "../icons/edit.svg";
 import seguridad from "../icons/seguridad.svg";
-import compras from "../icons/compras.svg";
+import biblioteca from "../icons/biblioteca.svg";
 import arrowRigth from "../icons/arrowRigth.svg";
 import logout from "../icons/logout.svg";
 import "../css/perfilConfig.css";
@@ -114,6 +114,7 @@ export default function PerfilConfigPage() {
               </div>
               <img src={arrowRigth} alt="" />
             </article>
+            
             <article
               className="perfil_config_body_button"
               onClick={() => navigate("/perfil/favoritos")}
@@ -125,14 +126,19 @@ export default function PerfilConfigPage() {
               </div>
               <img src={arrowRigth} alt="" />
             </article>
-            <article className="perfil_config_body_button">
-              <img src={compras} alt="" />
+
+            <article
+              className="perfil_config_body_button"
+              onClick={() => navigate("/biblioteca")}
+            >
+              <img src={biblioteca} alt="" />
               <div>
-                <p>Historial de Compras</p>
-                <p>Ver tus transacciones recientes</p>
+                <p>Biblioteca</p>
+                <p>Ver todos los juegos que adquiriste</p>
               </div>
               <img src={arrowRigth} alt="" />
             </article>
+
           </section>
 
           <section className="perfil_config_footer">
