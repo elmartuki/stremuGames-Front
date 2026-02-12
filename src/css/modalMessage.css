@@ -1,24 +1,25 @@
-.modal_section {
+.modal_message_section {
   width: 100%;
   display: flex;
   justify-content: center;
   position: fixed;
   top: 10px;
   animation: mostrar 2s ease 1;
-  pointer-events: none;
+
   z-index: 20000;
 
-  .modal {
+  .modal_message {
     display: flex;
     width: fit-content;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background-color: #282828;
-    border-radius: 10px;
+    background-color: #151515;
+    border-radius: 4px;
     padding: 5px 10px 10px 10px;
 
     .modal_header {
+      margin-bottom: 5px;
       img {
         width: 26px;
       }

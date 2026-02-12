@@ -26,7 +26,7 @@ export default function Pendiente() {
           }
         }
       } catch (error) {
-        console.error("Error obteniendo compra:", error);
+        console.error(error);
       } finally {
         setLoadingCompra(false);
       }

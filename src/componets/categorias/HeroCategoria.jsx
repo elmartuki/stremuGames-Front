@@ -112,7 +112,6 @@ export default function HeroCategoria() {
       setEsFavorito(data.esFavorito);
       showMessage(data.message, "success");
     } catch (error) {
-      console.error(error);
       if (error.response?.status === 401 || error.response?.status === 403) {
         showMessage("Debes iniciar sesión para dar like", "error");
       } else {

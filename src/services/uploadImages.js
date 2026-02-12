@@ -29,7 +29,7 @@ export function useSubirImagen() {
         {
           method: "POST",
           body: data,
-        }
+        },
       );
 
       const fileData = await response.json();
@@ -43,7 +43,6 @@ export function useSubirImagen() {
         throw new Error(fileData.error?.message || "Error al subir imagen");
       }
     } catch (error) {
-      console.error(error);
       showMessage(error.message || "Error al subir la imagen", "error");
       return null;
     } finally {

@@ -7,19 +7,21 @@ import arrowLeft from "../icons/arrowLeft.svg";
 import cupondepago from "../icons/cupondepago.svg";
 import compras_green from "../icons/compras_green.svg";
 import sell_green from "../icons/sell_green.svg";
-// Nota: Asegúrate de tener sell_yellow importado si lo usas, vi que faltaba en tu lista
 import sell_yellow from "../icons/sell_yellow.svg";
 import clientAxios from "../utils/clientAxios";
 import "../css/carrito.css";
 import { useNavigate } from "react-router-dom";
 import { iniciarPago } from "../services/paymentService";
 import useMediaQuery from "../utils/changeDesk";
+import { useMessageStore } from "../services/MessageModal";
 
 export default function CarritoPage() {
   const [carrito, setCarrito] = useState({
     juegos: [],
     total: 0,
   });
+
+  const { showMessage } = useMessageStore.getState();
 
   const [loading, setLoading] = useState(true);
   const [procesandoPago, setProcesandoPago] = useState(false);
@@ -90,17 +92,15 @@ export default function CarritoPage() {
       if (data.init_point) {
         window.location.href = data.init_point;
       } else {
-        alert("No se pudo generar el link de pago");
+        showMessage("No se pudo generar el link de pago", "error");
       }
     } catch (error) {
-      console.error(error);
-      alert(error.message || "Error al procesar el pago");
+      showMessage("Error al procesar el pago", "error");
     } finally {
       setProcesandoPago(false);
     }
   };
 
-  // Verificamos si hay juegos válidos para mostrar el resumen
   const hayJuegos = !loading && carrito.juegos.length > 0;
 
   return (
@@ -124,7 +124,6 @@ export default function CarritoPage() {
       )}
 
       <section className="carrito_container">
-        {/* COLUMNA IZQUIERDA: PRODUCTOS O LOADER */}
         <section className="card-carrito_section">
           {loading ? (
             <div className="loader-container">
@@ -177,10 +176,8 @@ export default function CarritoPage() {
           )}
         </section>
 
-        {/* COLUMNA DERECHA: RESUMEN (Solo se muestra si hay juegos) */}
         {hayJuegos && (
           <div className="resumen_wrapper">
-            {/* Ticket */}
             <section className="ticket_section">
               <div className="ticket_header">
                 <p>
@@ -218,7 +215,6 @@ export default function CarritoPage() {
               </div>
             </section>
 
-            {/* Cupón */}
             <section className="desc-section">
               <div className="desc-title">
                 <p>
@@ -239,7 +235,6 @@ export default function CarritoPage() {
               </div>
             </section>
 
-            {/* Botón de Pago */}
             <section className="section_pago_total">
               <button
                 onClick={handlePago}

@@ -34,6 +34,7 @@ import Pendiente from "../componets/payments/Pendiente.jsx";
 import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
 import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
 import FavoritosPage from "../pages/FavoritosPage.jsx";
+import SoportePage from "../pages/SoportePage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -104,6 +105,15 @@ export default function AppRouter() {
             <>
               <CategoriaSeleccionadaPage />
               <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/soporte"
+          element={
+            <>
+              <SoportePage />
+              {isDesktop ? <FooterWeb /> : <Footer />}
             </>
           }
         />
