@@ -52,6 +52,7 @@ export default function AppRouter() {
       "/pago/exitoso/",
       "/pago/fallido/",
       "/perfil/recuperar",
+      "/perfil/favoritos",
     ];
 
     const mostrarNavbar =
