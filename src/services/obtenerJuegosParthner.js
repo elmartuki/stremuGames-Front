@@ -25,7 +25,7 @@ export const useObtenerJuegosParthner = () => {
 
       await recargarJuegos();
     } catch (error) {
-      alert("Error al eliminar");
+      showMessage("Error al eliminar", "error");
     }
   };
 

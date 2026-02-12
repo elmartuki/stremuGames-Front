@@ -3,11 +3,12 @@
   flex-direction: column;
   gap: 20px;
   animation: fadeInScale 0.6s ease-out;
+  margin-bottom: 80px;
 
   .perfil_config {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
   }
 
   .perfil_config_carroucel {
@@ -83,7 +84,7 @@
       align-items: center;
       background-color: #161616;
       border: 1px solid #282828;
-      padding: 15px 20px;
+      padding: 12px 20px;
       border-radius: 6px;
       cursor: pointer;
       position: relative;
@@ -182,7 +183,7 @@
         flex-direction: column;
         text-align: center;
         flex: 1;
-        padding: 10px 5px;
+        padding: 5px 5px;
         border-right: 2px solid #282828;
         transition: background-color 0.2s;
         cursor: default;
@@ -240,6 +241,7 @@
     align-items: center;
     height: 91vh;
     overflow: hidden;
+    margin-bottom: 0px;
 
     .perfil_config {
       width: 50%;

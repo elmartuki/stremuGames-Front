@@ -11,11 +11,14 @@ import { useObtenerUsuarios } from "../services/obtenerUsuarios";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useNavigate } from "react-router-dom";
 import clientAxios from "../utils/clientAxios";
+import { useMessageStore } from "../services/MessageModal";
 
 export default function AdminPanelPage() {
   const navigate = useNavigate();
   const [buscar, setBuscar] = useState("");
   const [indice, setIndice] = useState(4);
+
+  const { showMessage } = useMessageStore.getState();
 
   const { usuario } = useObtenerUsuario();
   const {
@@ -68,7 +71,7 @@ export default function AdminPanelPage() {
         else setListaEmpresas(updater);
       }
     } catch (error) {
-      console.error("Error al banear:", error);
+      showMessage("Error al banear.", "error");
     }
   };
 
@@ -84,8 +87,7 @@ export default function AdminPanelPage() {
         );
       }
     } catch (error) {
-      console.error("Error al actualizar estado del juego:", error);
-      alert("No se pudo cambiar la visibilidad del juego");
+      showMessage("No se pudo cambiar la visibilidad del juego", "error");
     }
   };
 

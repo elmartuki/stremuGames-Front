@@ -11,10 +11,13 @@ import iconoDinero from "../icons/ventas.svg";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
 import clientAxios from "../utils/clientAxios";
+import { useMessageStore } from "../services/MessageModal";
 
 export default function StudioPage() {
   const [buscar, setBuscar] = useState("");
   const navigate = useNavigate();
+
+  const { showMessage } = useMessageStore.getState();
 
   const { usuario, cargando: cargandoUsuario } = useObtenerUsuario();
   const { listado, loading: cargandoJuegos } = useObtenerJuegos();
@@ -73,8 +76,7 @@ export default function StudioPage() {
         );
       }
     } catch (error) {
-      console.error("Error al actualizar estado del juego:", error);
-      alert("No se pudo cambiar la visibilidad del juego");
+      showMessage("No se pudo cambiar la visibilidad del juego", error);
     }
   };
 

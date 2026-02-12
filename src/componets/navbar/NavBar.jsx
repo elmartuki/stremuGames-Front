@@ -52,7 +52,7 @@ export default function NavBar() {
 
   const opcionesUser = [
     { titulo: "Explorar", ruta: "/explorar" },
-    { titulo: "Ofertas", ruta: "/ofertas" },
+    { titulo: "Ofertas", ruta: "/categorias/ofertas" },
     { titulo: "Categorías", ruta: "/categorias" },
     { titulo: "Comunidad", ruta: "/comunidad" },
   ];

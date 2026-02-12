@@ -68,7 +68,7 @@ export default function HeroJuegos({ filtrar }) {
       setEsFavorito(data.esFavorito);
       showMessage(data.message, "success");
     } catch (error) {
-      console.error(error);
+     
       if (error.response?.status === 401 || error.response?.status === 403) {
         showMessage("Debes iniciar sesión para dar like", "error");
       } else {
@@ -81,8 +81,6 @@ export default function HeroJuegos({ filtrar }) {
 
   const handleComprar = (e) => {
     e.stopPropagation();
-
-    console.log("Agregar al carrito:", juegoActual.titulo);
   };
 
   if (juegosParaMostrar.length === 0) return <div className="loading"></div>;

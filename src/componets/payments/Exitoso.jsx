@@ -26,7 +26,7 @@ export default function PagoExitoso() {
           }
         }
       } catch (error) {
-        console.error("Error obteniendo compra:", error);
+        console.error(error);
       } finally {
         setLoadingCompra(false);
       }

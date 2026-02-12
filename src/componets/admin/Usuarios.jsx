@@ -9,12 +9,15 @@ import back from "../../icons/back.svg";
 import more from "../../icons/more.svg";
 import lupa from "../../icons/search.svg";
 import ban from "../../icons/ban.svg";
+import { useMessageStore } from "../../services/MessageModal";
 
 export default function Usuarios() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const usuariosPorPagina = 10;
+
+  const { showMessage } = useMessageStore.getState();
 
   const { usuarios: usuariosData = [] } = useObtenerUsuarios();
 
@@ -50,11 +53,10 @@ export default function Usuarios() {
             user._id === id ? { ...user, activo: !user.activo } : user,
           ),
         );
-        console.log("Usuario actualizado correctamente");
+        showMessage("Usuario actualizado correctamente", "success");
       }
     } catch (error) {
-      console.error("Error al banear usuario:", error);
-      alert("No se pudo actualizar el estado del usuario.");
+      showMessage("No se pudo actualizar el estado del usuario.", "error");
     }
   };
 

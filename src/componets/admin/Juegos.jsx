@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import clientAxios from "../../utils/clientAxios";
@@ -8,10 +8,13 @@ import back from "../../icons/back.svg";
 import more from "../../icons/more.svg";
 import lupa from "../../icons/search.svg";
 import noImage from "../../icons/noimage.png";
+import { useMessageStore } from "../../services/MessageModal";
 
 export default function Juegos() {
   const navigate = useNavigate();
   const { listado, loading } = useObtenerJuegos();
+
+  const { showMessage } = useMessageStore.getState();
 
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
@@ -55,8 +58,7 @@ export default function Juegos() {
         );
       }
     } catch (error) {
-      console.error("Error al actualizar estado del juego:", error);
-      alert("No se pudo cambiar la visibilidad del juego");
+      showMessage("No se pudo cambiar la visibilidad del juego", "error");
     }
   };
 
