@@ -5,7 +5,7 @@ import ArrowLeft from "../../icons/back.svg";
 import MoreVertical from "../../icons/more.svg";
 import general from "../../icons/general.svg";
 import price from "../../icons/price.svg";
-import descripcion from "../../icons/descripcion.svg";
+import descripcionIcon from "../../icons/descripcion.svg";
 import upload from "../../icons/upload.svg";
 import galeriaIcon from "../../icons/galeria.svg";
 import noImage from "../../icons/noimage.png";
@@ -13,6 +13,7 @@ import noImage from "../../icons/noimage.png";
 import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
 import useMediaQuery from "../../utils/changeDesk";
+import { useMessageStore } from "../../services/MessageModal";
 
 const CATEGORIAS_DISPONIBLES = [
   "Acción",
@@ -30,6 +31,8 @@ const CATEGORIAS_DISPONIBLES = [
 export default function SubirJuego() {
   const navigate = useNavigate();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+
+  const { showMessage } = useMessageStore.getState();
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
@@ -157,13 +160,51 @@ export default function SubirJuego() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!form.titulo.trim() || !form.slug.trim() || !form.descripcion.trim()) {
+      return showMessage(
+        "Título, Slug y Descripción son obligatorios",
+        "error",
+      );
+    }
+
+    const slugRegex = /^[a-z0-9-]+$/;
+    if (!slugRegex.test(form.slug)) {
+      return showMessage(
+        "El Slug solo admite minúsculas, números y guiones",
+        "error",
+      );
+    }
+
+    if (form.precioBase < 0 || form.precioDescuento < 0 || form.pesoGB < 0) {
+      return showMessage(
+        "Los valores numéricos no pueden ser negativos",
+        "error",
+      );
+    }
+
+    if (form.precioDescuento > form.precioBase) {
+      return showMessage(
+        "El descuento no puede superar al precio base",
+        "error",
+      );
+    }
+
+    if (!form.imagenPortada || !form.imagenBanner) {
+      return showMessage("La portada y el banner son obligatorios", "error");
+    }
+
+    if (form.categorias.length === 0) {
+      return showMessage("Selecciona al menos una categoría", "error");
+    }
+
     try {
       await clientAxios.post("/juegos/crear", form);
-      alert("Juego creado exitosamente");
+      showMessage("Juego creado exitosamente", "success");
       navigate("/studio-panel");
     } catch (error) {
-      console.error(error);
-      alert("Hubo un error al crear el juego");
+      const msg =
+        error.response?.data?.message || "Hubo un error al crear el juego";
+      showMessage(msg, "error");
     }
   };
 
@@ -174,9 +215,7 @@ export default function SubirJuego() {
 
   return (
     <section className="edit-game">
-      {isDesktop ? (
-        <></>
-      ) : (
+      {!isDesktop && (
         <div className="edit-game_header">
           <div onClick={() => navigate(-1)} className="edit-game_back-btn">
             <img src={ArrowLeft} alt="Volver" />
@@ -492,7 +531,7 @@ export default function SubirJuego() {
 
         <section className="inputs_container">
           <p className="inputs_container_titulo">
-            <img src={descripcion} alt="" />
+            <img src={descripcionIcon} alt="" />
             Descripción
           </p>
           <div className="edit-game_input-group">

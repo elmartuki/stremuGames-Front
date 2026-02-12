@@ -8,6 +8,8 @@ import seguridad from "../icons/seguridad.svg";
 import biblioteca from "../icons/biblioteca.svg";
 import arrowRigth from "../icons/arrowRigth.svg";
 import logout from "../icons/logout.svg";
+import support from "../icons/support.svg";
+
 import "../css/perfilConfig.css";
 import useMediaQuery from "../utils/changeDesk";
 
@@ -114,7 +116,7 @@ export default function PerfilConfigPage() {
               </div>
               <img src={arrowRigth} alt="" />
             </article>
-            
+
             <article
               className="perfil_config_body_button"
               onClick={() => navigate("/perfil/favoritos")}
@@ -139,6 +141,21 @@ export default function PerfilConfigPage() {
               <img src={arrowRigth} alt="" />
             </article>
 
+            {isDesktop ? (
+              <></>
+            ) : (
+              <article
+                className="perfil_config_body_button"
+                onClick={() => navigate("/soporte")}
+              >
+                <img src={support} alt="" />
+                <div>
+                  <p>Soporte</p>
+                  <p>¿Tienes algun inconveniente?</p>
+                </div>
+                <img src={arrowRigth} alt="" />
+              </article>
+            )}
           </section>
 
           <section className="perfil_config_footer">

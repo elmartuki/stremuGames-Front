@@ -10,11 +10,11 @@ export default function ModalMessage() {
 
   return (
     <>
-      <section className="modal_section">
+      <section className="modal_message_section">
         <article
-          className="modal"
+          className="modal_message"
           style={{
-            border: type === "success" ? "2px solid #747574" : "2px solid red",
+            border: type === "success" ? "2px solid #66f61e" : "2px solid red",
           }}
         >
           <div className="modal_header">

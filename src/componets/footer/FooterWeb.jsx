@@ -1,8 +1,11 @@
 import terminal from "../../icons/terminal.svg";
 import instagram from "../../icons/ig.svg";
 import twitter from "../../icons/twitter.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function FooterWeb() {
+  const navigate = useNavigate();
+
   return (
     <footer className="footer-web">
       <div className="footer_container">
@@ -15,7 +18,7 @@ export default function FooterWeb() {
         <div className="seccion">
           <button>SOBRE NOSOTROS</button>
           <button>TERMINOS Y CONDICIONES</button>
-          <button>SOPORTE</button>
+          <button onClick={() => navigate("/soporte")}>SOPORTE</button>
         </div>
         <div className="seccion">
           <button>

@@ -12,6 +12,7 @@ export const useObtenerUsuarios = () => {
 
         setUsuarios(response.data.datos || []);
       } catch (error) {
+        
         console.error("Error al obtener usuarios:", error);
       } finally {
         setCargando(false);

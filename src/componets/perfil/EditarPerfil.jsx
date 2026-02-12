@@ -26,6 +26,7 @@ export default function EditarPerfil() {
 
   const { usuario } = useObtenerUsuario();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+  const { showMessage } = useMessageStore.getState();
 
   const {
     subirImagen: subirPerfil,
@@ -49,12 +50,20 @@ export default function EditarPerfil() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (usuario) {
+      setData({
+        nombreUsuario: usuario.nombreUsuario || "",
+        biografia: usuario.biografia || "",
+      });
+    }
+  }, [usuario]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) =>
         prevIndex === imagenesDecorativas.length - 1 ? 0 : prevIndex + 1,
       );
     }, 6000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -69,15 +78,33 @@ export default function EditarPerfil() {
   const handleSubmit = async () => {
     if (!usuario) return;
 
+    const nuevoNombre = data.nombreUsuario.trim();
+    const nuevaBio = data.biografia.trim();
+
+    if (!nuevoNombre) {
+      return showMessage("El nombre de usuario no puede estar vacío", "error");
+    }
+
+    if (nuevoNombre.length < 3) {
+      return showMessage("El nombre debe tener al menos 3 caracteres", "error");
+    }
+
+    const regexUsuario = /^[a-zA-Z0-9_]+$/;
+    if (!regexUsuario.test(nuevoNombre)) {
+      return showMessage(
+        "El nombre solo permite letras, números y guiones bajos",
+        "error",
+      );
+    }
+
     const datosParaEnviar = {
       foto_de_perfil: urlPerfil || usuario.foto_de_perfil,
       foto_banner: urlBg || usuario.foto_banner,
-      nombreUsuario: data.nombreUsuario || usuario.nombreUsuario,
-      biografia: data.biografia || usuario.biografia,
+      nombreUsuario: nuevoNombre,
+      biografia: nuevaBio,
     };
 
     try {
-      const { showMessage } = useMessageStore.getState();
       const response = await clientAxios.put(
         `/usuarios/${usuario._id}`,
         datosParaEnviar,
@@ -88,7 +115,6 @@ export default function EditarPerfil() {
         navigate("/perfil");
       }
     } catch (error) {
-      const { showMessage } = useMessageStore.getState();
       showMessage(
         error.response?.data?.message || "Error al actualizar",
         "error",
@@ -96,29 +122,22 @@ export default function EditarPerfil() {
     }
   };
 
-  if (!usuario) {
-    return <></>;
-  }
+  if (!usuario) return <></>;
 
   const iniciales = usuario.nombreUsuario?.toUpperCase().slice(0, 2);
   const imagenFinal = previewPerfil || urlPerfil || usuario.foto_de_perfil;
-
   const backgroundFinal =
     previewBg ||
     urlBg ||
     usuario.foto_banner ||
     "https://via.placeholder.com/800x400?text=Sin+Fondo";
 
-  const displayName = data.nombreUsuario || usuario.nombreUsuario;
-
   return (
     <section className="editar_perfil_section">
       {isDesktop ? (
-        <>
-          <nav className="navbar-phone desk">
-            <img onClick={() => navigate(-1)} src={back} alt="Atrás" />
-          </nav>
-        </>
+        <nav className="navbar-phone desk">
+          <img onClick={() => navigate(-1)} src={back} alt="Atrás" />
+        </nav>
       ) : (
         <nav className="navbar-phone">
           <img onClick={() => navigate(-1)} src={back} alt="Atrás" />
@@ -135,7 +154,6 @@ export default function EditarPerfil() {
               src={imagenesDecorativas[currentIndex]}
               alt="Decorativo"
             />
-
             <div className="carroucel_dots_overlay">
               {imagenesDecorativas.map((_, index) => (
                 <span
@@ -176,7 +194,6 @@ export default function EditarPerfil() {
                     ) : (
                       <p>{iniciales}</p>
                     )}
-
                     <div
                       className="boton_editar_foto"
                       onClick={handleEditClick}
@@ -184,7 +201,6 @@ export default function EditarPerfil() {
                       <img src={editIcon} alt="Editar" />
                     </div>
                   </div>
-
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -196,11 +212,8 @@ export default function EditarPerfil() {
               </div>
 
               <div className="loading_container">
-                {subiendoPerfil && (
-                  <span className="loading_msg">Subiendo Avatar...</span>
-                )}
-                {subiendoBg && (
-                  <span className="loading_msg">Subiendo Fondo...</span>
+                {(subiendoPerfil || subiendoBg) && (
+                  <span className="loading_msg">Subiendo archivos...</span>
                 )}
               </div>
             </div>
@@ -212,10 +225,10 @@ export default function EditarPerfil() {
               <input
                 type="text"
                 maxLength="20"
-                defaultValue={usuario.nombreUsuario}
-                onChange={(event) => {
-                  setData({ ...data, nombreUsuario: event.target.value });
-                }}
+                value={data.nombreUsuario}
+                onChange={(event) =>
+                  setData({ ...data, nombreUsuario: event.target.value })
+                }
                 placeholder="Tu nombre"
               />
             </div>
@@ -223,14 +236,13 @@ export default function EditarPerfil() {
             <div className="column_input">
               <div className="label_container">
                 <label>Biografía </label>
-                <label htmlFor="">{data.biografia.length} / 300</label>
+                <label>{data.biografia.length} / 300</label>
               </div>
-
               <textarea
                 onChange={(event) =>
                   setData({ ...data, biografia: event.target.value })
                 }
-                defaultValue={usuario.biografia}
+                value={data.biografia}
                 placeholder="Cuéntanos sobre ti..."
                 maxLength="300"
                 rows="3"
@@ -247,7 +259,7 @@ export default function EditarPerfil() {
               >
                 <img src={checkIcon} alt="Guardar" />
                 {subiendoPerfil || subiendoBg
-                  ? "Subiendo..."
+                  ? "Cargando..."
                   : "Guardar Cambios"}
               </button>
               <button

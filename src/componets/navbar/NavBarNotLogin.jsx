@@ -27,7 +27,7 @@ export default function NavBarNotLogin() {
                 <button onClick={() => navigate("/comunidad")}>
                   Comunidad
                 </button>
-                <button onClick={() => navigate("/ofertas")}>Ofertas</button>
+                <button onClick={() => navigate("/categorias/ofertas")}>Ofertas</button>
               </>
             ) : (
               <></>

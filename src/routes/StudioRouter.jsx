@@ -18,7 +18,6 @@ export default function StudioRouter() {
     try {
       return jwtDecode(token);
     } catch (error) {
-      console.error("Token inválido:", error);
       return null;
     }
   }, [token]);

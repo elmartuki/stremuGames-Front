@@ -9,12 +9,15 @@ import back from "../../icons/back.svg";
 import more from "../../icons/more.svg";
 import lupa from "../../icons/search.svg";
 import ban from "../../icons/ban.svg";
+import { useMessageStore } from "../../services/MessageModal";
 
 export default function Empresas() {
   const navigate = useNavigate();
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
   const empresasPorPagina = 10;
+
+  const { showMessage } = useMessageStore.getState();
 
   const { empresas: empresasData = [] } = useObtenerUsuarios();
 
@@ -44,19 +47,19 @@ export default function Empresas() {
     try {
       const response = await clientAxios.put(`/usuarios/banear/${id}`);
 
-      console.log(response);
-
       if (response.status === 200) {
         setListaEmpresas((prevEmpresas) =>
           prevEmpresas.map((emp) =>
             emp._id === id ? { ...emp, activo: !emp.activo } : emp,
           ),
         );
-        console.log("Estado de usuario actualizado correctamente");
+        showMessage("Estado de usuario actualizado correctamente", "success");
       }
     } catch (error) {
-      console.error("Error al banear/activar:", error);
-      alert("No se pudo realizar la acción. Inténtalo de nuevo.");
+      showMessage(
+        "No se pudo realizar la acción. Inténtalo de nuevo.",
+        "error",
+      );
     }
   };
 
