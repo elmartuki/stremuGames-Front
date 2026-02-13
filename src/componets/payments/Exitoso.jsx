@@ -137,7 +137,7 @@ export default function PagoExitoso() {
           <span className="total_monto">${Number(total).toFixed(2)}</span>
         </div>
 
-        <button className="btn_volver" onClick={() => navigate("/perfil")}>
+        <button className="btn_volver" onClick={() => navigate("/biblioteca")}>
           Ir a mi Biblioteca
         </button>
       </article>

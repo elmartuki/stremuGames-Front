@@ -63,7 +63,7 @@ export default function Fallido() {
 
           <button
             className="btn_volver_inicio"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/explorar")}
             style={{
               background: "transparent",
               border: "none",
