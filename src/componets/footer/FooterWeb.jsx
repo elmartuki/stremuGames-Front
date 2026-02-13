@@ -2,9 +2,11 @@ import terminal from "../../icons/terminal.svg";
 import instagram from "../../icons/ig.svg";
 import twitter from "../../icons/twitter.svg";
 import { useNavigate } from "react-router-dom";
+import { useModalStore } from "../../services/ModalTerminos";
 
 export default function FooterWeb() {
   const navigate = useNavigate();
+  const openModal = useModalStore((state) => state.openModal);
 
   return (
     <footer className="footer-web">
@@ -17,7 +19,7 @@ export default function FooterWeb() {
         </div>
         <div className="seccion">
           <button>SOBRE NOSOTROS</button>
-          <button>TERMINOS Y CONDICIONES</button>
+          <button onClick={openModal}>TERMINOS Y CONDICIONES</button>
           <button onClick={() => navigate("/soporte")}>SOPORTE</button>
         </div>
         <div className="seccion">
