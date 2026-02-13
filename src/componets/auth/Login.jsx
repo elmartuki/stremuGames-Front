@@ -7,6 +7,7 @@ import encrypted from "../../icons/encrypted.svg";
 import visibility_off from "../../icons/visibility_off.svg";
 import visibility from "../../icons/visibility.svg";
 import background_3 from "../../icons/background_3.png";
+import background_4 from "../../icons/background_4.png";
 import errorIcon from "../../icons/error.svg";
 import fondo_futurista_4k from "../../images/fondo_futurista_4k.jpg";
 import fondo_futurista_4k_2 from "../../images/fondo_futurista_4k_2.jpg";
@@ -85,6 +86,11 @@ export default function Login() {
           className="background-login-image"
           alt="Fondo de pantalla del login"
         />
+        <img
+          src={background_4}
+          className="background-login-image-mobile"
+          alt="Fondo de pantalla del login"
+        />
         <article className="container-login">
           <div className="subcontainer-login">
             <div className="container-login-title">
@@ -93,11 +99,11 @@ export default function Login() {
               </div>
               <p>STREMU GAMES</p>
             </div>
-            <p className="container-login-subtitle">BEYOND THE</p>
-            <p className="container-login-subtitle-2">INTERFACE.</p>
+            <p className="container-login-subtitle">MÁS ALLÁ DE LA</p>
+            <p className="container-login-subtitle-2">INTERFAZ.</p>
             <p className="container-login-description">
-              Experience high-fidelity gaming with zero latency. Join the elite
-              network of players shaping the future of the grid.
+              Experimenta juegos de alta fidelidad con cero latencia. Únete a la
+              red de élite de jugadores que dan forma al futuro del grid.
             </p>
             <div className="carousel">
               <div className="zoom-carousel">
@@ -108,20 +114,19 @@ export default function Login() {
             </div>
           </div>
         </article>
-
         <section className="login-section">
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-card">
               <header className="login-card__header">
-                <h2 className="login-card__title">PLAYER_LOGIN</h2>
+                <h2 className="login-card__title">INICIAR SESIÓN</h2>
                 <p className="login-card__subtitle">
-                  Enter your credentials to access stremu games.
+                  Ingresa tus credenciales para acceder a Stremu Games.
                 </p>
               </header>
               <div className="login-form__content">
                 <div className="login-form__field">
                   <label className="login-form__label" htmlFor="usuario_email">
-                    USERNAME OR EMAIL
+                    USUARIO O EMAIL
                   </label>
                   <div className="login-form__input-wrapper">
                     <img src={arroba} alt="" />
@@ -141,10 +146,10 @@ export default function Login() {
                 <div className="login-form__field">
                   <div className="login-form__field_child">
                     <label className="login-form__label" htmlFor="password">
-                      PASSWORD
+                      CONTRASEÑA
                     </label>
                     <a className="login-form__forget_my_password" href="#">
-                      forgot my password
+                      olvidé mi contraseña
                     </a>
                   </div>
                   <div className="login-form__input-wrapper">
@@ -180,7 +185,7 @@ export default function Login() {
                 )}
 
                 <button type="submit" className="login-form__submit">
-                  <p>START</p>
+                  <p>INGRESAR</p>
                 </button>
 
                 <div className="login-form__separator">

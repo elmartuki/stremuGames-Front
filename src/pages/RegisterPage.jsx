@@ -10,7 +10,7 @@ export default function RegisterPage() {
         <img onClick={() => navigate(-1)} src={back} alt="" />
         <div></div>
       </nav>
-      <Register />;
+      <Register />
     </>
   );
 }

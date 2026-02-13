@@ -8,7 +8,7 @@ import visibility from "../../icons/visibility.svg";
 import errorIcon from "../../icons/error.svg";
 import arroba from "../../icons/arroba.svg";
 import background_3 from "../../icons/background_3.png";
-
+import background_4 from "../../icons/background_4.png";
 import encrypted from "../../icons/encrypted.svg";
 import person_green from "../../icons/person_green.svg";
 import { loginWithGoogle } from "../../utils/FireBase";
@@ -178,6 +178,11 @@ export default function Register() {
           className="background-login-image"
           alt="Fondo de pantalla del login"
         />
+        <img
+          src={background_4}
+          className="background-login-image-mobile"
+          alt="Fondo de pantalla del login"
+        />
         <article className="container-login">
           <div className="subcontainer-login">
             <div className="container-login-title">
@@ -187,12 +192,12 @@ export default function Register() {
               <p>STREMU GAMES</p>
             </div>
 
-            <p className="container-login-subtitle">JOIN THE</p>
-            <p className="container-login-subtitle-2">GRID.</p>
+            <p className="container-login-subtitle">ÚNETE A LA</p>
+            <p className="container-login-subtitle-2">RED.</p>
 
             <p className="container-login-description">
-              Create your account and become part of the next-generation gaming
-              platform.
+              Crea tu cuenta y forma parte de la plataforma de juegos de próxima
+              generación.
             </p>
 
             <div className="carousel">
@@ -209,22 +214,22 @@ export default function Register() {
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="login-card">
               <header className="login-card__header">
-                <h2 className="login-card__title">CREATE_ACCOUNT</h2>
+                <h2 className="login-card__title">CREAR CUENTA</h2>
                 <p className="login-card__subtitle">
-                  Create your account to access Stremu Games.
+                  Crea tu cuenta para acceder a Stremu Games.
                 </p>
               </header>
 
               <div className="login-form__content">
                 <div className="login-form__field">
-                  <label className="login-form__label">USERNAME</label>
+                  <label className="login-form__label">USUARIO</label>
                   <div className="login-form__input-wrapper">
                     <img src={person_green} alt="Usuario" />
                     <input
                       type="text"
                       name="nombreUsuario"
                       className="login-form__input"
-                      placeholder="Your username"
+                      placeholder="Tu usuario"
                       value={form.nombreUsuario}
                       onChange={handleChange}
                     />
@@ -247,13 +252,13 @@ export default function Register() {
                 </div>
 
                 <div className="login-form__field">
-                  <label className="login-form__label">PASSWORD</label>
+                  <label className="login-form__label">CONTRASEÑA</label>
                   <div className="login-form__input-wrapper">
                     <img src={encrypted} alt="Contraseña" />
                     <input
                       type={mostrarPassword ? "text" : "password"}
                       className="login-form__input"
-                      placeholder="Enter your password"
+                      placeholder="Ingresa tu contraseña"
                       value={form.password}
                       onChange={(e) =>
                         setForm({ ...form, password: e.target.value })
@@ -273,13 +278,15 @@ export default function Register() {
                 </div>
 
                 <div className="login-form__field">
-                  <label className="login-form__label">REPEAT PASSWORD</label>
+                  <label className="login-form__label">
+                    REPETIR CONTRASEÑA
+                  </label>
                   <div className="login-form__input-wrapper">
                     <img src={encrypted} alt="Contraseña" />
                     <input
                       type={mostrarRepeatPassword ? "text" : "password"}
                       className="login-form__input"
-                      placeholder="Repeat your password"
+                      placeholder="Repite tu contraseña"
                       value={form.repeatPassword}
                       onChange={(e) =>
                         setForm({ ...form, repeatPassword: e.target.value })
@@ -314,7 +321,7 @@ export default function Register() {
                   className="login-form__submit"
                   disabled={loading}
                 >
-                  <p>{loading ? "CREATING..." : "CREATE ACCOUNT"}</p>
+                  <p>{loading ? "CREANDO..." : "CREAR CUENTA"}</p>
                 </button>
 
                 <div className="login-form__separator">
@@ -355,9 +362,9 @@ export default function Register() {
               </div>
             </div>
             <footer className="login-footer">
-              <p className="login-footer__text">Already have an account?</p>
+              <p className="login-footer__text">¿Ya tienes una cuenta?</p>
               <a href="/login" className="login-footer__link">
-                Sign in
+                Iniciar sesión
               </a>
             </footer>
           </form>

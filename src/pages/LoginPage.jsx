@@ -8,7 +8,6 @@ export default function LoginPage() {
     <>
       <nav className="navbar-phone desk">
         <img onClick={() => navigate(-1)} src={back} alt="" />
-        <div></div>
       </nav>
       <Login />
     </>
