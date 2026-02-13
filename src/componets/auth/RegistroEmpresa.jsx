@@ -10,6 +10,7 @@ import link from "../../icons/link.svg";
 import visibility from "../../icons/visibility.svg";
 import visibility_off from "../../icons/visibility_off.svg";
 import background from "../../icons/background_2.png";
+import background_4 from "../../icons/background_4.png";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -164,7 +165,9 @@ export default function RegistroEmpresa() {
           <img className="background" src={background} alt="" />
         </>
       ) : (
-        <></>
+        <>
+          <img className="background" src={background_4} alt="" />
+        </>
       )}
 
       {isDesktop ? (
