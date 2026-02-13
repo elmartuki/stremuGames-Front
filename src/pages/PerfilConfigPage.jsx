@@ -168,11 +168,14 @@ export default function PerfilConfigPage() {
               <img src={logout} alt="" />
               Cerrar Sesión
             </button>
-            <p>Version 0.3.0</p>
+
+            <p>App Versión 0.9.0</p>
           </section>
         </section>
 
         <section className="perfil_config_carroucel">
+          {isDesktop ? <p className="version_app">App Versión 0.9.0</p> : <></>}
+
           <div className="imagenes_container">
             <img
               key={currentIndex}

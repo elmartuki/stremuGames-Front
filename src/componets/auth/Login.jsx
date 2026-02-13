@@ -49,7 +49,6 @@ export default function Login() {
       const response = await clientAxios.post("/usuarios/login", form);
 
       if (response.status === 200) {
-        
         localStorage.setItem("TokenStremuGames", response.data.token);
 
         localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
@@ -66,7 +65,6 @@ export default function Login() {
       <section className="container-login-father">
         <article className="container-login">
           <div className="subcontainer-login">
-            {" "}
             <div className="container-login-title">
               <div className="image-joystick">
                 <img src={joystick} alt="Joystick" />
