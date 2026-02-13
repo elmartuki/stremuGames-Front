@@ -280,6 +280,31 @@
       }
     }
 
+    .btn_google {
+      padding: 0px;
+      margin-top: 0px;
+      background-color: #202020;
+      color: white;
+      border: 2px solid #353535;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .btn_google:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .btn_google:not(:disabled):hover {
+      color: white;
+      background-color: #252525;
+      border-color: #404040;
+    }
+
     .formulario_login_footer {
       margin-top: 20px;
       text-align: center;
