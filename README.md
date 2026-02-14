@@ -28,7 +28,8 @@ Sigue estos pasos para levantar el proyecto en tu computadora.
     ```
 
 2.  **Configurar Variables de Entorno:**
-    Busca el archivo `.env.example` y cámbiale el nombre a `.env`.
+   Este proyecto requiere un archivo .env con credenciales específicas. Para obtenerlo, debes solicitarlo personalmente enviando un correo a: elmartind17@gmail.com.
+    Nota: Una vez recibas el archivo, asegúrate de colocarlo dentro de la carpeta del front.
 
 3.  **Instalar Dependencias:**
     Ejecuta el siguiente comando para descargar las librerías necesarias:
