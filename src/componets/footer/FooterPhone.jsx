@@ -29,7 +29,7 @@ export default function Footer() {
     { titulo: "", icono: categoriasIcon, ruta: "/categorias" },
     { titulo: "", icono: comunidadIcon, ruta: "/comunidad" },
     { titulo: "", icono: carritoIcon, ruta: "/carrito" },
-    { titulo: "", icono: wishlistIcon, ruta: "/wishlist" },
+    { titulo: "", icono: wishlistIcon, ruta: "/perfil/favoritos" },
     { titulo: "", icono: perfilIcon, ruta: "/perfil" },
   ];
 
