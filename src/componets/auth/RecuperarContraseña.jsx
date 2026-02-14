@@ -11,13 +11,15 @@ import back from "../../icons/back.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useMediaQuery from "../../utils/changeDesk";
+import clientAxios from "../../utils/clientAxios";
+import { useMessageStore } from "../../services/MessageModal.js";
 
 export default function RecuperarPassword() {
   const navigate = useNavigate();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+  const showMessage = useMessageStore((state) => state.showMessage);
 
   const [step, setStep] = useState(1);
-
   const [showNew, setShowNew] = useState(false);
   const [showRepeat, setShowRepeat] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -29,10 +31,99 @@ export default function RecuperarPassword() {
     repeatNewPassword: "",
   });
 
-  const handleNextStep = () => {
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
+const handleNextStep = async () => {
+    if (step === 1) {
+      if (!form.email.trim()) {
+        showMessage("Por favor, ingresa tu correo electrónico.", "warning");
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await clientAxios.post(
+          "/usuarios/recuperarContrasenia",
+          {
+            email: form.email,
+          },
+        );
+        if (response.status === 200) {
+          setStep(2);
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          showMessage("No existe ninguna cuenta con este correo.", "error");
+        } else {
+          showMessage("Hubo un error al intentar enviar el correo.", "error");
+        }
+      } finally {
+        setLoading(false);
+      }
+    } else if (step === 2) {
+      if (!form.codigo.trim()) {
+        showMessage("Por favor, ingresa el código de verificación.", "warning");
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await clientAxios.post(
+          "/usuarios/verificarCodigo",
+          {
+            email: form.email,
+            codigo: form.codigo,
+          }
+        );
+        if (response.status === 200) {
+          setStep(3);
+        }
+      } catch (error) {
+        if (error.response) {
+          showMessage(error.response.data.message, "error");
+        } else {
+          showMessage("Error al verificar el código.", "error");
+        }
+      } finally {
+        setLoading(false);
+      }
+    } else if (step === 3) {
+      if (!form.newPassword.trim() || !form.repeatNewPassword.trim()) {
+        showMessage("Todos los campos son obligatorios.", "warning");
+        return;
+      }
+      if (form.newPassword !== form.repeatNewPassword) {
+        showMessage("Las contraseñas no coinciden.", "error");
+        return;
+      }
+      if (form.newPassword.length < 6) {
+        showMessage(
+          "La contraseña debe tener al menos 6 caracteres.",
+          "warning",
+        );
+        return;
+      }
+      setLoading(true);
+      try {
+        const response = await clientAxios.post(
+          "/usuarios/cambiarContrasenia",
+          {
+            email: form.email,
+            codigo: form.codigo,
+            nuevaPassword: form.newPassword,
+          },
+        );
+        if (response.status === 200) {
+          showMessage("Contraseña actualizada con éxito.", "success");
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
+      } catch (error) {
+        if (error.response) {
+          showMessage(error.response.data.message, "error");
+        } else {
+          showMessage("Hubo un error al actualizar la contraseña.", "error");
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -84,7 +175,7 @@ export default function RecuperarPassword() {
               )}
               {step === 2 && (
                 <p className="descripcion">
-                  Ingresa el código de 5 dígitos que enviamos a tu correo.
+                  Ingresa el código de 6 dígitos que enviamos a tu correo.
                 </p>
               )}
               {step === 3 && (
@@ -152,12 +243,12 @@ export default function RecuperarPassword() {
               <input
                 className="input_code"
                 onChange={(e) => {
-                  if (e.target.value.length <= 5) {
+                  if (e.target.value.length <= 6) {
                     setForm({ ...form, codigo: e.target.value });
                   }
                 }}
                 type="text"
-                placeholder="Ej. 12345"
+                placeholder="Ej. 123456"
                 value={form.codigo}
               />
             </div>
@@ -180,6 +271,27 @@ export default function RecuperarPassword() {
                 maxLength="60"
                 placeholder="Mínimo 8 car., 1 mayúscula y 1 número"
                 value={form.newPassword}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite pegar la contraseña. Escríbela manualmente.",
+                    "warning",
+                  );
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite copiar la contraseña.",
+                    "warning",
+                  );
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite arrastrar texto aquí. Escríbela manualmente.",
+                    "warning",
+                  );
+                }}
               />
               <img
                 className="toggle_pass"
@@ -200,6 +312,27 @@ export default function RecuperarPassword() {
                 placeholder="Repita la nueva contraseña"
                 maxLength="60"
                 value={form.repeatNewPassword}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite pegar la contraseña. Escríbela manualmente.",
+                    "warning",
+                  );
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite copiar la contraseña.",
+                    "warning",
+                  );
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  showMessage(
+                    "Por seguridad, no se permite arrastrar texto aquí. Escríbela manualmente.",
+                    "warning",
+                  );
+                }}
               />
               <img
                 className="toggle_pass"
