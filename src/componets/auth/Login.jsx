@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import clientAxios from "../../utils/clientAxios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import joystick from "../../icons/joystick.svg";
 import arroba from "../../icons/arroba.svg";
 import encrypted from "../../icons/encrypted.svg";
@@ -158,9 +158,13 @@ export default function Login() {
                     <label className="login-form__label" htmlFor="password">
                       CONTRASEÑA
                     </label>
-                    <a className="login-form__forget_my_password" href="#">
-                      olvidé mi contraseña
-                    </a>
+
+                    <Link
+                      className="login-form__forget_my_password"
+                      to="/login/recuperar"
+                    >
+                      Olvidé mi contraseña
+                    </Link>
                   </div>
                   <div className="login-form__input-wrapper">
                     <img src={encrypted} alt="Contraseña" />

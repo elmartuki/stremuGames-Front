@@ -53,6 +53,7 @@ export default function AppRouter() {
       "/pago/fallido/",
       "/perfil/recuperar",
       "/perfil/favoritos",
+      "/login/recuperar",
     ];
 
     const mostrarNavbar =
@@ -135,6 +136,15 @@ export default function AppRouter() {
             </>
           }
         />
+        <Route
+          path="/login/recuperar"
+          element={
+            <>
+              <RecoverPassword />
+            </>
+          }
+        />
+
         <Route
           path="/comunidad/usuario/:id"
           element={
