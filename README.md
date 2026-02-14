@@ -1,16 +1,43 @@
-# React + Vite
+# 🎮 StremuGames
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bienvenido al repositorio de **StremuGames**.
 
-Currently, two official plugins are available:
+> **🚀 Ver Proyecto Online:** [https://stremugames.vercel.app/](https://stremugames.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📂 Estructura del Proyecto
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+El proyecto está organizado en dos carpetas principales dentro de la raíz:
 
-## Expanding the ESLint configuration
+* `back/`: Código del servidor (API, Base de Datos).
+* `front/`: Código del cliente (React/Vite).
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Guía de Instalación Local
+
+Sigue estos pasos para levantar el proyecto en tu computadora.
+
+### 1️⃣ Configuración del Frontend
+
+1.  **Navegar a la carpeta:**
+    Abre tu terminal y entra en el directorio del frontend:
+    ```bash
+    cd front
+    ```
+
+2.  **Configurar Variables de Entorno:**
+    Busca el archivo `.env.example` y cámbiale el nombre a `.env`.
+
+3.  **Instalar Dependencias:**
+    Ejecuta el siguiente comando para descargar las librerías necesarias:
+    ```bash
+    npm i
+    ```
+
+4.  **Iniciar el Proyecto:**
+    Levanta la aplicación en modo desarrollo:
+    ```bash
+    npm run dev
+    ```
