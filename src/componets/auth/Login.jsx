@@ -40,8 +40,14 @@ export default function Login() {
       }
     } catch (error) {
       console.error(error);
-      if (error.response && error.response.status === 404) {
-        setErrorLogin("Cuenta no encontrada. Por favor regístrate primero.");
+      if (error.response) {
+        if (error.response.status === 404) {
+          setErrorLogin("Cuenta no encontrada. Por favor regístrate primero.");
+        } else if (error.response.status === 403) {
+          setErrorLogin(error.response.data.message);
+        } else {
+          setErrorLogin("Error al iniciar sesión con Google");
+        }
       } else {
         setErrorLogin("Error al iniciar sesión con Google");
       }
@@ -74,7 +80,11 @@ export default function Login() {
         navigate("/explorar");
       }
     } catch (error) {
-      setErrorLogin("Usuario/Email o contraseña incorrectos");
+      if (error.response && error.response.status === 403) {
+        setErrorLogin(error.response.data.message);
+      } else {
+        setErrorLogin("Usuario/Email o contraseña incorrectos");
+      }
     }
   };
 
