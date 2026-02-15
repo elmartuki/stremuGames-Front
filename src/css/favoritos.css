@@ -179,7 +179,7 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    aspect-ratio: 3/5;
+    aspect-ratio: 5/7;
     border-radius: 4px;
     background-color: #202020;
 
@@ -303,15 +303,15 @@
   justify-content: center;
   width: 28px !important;
   height: 28px !important;
-  background-color: rgba(73, 73, 73, 0.8);
+  background-color: rgb(59, 59, 59) !important;
   border-radius: 50% !important;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease !important;
 
   img {
-    width: 20px !important;
-    height: 20px !important;
+    width: 23px !important;
+    height: 23px !important;
     filter: invert(0) !important;
     transition: all 0.2s ease !important;
   }
@@ -483,13 +483,6 @@
   .favorito-card {
     width: calc(20% - 1.2rem);
 
-    .favorito-img-wrapper .card-overlay {
-      opacity: 0;
-      &:hover {
-        opacity: 1;
-      }
-    }
-
     .favorito-content {
       padding: 10px 0 0 0 !important;
       .favorito-titulo {
@@ -519,8 +512,8 @@
     height: 32px !important;
     background-color: rgba(255, 255, 255, 0.9);
     img {
-      width: 18px !important;
-      height: 18px !important;
+      width: 25px !important;
+      height: 25px !important;
     }
   }
 }
