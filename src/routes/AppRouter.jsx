@@ -35,6 +35,7 @@ import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
 import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
 import FavoritosPage from "../pages/FavoritosPage.jsx";
 import SoportePage from "../pages/SoportePage.jsx";
+import SobreNosotrosPage from "../pages/SobreNosotrosPage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
@@ -144,7 +145,15 @@ export default function AppRouter() {
             </>
           }
         />
-
+        <Route
+          path="/sobre-nosotros"
+          element={
+            <>
+              <SobreNosotrosPage />
+              {isDesktop ? <FooterWeb /> : <Footer />}
+            </>
+          }
+        />
         <Route
           path="/comunidad/usuario/:id"
           element={
