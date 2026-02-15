@@ -6,7 +6,6 @@ import empresaIcon from "../icons/empresa.svg";
 import global from "../icons/globe_white.svg";
 import trending from "../icons/trending.svg";
 import newIcon from "../icons/new.svg";
-import person_add from "../icons/person_add.svg";
 import visibility from "../icons/visibility.svg";
 import no_banner from "../icons/background-banner.png";
 
@@ -19,7 +18,7 @@ import { ComunidadSkeleton } from "../componets/skeletons/Skeleton";
 import useMediaQuery from "../utils/changeDesk";
 
 const PlayerCard = ({ usuario, navigate }) => {
-  const { nivel } = useCalcularNivel(usuario._id);
+  const { nivel } = useCalcularNivel(usuario.nombreUsuario);
   const iniciales = usuario.nombreUsuario
     ? usuario.nombreUsuario.toUpperCase().slice(0, 2)
     : "UN";
@@ -42,7 +41,9 @@ const PlayerCard = ({ usuario, navigate }) => {
       <div className="btn_container">
         <button
           className="btn-follow"
-          onClick={() => navigate(`/comunidad/usuario/${usuario._id}`)}
+          onClick={() =>
+            navigate(`/comunidad/usuario/${usuario.nombreUsuario}`)
+          }
         >
           <img src={visibility} alt="" /> Ver Perfil
         </button>
@@ -214,9 +215,13 @@ export default function ComunidadPage() {
                               {juegosReales} Juegos Publicados
                             </span>
                             <button
-                              onClick={() =>
-                                navigate(`/comunidad/estudio/${empresa._id}`)
-                              }
+                              onClick={() => {
+                                const slug = empresa.nombreUsuario
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-");
+
+                                navigate(`/comunidad/estudio/${slug}`);
+                              }}
                             >
                               Ver Perfil
                             </button>
@@ -277,9 +282,13 @@ export default function ComunidadPage() {
                             {juegosReales} Juegos Publicados
                           </span>
                           <button
-                            onClick={() =>
-                              navigate(`/comunidad/estudio/${empresa._id}`)
-                            }
+                            onClick={() => {
+                              const slug = empresa.nombreUsuario
+                                .toLowerCase()
+                                .replace(/\s+/g, "-");
+
+                              navigate(`/comunidad/estudio/${slug}`);
+                            }}
                           >
                             Ver Perfil
                           </button>

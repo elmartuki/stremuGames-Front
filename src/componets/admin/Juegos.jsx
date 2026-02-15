@@ -119,7 +119,7 @@ export default function Juegos() {
                 <div className="card-game-footer">
                   <button
                     className="btn-game-view"
-                    onClick={() => navigate(`/juego/${juego._id}`)}
+                    onClick={() => navigate(`/juego/${juego.slug}`)}
                   >
                     Ver
                   </button>

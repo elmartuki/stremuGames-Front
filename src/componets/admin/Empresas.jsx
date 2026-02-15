@@ -133,7 +133,7 @@ export default function Empresas() {
                     <div className="desarrolladora_botones">
                       <button
                         className="ver_perfil"
-                        onClick={() => navigate(`/comunidad/estudio/${_id}`)}
+                        onClick={() => navigate(`/comunidad/estudio/${nombreUsuario}`)}
                       >
                         Ver Perfil
                       </button>

@@ -69,6 +69,7 @@ export default function Carroucel() {
                 categorias,
                 galeria,
                 _id,
+                slug,
               } = juego;
 
               const porcentaje =
@@ -78,7 +79,7 @@ export default function Carroucel() {
                 <article
                   key={_id}
                   className="juego_card large"
-                  onClick={() => navigate(`/juego/${_id}`)}
+                  onClick={() => navigate(`/juego/${slug}`)}
                   onMouseEnter={() => setPreviewId(_id)}
                   onMouseLeave={() => setPreviewId(null)}
                 >

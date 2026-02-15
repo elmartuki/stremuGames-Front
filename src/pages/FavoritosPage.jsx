@@ -181,7 +181,7 @@ export default function FavoritosPage() {
                     <article
                       key={juego._id}
                       className="favorito-card"
-                      onClick={() => navigate(`/juego/${juego._id}`)}
+                      onClick={() => navigate(`/juego/${juego.slug}`)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="favorito-img-wrapper">

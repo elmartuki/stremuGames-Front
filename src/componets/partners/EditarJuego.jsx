@@ -265,9 +265,16 @@ export default function EditarJuego() {
             <p>Título</p>
             <input
               className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, titulo: event.target.value })
-              }
+              onChange={(event) => {
+                const newTitle = event.target.value;
+                const newSlug = newTitle
+                  .toLowerCase()
+                  .trim()
+                  .replace(/[\s\W-]+/g, "-")
+                  .replace(/^-+|-+$/g, "");
+
+                setForm({ ...form, titulo: newTitle, slug: newSlug });
+              }}
               type="text"
               placeholder="Nombre del juego"
               value={form.titulo}

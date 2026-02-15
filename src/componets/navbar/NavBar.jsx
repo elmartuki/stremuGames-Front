@@ -182,7 +182,7 @@ export default function NavBar() {
                               key={juego._id}
                               className="resultado"
                               onClick={() => {
-                                navigate(`/juego/${juego._id}`);
+                                navigate(`/juego/${juego.slug}`);
                                 setBuscar("");
                                 setOpenSearch(false);
                               }}
@@ -311,7 +311,7 @@ export default function NavBar() {
                                 key={juego._id}
                                 className="resultado"
                                 onClick={() => {
-                                  navigate(`/juego/${juego._id}`);
+                                  navigate(`/juego/${juego.slug}`);
                                   setBuscar("");
                                   setOpenSearch(false);
                                 }}

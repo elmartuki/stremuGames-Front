@@ -33,7 +33,7 @@ export default function JuegosDelUsuario({ juegosComprados = [] }) {
     <>
       {juegosEncontrados.map((juego) => (
         <article
-          onClick={() => navigate(`/juego/${juego._id}`)}
+          onClick={() => navigate(`/juego/${juego.slug}`)}
           key={juego._id}
           className="juego_tarjeta"
         >

@@ -157,6 +157,23 @@ export default function SubirJuego() {
     }));
   };
 
+  const handleTitleChange = (event) => {
+    const newTitle = event.target.value;
+    const newSlug = newTitle
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+
+    setForm((prev) => ({
+      ...prev,
+      titulo: newTitle,
+      slug: newSlug,
+    }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -240,9 +257,7 @@ export default function SubirJuego() {
             <p>Título</p>
             <input
               className="edit-game_input"
-              onChange={(event) =>
-                setForm({ ...form, titulo: event.target.value })
-              }
+              onChange={handleTitleChange}
               type="text"
               placeholder="Nombre del juego"
               value={form.titulo}

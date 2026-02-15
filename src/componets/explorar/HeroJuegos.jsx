@@ -95,7 +95,7 @@ export default function HeroJuegos({ filtrar }) {
       <article className="hero">
         <div
           className="hero_big"
-          onClick={() => navigate(`/juego/${juegoActual?._id}`)}
+          onClick={() => navigate(`/juego/${juegoActual?.slug}`)}
           style={{
             position: "relative",
             overflow: "hidden",

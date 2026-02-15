@@ -186,7 +186,7 @@ export default function AdminPanelPage() {
               </div>
               <div className="tarjeta_juego_buttons">
                 <button
-                  onClick={() => navigate(`/juego/${juego._id}`)}
+                  onClick={() => navigate(`/juego/${juego.slug}`)}
                   className="ver"
                 >
                   Ver
@@ -241,7 +241,7 @@ export default function AdminPanelPage() {
                 <div className="desarrolladora_botones">
                   <button
                     onClick={() =>
-                      navigate(`/comunidad/estudio/${empresa._id}`)
+                      navigate(`/comunidad/estudio/${empresa.nombreUsuario}`)
                     }
                     className="ver_perfil"
                   >
@@ -298,7 +298,7 @@ export default function AdminPanelPage() {
                 <div className="desarrolladora_botones">
                   <button
                     className="ver_perfil"
-                    onClick={() => navigate(`/comunidad/usuario/${u._id}`)}
+                    onClick={() => navigate(`/comunidad/usuario/${u.nombreUsuario}`)}
                   >
                     Ver Perfil
                   </button>

@@ -79,6 +79,7 @@ export default function Categoria() {
           precioBase,
           precioDescuento,
           _id,
+          slug,
         } = juego;
 
         const porcentaje =
@@ -90,7 +91,7 @@ export default function Categoria() {
           <article
             key={_id}
             className="juegos"
-            onClick={() => navigate(`/juego/${_id}`)}
+            onClick={() => navigate(`/juego/${slug}`)}
           >
             <div className="juegos_imagen">
               <img
