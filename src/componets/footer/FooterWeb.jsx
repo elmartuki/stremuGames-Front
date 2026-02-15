@@ -45,7 +45,9 @@ export default function FooterWeb() {
           </svg>
         </div>
         <div className="seccion">
-          <button>SOBRE NOSOTROS</button>
+          <button onClick={() => navigate("/sobre-nosotros")}>
+            SOBRE NOSOTROS
+          </button>
           <button onClick={openModal}>TERMINOS Y CONDICIONES</button>
           <button onClick={() => navigate("/soporte")}>SOPORTE</button>
         </div>
