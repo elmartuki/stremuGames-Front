@@ -7,11 +7,15 @@ import iconoJuegos from "../icons/games_green.svg";
 import add_white from "../icons/add_white.svg";
 import iconoVentas from "../icons/shoping_green.svg";
 import iconoDinero from "../icons/ventas.svg";
+import deleteIcon from "../icons/delete.svg";
 
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerJuegos } from "../services/obtenerJuegos";
+import { eliminarUnJuego } from "../services/eliminarUnJuego";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "../services/MessageModal";
+import { useConfirmStore } from "../services/ConfirmModal";
+import ConfirmModal from "../componets/modal/ConfirmModal";
 
 export default function StudioPage() {
   const [buscar, setBuscar] = useState("");
@@ -23,6 +27,8 @@ export default function StudioPage() {
   const { listado, loading: cargandoJuegos } = useObtenerJuegos();
 
   const [juegosLocal, setJuegosLocal] = useState([]);
+
+  const { ask } = useConfirmStore();
 
   useEffect(() => {
     if (listado) {
@@ -80,6 +86,21 @@ export default function StudioPage() {
     }
   };
 
+  const handleEliminar = (id) => {
+    ask(
+      "¿Estás seguro de que deseas eliminar este juego? Esta acción no se puede deshacer.",
+      async () => {
+        try {
+          await eliminarUnJuego(id);
+          setJuegosLocal((prev) => prev.filter((juego) => juego._id !== id));
+          showMessage("Juego eliminado correctamente");
+        } catch (error) {
+          showMessage("Error al eliminar el juego", error);
+        }
+      },
+    );
+  };
+
   const juegosFiltrados = misJuegos.filter((juego) =>
     juego.titulo.toLowerCase().includes(buscar.toLowerCase()),
   );
@@ -95,6 +116,8 @@ export default function StudioPage() {
 
   return (
     <section className="studio_panel_admin">
+      <ConfirmModal />
+
       <section className="seccion_busqueda_admin">
         <div className="input_buscador">
           <img src={iconoBusqueda} alt="Buscar" />
@@ -207,6 +230,16 @@ export default function StudioPage() {
                     }}
                   >
                     {juego.mostrar ? "Ocultar" : "Mostrar"}
+                  </button>
+                  <button
+                    className="eliminar_btn"
+                    onClick={() => handleEliminar(juego._id)}
+                  >
+                    <img
+                      src={deleteIcon}
+                      alt="Eliminar"
+                      style={{ width: "20px", height: "20px" }}
+                    />
                   </button>
                 </div>
               </div>
