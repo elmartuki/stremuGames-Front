@@ -7,12 +7,21 @@ import galeriaIcon from "../icons/galery.svg";
 import shop from "../icons/shop.svg";
 import noImage from "../icons/noimage.png";
 import back from "../icons/back.svg";
+import rigth_green from "../icons/rigth_green.svg";
+import likes from "../icons/fav.svg";
+import fire from "../icons/fire.svg";
+import newIcon from "../icons/new.svg";
+import racing from "../icons/racing.svg";
+import terror from "../icons/terror.svg";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "../services/MessageModal";
+import CarroucelLargo from "../componets/explorar/CarroucelLargo";
+import Carroucel from "../componets/explorar/Carroucel";
+import useMediaQuery from "../utils/changeDesk";
 
 export default function DetallesJuegoPage() {
   const { id } = useParams();
@@ -20,6 +29,8 @@ export default function DetallesJuegoPage() {
   const { usuario: desarrollador } = useObtenerUsuario(juego?.studioId);
   const showMessage = useMessageStore((state) => state.showMessage);
   const navigate = useNavigate();
+
+  const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const [esFavorito, setEsFavorito] = useState(false);
   const [contadorLikes, setContadorLikes] = useState(0);
@@ -203,7 +214,12 @@ export default function DetallesJuegoPage() {
                 <p className="section_subtitle">Desarrollador</p>
                 <div
                   className="dev_card"
-                  onClick={() => navigate(`/comunidad/estudio/${studioId}`)}
+                  onClick={() => {
+                    const slug = nombreUsuario
+                      .toLowerCase()
+                      .replace(/\s+/g, "-");
+                    navigate(`/comunidad/estudio/${slug}`);
+                  }}
                 >
                   <div className="dev_logo">
                     {foto_de_perfil === "" ? (
@@ -270,6 +286,193 @@ export default function DetallesJuegoPage() {
               <p>{descripcion}</p>
             </div>
           </div>
+        </section>
+
+        <section className="more_games_section">
+          <section className="explorar_carroucel">
+            <div className="explorar_carroucel_header">
+              <div className="titulo_container">
+                <img src={fire} alt="" />
+                <div className="titulo">
+                  <p>Juegos Populares</p>
+                  <p>Los juegos en tendencias</p>
+                </div>
+              </div>
+
+              <div
+                className="btn_ver_mas"
+                onClick={() => navigate("/categorias/Populares")}
+              >
+                <p>
+                  Ver todo <img src={rigth_green} alt="" />
+                </p>
+              </div>
+            </div>
+
+            {isDesktop ? (
+              <section
+                key="populares-desk"
+                className="carroucel_section carroucel_section_desk carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Populares"} />
+              </section>
+            ) : (
+              <section
+                key="populares-mobile"
+                className="carroucel_section carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Populares"} />
+              </section>
+            )}
+          </section>
+
+          <section className="explorar_carroucel">
+            <div className="explorar_carroucel_header">
+              <div className="titulo_container">
+                <img src={likes} alt="" />
+                <div className="titulo">
+                  <p>Juegos Favoritos</p>
+                  <p>Los juegos mas queridos por la comunidad</p>
+                </div>
+              </div>
+
+              <div
+                className="btn_ver_mas"
+                onClick={() => navigate("/categorias/Favoritos")}
+              >
+                <p>
+                  Ver todo <img src={rigth_green} alt="" />
+                </p>
+              </div>
+            </div>
+
+            {isDesktop ? (
+              <section
+                key="populares-desk"
+                className="carroucel_section carroucel_section_desk carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Favoritos"} />
+              </section>
+            ) : (
+              <section
+                key="populares-mobile"
+                className="carroucel_section carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Favoritos"} />
+              </section>
+            )}
+          </section>
+
+          <section className="explorar_carroucel">
+            <div className="explorar_carroucel_header">
+              <div className="titulo_container">
+                <img src={newIcon} alt="" />
+                <div className="titulo">
+                  <p>Agregados Recientemente</p>
+                  <p>Novedades en StremuGames</p>
+                </div>
+              </div>
+
+              <div
+                className="btn_ver_mas"
+                onClick={() => navigate("/categorias/Recientes")}
+              >
+                <p>
+                  Ver todo <img src={rigth_green} alt="" />
+                </p>
+              </div>
+            </div>
+
+            {isDesktop ? (
+              <section
+                key="recientes-desk"
+                className="carroucel_section carroucel_section_desk carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Recientes"} />
+              </section>
+            ) : (
+              <section
+                key="recientes-mobile"
+                className="carroucel_section carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Recientes"} />
+              </section>
+            )}
+          </section>
+
+          <section className="explorar_carroucel">
+            <div className="explorar_carroucel_header">
+              <div className="titulo_container">
+                <img src={racing} alt="" />
+                <div className="titulo">
+                  <p>Carreras</p>
+                  <p>Descubre todos los juegos de Carreras</p>
+                </div>
+              </div>
+
+              <div
+                className="btn_ver_mas"
+                onClick={() => navigate("/categorias/Carreras")}
+              >
+                <p>
+                  Ver todo <img src={rigth_green} alt="" />
+                </p>
+              </div>
+            </div>
+
+            {isDesktop ? (
+              <section
+                key="carreras-desk"
+                className="carroucel_section carroucel_section_desk carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Carreras"} />
+              </section>
+            ) : (
+              <section
+                key="carreras-mobile"
+                className="carroucel_section carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Carreras"} />
+              </section>
+            )}
+          </section>
+
+          <section className="explorar_carroucel">
+            <div className="explorar_carroucel_header">
+              <div className="titulo_container">
+                <img src={terror} alt="" />
+                <div className="titulo">
+                  <p>Terror</p>
+                  <p>Descubre todos los juegos de terror</p>
+                </div>
+              </div>
+
+              <div
+                className="btn_ver_mas"
+                onClick={() => navigate("/categorias/Terror")}
+              >
+                <p>
+                  Ver todo <img src={rigth_green} alt="" />
+                </p>
+              </div>
+            </div>
+
+            {isDesktop ? (
+              <section
+                key="terror-desk"
+                className="carroucel_section carroucel_section_desk carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Terror"} />
+              </section>
+            ) : (
+              <section
+                key="terror-mobile"
+                className="carroucel_section carroucel-largo"
+              >
+                <CarroucelLargo filtrar={"Terror"} />
+              </section>
+            )}
+          </section>
         </section>
       </section>
     </>

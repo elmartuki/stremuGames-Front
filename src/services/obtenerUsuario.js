@@ -3,19 +3,21 @@ import clientAxios from "../utils/clientAxios";
 import { useObtenerToken } from "./obtenerToken";
 import { useMessageStore } from "./MessageModal";
 
-export const useObtenerUsuario = (idExterno = null) => {
+export const useObtenerUsuario = (usuarioExterno = null) => {
   const [usuario, setUsuario] = useState(null);
   const { usuarioInfo } = useObtenerToken();
 
-  const idParaBuscar = idExterno || usuarioInfo?.id;
+  const usuarioParaBuscar = usuarioExterno || usuarioInfo?.nombreUsuario;
 
   useEffect(() => {
-    if (!idParaBuscar) return;
+    if (!usuarioParaBuscar) return;
 
     const fetchUsuario = async () => {
       const { showMessage } = useMessageStore.getState();
       try {
-        const response = await clientAxios.get(`/usuarios/${idParaBuscar}`);
+        const response = await clientAxios.get(
+          `/usuarios/${usuarioParaBuscar}`,
+        );
 
         if (response.data) {
           setUsuario(response.data.datos);
@@ -29,7 +31,7 @@ export const useObtenerUsuario = (idExterno = null) => {
     };
 
     fetchUsuario();
-  }, [idParaBuscar]);
+  }, [usuarioParaBuscar]);
 
   return { usuario };
 };

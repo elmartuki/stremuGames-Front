@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "./MessageModal";
 
-export const useObtenerUnJuego = (id) => {
+export const useObtenerUnJuego = (slug) => {
   const [juego, setJuego] = useState(null);
   const [loading, setLoading] = useState(true);
   const { showMessage } = useMessageStore.getState();
@@ -11,7 +11,7 @@ export const useObtenerUnJuego = (id) => {
     const fetchJuego = async () => {
       setLoading(true);
       try {
-        const response = await clientAxios.get(`/juegos/${id}`);
+        const response = await clientAxios.get(`/juegos/${slug}`);
 
         if (response) {
           setJuego(response.data.datos);
@@ -23,10 +23,10 @@ export const useObtenerUnJuego = (id) => {
       }
     };
 
-    if (id) {
+    if (slug) {
       fetchJuego();
     }
-  }, [id]);
+  }, [slug]);
 
   return { juego, loading };
 };

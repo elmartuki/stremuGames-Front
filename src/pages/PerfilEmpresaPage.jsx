@@ -14,7 +14,7 @@ import { useMessageStore } from "../services/MessageModal";
 export default function PerfilEmpresaPage() {
   const { empresas, cargando } = useObtenerUsuarios();
   const { listado, loading: loadingJuegos } = useObtenerJuegos();
-  const { id } = useParams();
+  const { id: paramUrl } = useParams();
   const navigate = useNavigate();
   const showMessage = useMessageStore((state) => state.showMessage);
 
@@ -23,38 +23,41 @@ export default function PerfilEmpresaPage() {
   const [loadingAction, setLoadingAction] = useState(false);
 
   const interactuadoRef = useRef(false);
-
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
+  const empresaEncontrada = empresas?.find(
+    (e) =>
+      e._id === paramUrl ||
+      e.nombreUsuario.toLowerCase().replace(/\s+/g, "-") === paramUrl,
+  );
+
+  const idReal = empresaEncontrada?._id;
+
   useEffect(() => {
-    if (empresas && id) {
-      const empresa = empresas.find((e) => e._id === id);
+    if (empresaEncontrada && idReal && !interactuadoRef.current) {
+      setContadorSeguidores(empresaEncontrada.seguidores.length);
 
-      if (empresa && !interactuadoRef.current) {
-        setContadorSeguidores(empresa.seguidores.length);
+      const verificarEstado = async () => {
+        try {
+          const token = localStorage.getItem("TokenStremuGames");
+          if (!token) return;
 
-        const verificarEstado = async () => {
-          try {
-            const token = localStorage.getItem("TokenStremuGames");
-            if (!token) return;
+          const { data } = await clientAxios.get(
+            `/usuarios/seguir/verificar/${idReal}`,
+          );
 
-            const { data } = await clientAxios.get(
-              `/usuarios/seguir/verificar/${id}`,
-            );
+          setEsSeguidor(data.esSeguidor);
+        } catch (error) {
+          setEsSeguidor(false);
+        }
+      };
 
-            setEsSeguidor(data.esSeguidor);
-          } catch (error) {
-            setEsSeguidor(false);
-          }
-        };
-
-        verificarEstado();
-      }
+      verificarEstado();
     }
-  }, [empresas, id]);
+  }, [empresaEncontrada, idReal]);
 
   const handleSeguir = async () => {
-    if (loadingAction) return;
+    if (loadingAction || !idReal) return;
 
     interactuadoRef.current = true;
 
@@ -67,7 +70,7 @@ export default function PerfilEmpresaPage() {
     setContadorSeguidores((prev) => (estadoAnterior ? prev - 1 : prev + 1));
 
     try {
-      const { data } = await clientAxios.put(`/usuarios/seguir/${id}`);
+      const { data } = await clientAxios.put(`/usuarios/seguir/${idReal}`);
 
       if (data && typeof data.cantidadSeguidores === "number") {
         setContadorSeguidores(data.cantidadSeguidores);
@@ -97,8 +100,6 @@ export default function PerfilEmpresaPage() {
     return <PerfilEmpresaSkeleton />;
   }
 
-  const empresaEncontrada = empresas.find((empresa) => empresa._id === id);
-
   if (!empresaEncontrada) {
     return (
       <section className="perfil_loading">
@@ -113,19 +114,14 @@ export default function PerfilEmpresaPage() {
     );
   }
 
-  const {
-    foto_de_perfil,
-    nombreUsuario,
-    biografia = "",
-    _id,
-  } = empresaEncontrada;
+  const { foto_de_perfil, nombreUsuario, biografia = "" } = empresaEncontrada;
 
   const juegosDelEstudio = listado.filter((juego) => {
     const sId =
       typeof juego.studioId === "object"
         ? juego.studioId?.$oid
         : juego.studioId;
-    return sId === id;
+    return sId === idReal;
   });
 
   const iniciales = nombreUsuario.toUpperCase().slice(0, 2);
@@ -216,7 +212,7 @@ export default function PerfilEmpresaPage() {
                     <p className="desc_destacado">{destacado.descripcion}</p>
                     <div className="footer_destacado">
                       <button
-                        onClick={() => navigate(`/juego/${destacado._id}`)}
+                        onClick={() => navigate(`/juego/${destacado.slug}`)}
                         className="btn_verde"
                       >
                         Ver Detalles
@@ -247,7 +243,7 @@ export default function PerfilEmpresaPage() {
                         <article
                           className="card_mini"
                           key={juego._id}
-                          onClick={() => navigate(`/juego/${juego._id}`)}
+                          onClick={() => navigate(`/juego/${juego.slug}`)}
                         >
                           <div className="card_img">
                             <img src={juego.imagenPortada} alt={juego.titulo} />

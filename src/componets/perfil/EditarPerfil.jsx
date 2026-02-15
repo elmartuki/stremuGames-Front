@@ -111,8 +111,18 @@ export default function EditarPerfil() {
       );
       showMessage(response.data.message, "success");
 
-      if (response.status === 200) {
-        navigate("/perfil");
+      if (response.data.token) {
+        localStorage.setItem("TokenStremuGames", response.data.token);
+        setTimeout(() => {
+          navigate(-1);
+          setTimeout(() => {
+            window.location.reload();
+          }, 50);
+        }, 3000);
+      } else if (response.status === 200) {
+        setTimeout(() => {
+          navigate(-1);
+        }, 3000);
       }
     } catch (error) {
       showMessage(

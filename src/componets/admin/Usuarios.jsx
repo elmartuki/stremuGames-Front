@@ -131,7 +131,7 @@ export default function Usuarios() {
                     <div className="desarrolladora_botones">
                       <button
                         className="ver_perfil"
-                        onClick={() => navigate(`/comunidad/usuario/${_id}`)}
+                        onClick={() => navigate(`/comunidad/usuario/${nombreUsuario}`)}
                       >
                         Ver Perfil
                       </button>
