@@ -1,5 +1,5 @@
 import "../../css/categoriaSeleccionada.css";
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../icons/noimage.png";
@@ -7,42 +7,41 @@ import { CategoriaSkeleton } from "../skeletons/Skeleton";
 import useMediaQuery from "../../utils/changeDesk";
 
 export default function Categoria() {
-  const [lista, setLista] = useState([]);
   const { listado, loading } = useObtenerJuegos();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
-    if (!listado || !listado.length || !id) return;
+  const lista = useMemo(() => {
+    if (!listado || !id) return [];
 
-    let listadoFiltrado = [];
+    let listadoFiltrado = [...listado];
 
     if (id === "Populares") {
-      listadoFiltrado = [...listado].sort(
+      listadoFiltrado.sort(
         (a, b) => (b.cantidadVotos || 0) - (a.cantidadVotos || 0),
       );
     } else if (id === "Favoritos") {
-      listadoFiltrado = [...listado].sort(
+      listadoFiltrado.sort(
         (a, b) =>
           (b.usuarios_likes?.length || 0) - (a.usuarios_likes?.length || 0),
       );
     } else if (id === "Recientes") {
-      listadoFiltrado = [...listado.reverse()].sort(
+      listadoFiltrado.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
       );
     } else if (id === "ofertas") {
-      listadoFiltrado = listado.filter(
+      listadoFiltrado = listadoFiltrado.filter(
         (juego) =>
           juego.precioDescuento < juego.precioBase && juego.precioDescuento > 0,
       );
     } else {
-      listadoFiltrado = listado.filter((juego) => {
-        return juego.categorias.includes(id);
-      });
+      listadoFiltrado = listadoFiltrado.filter((juego) =>
+        juego.categorias.includes(id),
+      );
     }
 
-    setLista(listadoFiltrado);
+    return listadoFiltrado;
   }, [listado, id]);
 
   const handleImageError = (e) => {
@@ -50,23 +49,12 @@ export default function Categoria() {
     e.target.src = noImage;
   };
 
-  if (loading || !listado) {
+  if (loading) {
     return <CategoriaSkeleton />;
   }
 
-  if (lista.length === 0 && !loading) {
-    return (
-      <p
-        style={{
-          color: "white",
-          padding: "20px",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
-        No se encontraron juegos en esta sección.
-      </p>
-    );
+  if (lista.length === 0) {
+    return navigate("*");
   }
 
   return (

@@ -10,10 +10,37 @@ export default function NavBarNotLogin() {
       <header className="navbar_init_container">
         <nav className="navbar_init">
           <div className="logo">
-            <p>
-              <img src={terminal} alt="" />
-              Stremugames
-            </p>
+            <svg
+              width="150px"
+              viewBox="0 0 650 120"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="100%" height="100%" fill="transparent" />
+
+              <g transform="skewX(-15)">
+                <text
+                  x="15"
+                  y="90"
+                  font-family="'Arial Black', 'Helvetica Neue', sans-serif"
+                  font-weight="900"
+                  font-size="90"
+                  textLength="100%"
+                  lengthAdjust="spacingAndGlyphs"
+                >
+                  <tspan fill="#FFFFFF">STREMU</tspan>
+                  <tspan fill="#55FF00">GAMES</tspan>
+                </text>
+              </g>
+
+              <rect
+                x="255"
+                y="105"
+                width="140"
+                height="5"
+                fill="#55FF00"
+                rx="2"
+              />
+            </svg>
           </div>
 
           <div className="links">
@@ -27,7 +54,9 @@ export default function NavBarNotLogin() {
                 <button onClick={() => navigate("/comunidad")}>
                   Comunidad
                 </button>
-                <button onClick={() => navigate("/categorias/ofertas")}>Ofertas</button>
+                <button onClick={() => navigate("/categorias/ofertas")}>
+                  Ofertas
+                </button>
               </>
             ) : (
               <></>

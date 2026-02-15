@@ -105,8 +105,12 @@ export default function PerfilPage() {
     e.target.src = noImage;
   };
 
-  if (cargando || !usuario) {
+  if (cargando) {
     return <PerfilPageSkeleton />;
+  }
+
+  if (!usuario) {
+    return navigate("*");
   }
 
   const {

@@ -141,21 +141,17 @@ export default function PerfilConfigPage() {
               <img src={arrowRigth} alt="" />
             </article>
 
-            {isDesktop ? (
-              <></>
-            ) : (
-              <article
-                className="perfil_config_body_button"
-                onClick={() => navigate("/soporte")}
-              >
-                <img src={support} alt="" />
-                <div>
-                  <p>Soporte</p>
-                  <p>¿Tienes algun inconveniente?</p>
-                </div>
-                <img src={arrowRigth} alt="" />
-              </article>
-            )}
+            <article
+              className="perfil_config_body_button"
+              onClick={() => navigate("/soporte")}
+            >
+              <img src={support} alt="" />
+              <div>
+                <p>Soporte</p>
+                <p>¿Tienes algun inconveniente?</p>
+              </div>
+              <img src={arrowRigth} alt="" />
+            </article>
           </section>
 
           <section className="perfil_config_footer">

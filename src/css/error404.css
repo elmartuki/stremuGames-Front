@@ -1,0 +1,218 @@
+.page_404 {
+  position: relative;
+  min-height: 100dvh;
+  background-color: #0a0a0a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  padding: 1rem;
+
+  .bg_text_404 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(150px, 30vw, 400px);
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .content_wrapper_404 {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 10px;
+
+    .icon_glitch_container {
+      margin-bottom: 1rem;
+      img {
+        width: 50px;
+        height: 50px;
+        filter: invert(30%) sepia(91%) saturate(564%) hue-rotate(66deg)
+          brightness(98%) contrast(92%) drop-shadow(0 0 10px #66f61e);
+      }
+    }
+
+    .title_glitch {
+      font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 0;
+      color: white;
+      position: relative;
+      font-style: italic;
+      line-height: 1.1;
+
+      &::before,
+      &::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #0a0a0a;
+        overflow: hidden;
+      }
+    }
+
+    .subtitle_404 {
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      font-weight: 700;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      padding: 0 10px;
+    }
+
+    .description_404 {
+      color: #888;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      max-width: 600px;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      padding: 0 15px;
+    }
+
+    .actions_404 {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 28px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 800;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        min-width: 160px;
+
+        img {
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      .btn_primary {
+        background-color: #66f61e;
+        color: #000;
+        box-shadow: 0 0 15px rgba(102, 246, 30, 0.4);
+
+        img {
+          filter: brightness(0);
+        }
+
+        &:hover {
+          background-color: #84ff45;
+          transform: translateY(-2px);
+          box-shadow: 0 0 25px rgba(102, 246, 30, 0.6);
+        }
+      }
+    }
+
+    .nav_grid_404 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 40px;
+
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .nav_card {
+        background-color: #111;
+        border: 1px solid #222;
+        padding: 15px;
+        border-radius: 12px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: all 0.3s ease;
+        height: 100%;
+
+        &:hover {
+          border-color: #66f61e;
+          background-color: #161616;
+          transform: translateY(-5px);
+
+          .icon_box img {
+            transform: scale(1.1);
+          }
+        }
+
+        .icon_box {
+          background-color: #1a1a1a;
+          width: 36px;
+          height: 36px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 12px;
+
+          img {
+            width: 18px;
+            filter: invert(30%) sepia(91%) saturate(564%) hue-rotate(66deg)
+              brightness(98%) contrast(92%) drop-shadow(0 0 5px #66f61e);
+            transition: transform 0.3s ease;
+          }
+        }
+
+        .text_box {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          text-align: left;
+
+          .card_title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+          }
+
+          .card_sub {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.2;
+          }
+        }
+      }
+    }
+
+    .footer_404 {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: #444;
+      margin-top: auto;
+    }
+  }
+}

@@ -87,7 +87,7 @@ export default function HeroCategoria() {
         if (!token) return;
 
         const { data } = await clientAxios.get(
-          `/juegos/favoritos/verificar/${juegoActual._id}`,
+          `/usuarios/favoritos/verificar/${juegoActual._id}`,
         );
         setEsFavorito(data.esFavorito);
       } catch (error) {
@@ -106,7 +106,7 @@ export default function HeroCategoria() {
 
     try {
       const { data } = await clientAxios.put(
-        `/juegos/favoritos/${juegoActual._id}`,
+        `/usuarios/favoritos/${juegoActual._id}`,
       );
 
       setEsFavorito(data.esFavorito);
@@ -117,6 +117,27 @@ export default function HeroCategoria() {
       } else {
         showMessage("Error al gestionar favoritos", "error");
       }
+    } finally {
+      setLoadingAction(false);
+    }
+  };
+
+  const handleComprar = async (e) => {
+    e.stopPropagation();
+
+    if (loadingAction || !juegoActual) return;
+    setLoadingAction(true);
+
+    try {
+      const response = await clientAxios.post(`/carrito/${juegoActual._id}`);
+      if (response.status === 200) {
+        showMessage(`${response.data.message}.`, "success");
+        navigate("/carrito");
+      }
+    } catch (error) {
+      const errorMsg =
+        error.response?.data?.message || "No se pudo agregar al carrito.";
+      showMessage(errorMsg, "error");
     } finally {
       setLoadingAction(false);
     }
@@ -161,11 +182,10 @@ export default function HeroCategoria() {
           <div className="hero_buttons">
             <button
               className="btn_comprar"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
+              disabled={loadingAction}
+              onClick={handleComprar}
             >
-              Comprar Ahora
+              {loadingAction ? "Cargando..." : "Comprar Ahora"}
             </button>
 
             <button

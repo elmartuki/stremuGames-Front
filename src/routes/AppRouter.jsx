@@ -35,6 +35,7 @@ import RecuperarContraseña from "../componets/auth/RecuperarContraseña.jsx";
 import RecoverPassword from "../componets/auth/RecuperarContraseña.jsx";
 import FavoritosPage from "../pages/FavoritosPage.jsx";
 import SoportePage from "../pages/SoportePage.jsx";
+import Error404 from "../pages/Error404.jsx";
 import SobreNosotrosPage from "../pages/SobreNosotrosPage.jsx";
 
 export default function AppRouter() {
@@ -350,6 +351,8 @@ export default function AppRouter() {
           </>
         }
       />
+
+      <Route path="*" element={<Error404 />} />
     </Routes>
   );
 }
