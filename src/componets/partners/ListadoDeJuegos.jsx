@@ -11,7 +11,7 @@ export default function ListadoDeJuegos() {
 
   const navigate = useNavigate();
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <></>;
 
   return (
     <>

@@ -298,7 +298,9 @@ export default function AdminPanelPage() {
                 <div className="desarrolladora_botones">
                   <button
                     className="ver_perfil"
-                    onClick={() => navigate(`/comunidad/usuario/${u.nombreUsuario}`)}
+                    onClick={() =>
+                      navigate(`/comunidad/usuario/${u.nombreUsuario}`)
+                    }
                   >
                     Ver Perfil
                   </button>

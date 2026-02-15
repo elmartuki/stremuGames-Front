@@ -101,17 +101,7 @@ export default function PerfilEmpresaPage() {
   }
 
   if (!empresaEncontrada) {
-    return (
-      <section className="perfil_loading">
-        <p>Empresa no encontrada.</p>
-        <button
-          onClick={() => navigate(-1)}
-          style={{ marginTop: "10px", padding: "5px 10px" }}
-        >
-          Volver
-        </button>
-      </section>
-    );
+    return navigate("*");
   }
 
   const { foto_de_perfil, nombreUsuario, biografia = "" } = empresaEncontrada;

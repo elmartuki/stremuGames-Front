@@ -20,8 +20,8 @@ import { useObtenerUnJuego } from "../services/obtenerUnJuego";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "../services/MessageModal";
 import CarroucelLargo from "../componets/explorar/CarroucelLargo";
-import Carroucel from "../componets/explorar/Carroucel";
 import useMediaQuery from "../utils/changeDesk";
+import Error404 from "./Error404";
 
 export default function DetallesJuegoPage() {
   const { id } = useParams();
@@ -56,7 +56,7 @@ export default function DetallesJuegoPage() {
     verificarEstadoLike();
   }, [juego?._id]);
 
-  if (!juego || !desarrollador) return <div className="loading_screen"></div>;
+  if (!juego || !desarrollador) return <Error404 />;
 
   const {
     titulo,

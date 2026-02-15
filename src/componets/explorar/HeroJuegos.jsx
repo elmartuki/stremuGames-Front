@@ -3,17 +3,14 @@ import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import favoritoIcon from "../../icons/fav.svg";
 import { useNavigate } from "react-router-dom";
 import noImage from "../../icons/noimage.png";
-
 import clientAxios from "../../utils/clientAxios";
 import { useMessageStore } from "../../services/MessageModal";
 
 export default function HeroJuegos({ filtrar }) {
   const { listado } = useObtenerJuegos();
   const [indiceHero, setIndiceHero] = useState(0);
-
   const [esFavorito, setEsFavorito] = useState(false);
   const [loadingAction, setLoadingAction] = useState(false);
-
   const showMessage = useMessageStore((state) => state.showMessage);
   const navigate = useNavigate();
 
@@ -25,50 +22,41 @@ export default function HeroJuegos({ filtrar }) {
 
   useEffect(() => {
     if (juegosParaMostrar.length === 0) return;
-
     const intervalo = setInterval(() => {
       setIndiceHero((prevIndice) => {
         return prevIndice + 1 >= juegosParaMostrar.length ? 0 : prevIndice + 1;
       });
     }, 4000);
-
     return () => clearInterval(intervalo);
   }, [juegosParaMostrar.length]);
 
   useEffect(() => {
     if (!juegoActual) return;
-
     setEsFavorito(false);
-
     const verificarEstadoLike = async () => {
       try {
         const { data } = await clientAxios.get(
-          `/juegos/favoritos/verificar/${juegoActual._id}`,
+          `/usuarios/favoritos/verificar/${juegoActual._id}`,
         );
         setEsFavorito(data.esFavorito);
       } catch (error) {
         setEsFavorito(false);
       }
     };
-
     verificarEstadoLike();
   }, [juegoActual]);
 
   const handleFavorito = async (e) => {
     e.stopPropagation();
-
     if (loadingAction || !juegoActual) return;
     setLoadingAction(true);
-
     try {
       const { data } = await clientAxios.put(
-        `/juegos/favoritos/${juegoActual._id}`,
+        `/usuarios/favoritos/${juegoActual._id}`,
       );
-
       setEsFavorito(data.esFavorito);
       showMessage(data.message, "success");
     } catch (error) {
-     
       if (error.response?.status === 401 || error.response?.status === 403) {
         showMessage("Debes iniciar sesión para dar like", "error");
       } else {
@@ -79,8 +67,23 @@ export default function HeroJuegos({ filtrar }) {
     }
   };
 
-  const handleComprar = (e) => {
+  const handleComprar = async (e) => {
     e.stopPropagation();
+    if (loadingAction || !juegoActual) return;
+    setLoadingAction(true);
+    try {
+      const response = await clientAxios.post(`/carrito/${juegoActual._id}`);
+      if (response.status === 200) {
+        showMessage(`${response.data.message}.`, "success");
+        navigate("/carrito");
+      }
+    } catch (error) {
+      const errorMsg =
+        error.response?.data?.message || "No se pudo agregar al carrito.";
+      showMessage(errorMsg, "error");
+    } finally {
+      setLoadingAction(false);
+    }
   };
 
   if (juegosParaMostrar.length === 0) return <div className="loading"></div>;
@@ -122,7 +125,9 @@ export default function HeroJuegos({ filtrar }) {
             </p>
 
             <div className="btn_container">
-              <button onClick={handleComprar}>Comprar Ahora</button>
+              <button onClick={handleComprar} disabled={loadingAction}>
+                {loadingAction ? "Cargando..." : "Comprar Ahora"}
+              </button>
 
               <button
                 onClick={handleFavorito}
