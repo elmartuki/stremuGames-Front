@@ -13,6 +13,8 @@ export default function FavoritosPage() {
   const [loading, setLoading] = useState(true);
   const [loadingActionId, setLoadingActionId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState("");
+  const [retryTrigger, setRetryTrigger] = useState(0);
 
   const navigate = useNavigate();
 
@@ -24,6 +26,8 @@ export default function FavoritosPage() {
 
   useEffect(() => {
     const fetchFavoritos = async () => {
+      setLoading(true);
+      setError("");
       try {
         const userStorage = JSON.parse(localStorage.getItem("usuario"));
         const token = localStorage.getItem("TokenStremuGames");
@@ -49,13 +53,14 @@ export default function FavoritosPage() {
         }
       } catch (error) {
         console.error(error);
+        setError("No se pudo establecer conexión con el servidor de datos.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchFavoritos();
-  }, []);
+  }, [retryTrigger]);
 
   const handleEliminarFavorito = async (e, idJuego) => {
     e.stopPropagation();
@@ -114,9 +119,48 @@ export default function FavoritosPage() {
 
   if (loading) {
     return (
-      <section className="favoritos-page loader-container">
-        <div className="spinner"></div>
-      </section>
+      <div className="loading-container">
+        <div className="cyber-loader">
+          <div className="cyber-glitch"></div>
+          <div className="cyber-text">CARGANDO LISTA DE DESEOS...</div>
+          <div className="cyber-bar">
+            <div className="cyber-progress"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-content">
+          <div className="error-icon-wrapper">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <h2 className="error-title">FALLO CRÍTICO DEL SISTEMA</h2>
+          <p className="error-message">
+            {error || "Protocolo de comunicación interrumpido."}
+          </p>
+          <button
+            className="error-retry-btn"
+            onClick={() => setRetryTrigger((prev) => prev + 1)}
+          >
+            REINICIAR CONEXIÓN
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -163,14 +207,52 @@ export default function FavoritosPage() {
         </header>
 
         {favoritos.length === 0 ? (
-          <div className="empty-state">
-            <h2>Tu lista de deseos está vacía</h2>
-            <p>Explora la tienda para añadir juegos increíbles.</p>
+          <div className="empty-state-container">
+            <div className="empty-glitch-wrapper">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+                <path d="M9 10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z"></path>
+              </svg>
+            </div>
+            <h2 className="empty-title">LISTA DE DESEOS VACÍA</h2>
+            <p className="empty-text">
+              Tu base de datos de deseos está vacía. Explora el catálogo para añadir títulos.
+            </p>
+            <button
+              className="empty-cta-btn"
+              onClick={() => navigate("/")}
+            >
+              EXPLORAR CATÁLOGO
+            </button>
           </div>
         ) : juegosFiltrados.length === 0 ? (
-          <div className="empty-state">
-            <h2>No se encontraron resultados</h2>
-            <p>Prueba con otro término de búsqueda.</p>
+          <div className="empty-state-container">
+            <div className="empty-glitch-wrapper">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h2 className="empty-title">DATOS NO ENCONTRADOS</h2>
+            <p className="empty-text">
+              No hay coincidencias en tus registros para el término de búsqueda actual.
+            </p>
           </div>
         ) : (
           <>
