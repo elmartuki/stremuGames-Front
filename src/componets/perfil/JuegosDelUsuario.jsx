@@ -1,25 +1,20 @@
-import { useObtenerJuegos } from "../../services/obtenerJuegos";
-import { JuegosDelUsuarioSkeleton } from "../skeletons/Skeleton";
-import noImage from "../../icons/noimage.png";
 import { useNavigate } from "react-router-dom";
 
 export default function JuegosDelUsuario({ juegosComprados = [] }) {
-  const { listado, loading } = useObtenerJuegos();
-
   const navigate = useNavigate();
 
-  if (loading || !listado) {
-    return <JuegosDelUsuarioSkeleton />;
-  }
-
-  const juegosEncontrados = listado.filter((juegoGeneral) =>
-    juegosComprados.includes(juegoGeneral._id),
-  );
-
-  if (juegosEncontrados.length === 0) {
+  if (!juegosComprados || juegosComprados.length === 0) {
     return (
-      <p style={{ color: "#999", fontStyle: "italic", width: "100%" }}>
-        Este usuario no tiene juegos comprados.
+      <p
+        style={{
+          color: "#999",
+          fontStyle: "italic",
+          width: "100%",
+          textAlign: "center",
+          marginTop: "20px",
+        }}
+      >
+        No hay juegos en esta lista.
       </p>
     );
   }
@@ -31,11 +26,12 @@ export default function JuegosDelUsuario({ juegosComprados = [] }) {
 
   return (
     <>
-      {juegosEncontrados.map((juego) => (
+      {juegosComprados.map((juego) => (
         <article
-          onClick={() => navigate(`/juego/${juego.slug}`)}
+          onClick={() => juego.slug && navigate(`/juego/${juego.slug}`)}
           key={juego._id}
           className="juego_tarjeta"
+          style={{ cursor: "pointer" }}
         >
           <div>
             <img

@@ -89,7 +89,7 @@ export default function AppRouter() {
             <>
               <ExplorarPage />
               <Footer />
-              {isDesktop && <FooterWeb />}
+              <FooterWeb />
             </>
           }
         />
@@ -116,7 +116,8 @@ export default function AppRouter() {
           element={
             <>
               <SoportePage />
-              {isDesktop ? <FooterWeb /> : <Footer />}
+              <FooterWeb />
+              <Footer />
             </>
           }
         />
@@ -125,7 +126,8 @@ export default function AppRouter() {
           element={
             <>
               <ComunidadPage />
-              {isDesktop ? <FooterWeb /> : <Footer />}
+              <FooterWeb />
+              <Footer />
             </>
           }
         />
@@ -134,6 +136,7 @@ export default function AppRouter() {
           element={
             <>
               <PerfilEmpresaPage />
+              <FooterWeb />
               <Footer />
             </>
           }
@@ -151,7 +154,8 @@ export default function AppRouter() {
           element={
             <>
               <SobreNosotrosPage />
-              {isDesktop ? <FooterWeb /> : <Footer />}
+              <FooterWeb />
+              <Footer />
             </>
           }
         />
@@ -160,7 +164,8 @@ export default function AppRouter() {
           element={
             <>
               <PerfilPage />
-              {isDesktop ? <FooterWeb /> : <Footer />}
+              <FooterWeb />
+              <Footer />
             </>
           }
         />

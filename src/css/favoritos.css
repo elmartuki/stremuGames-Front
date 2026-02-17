@@ -478,6 +478,8 @@
   }
   .favoritos-grid {
     gap: 1.5rem;
+    width: 90%;
+    margin: auto;
   }
 
   .favorito-card {
