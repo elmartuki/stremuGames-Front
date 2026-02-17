@@ -1,3 +1,122 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulseColor {
+  0% {
+    stroke: #333;
+  }
+  50% {
+    stroke: #66f61e;
+  }
+  100% {
+    stroke: #333;
+  }
+}
+
+@keyframes spinOuter {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinInner {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes neonGlow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(102, 246, 30, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(102, 246, 30, 0.8));
+  }
+}
+
+@keyframes textFlicker {
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(102, 246, 30, 0.6);
+  }
+  50% {
+    opacity: 0.6;
+    text-shadow: none;
+  }
+  55% {
+    opacity: 1;
+    text-shadow: 0 0 15px rgba(102, 246, 30, 0.8);
+  }
+  60% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes scanBar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes errorGlitchIcon {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(-3px, 2px) skewX(3deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(3px, -2px) skewX(-3deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(255, 0, 60, 1));
+  }
+  75% {
+    transform: translate(-2px, -1px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
 .container-biblioteca {
   width: 100%;
   padding: 10px;
@@ -354,19 +473,6 @@
     overflow: hidden;
   }
 
-  @media (min-width: 768px) {
-    .empty-state-container {
-      padding: 60px 20px;
-      margin: 20px auto;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .empty-state-container {
-      margin: 40px auto;
-    }
-  }
-
   .empty-state-container::before {
     content: "";
     position: absolute;
@@ -483,78 +589,6 @@
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scanline {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes pulseColor {
-  0% {
-    stroke: #333;
-  }
-  50% {
-    stroke: #66f61e;
-  }
-  100% {
-    stroke: #333;
-  }
-}
-
-@media (min-width: 768px) {
-  .container-biblioteca {
-    padding: 40px;
-
-    .biblioteca-grid {
-      .biblioteca-card {
-        width: calc(25% - 8px);
-
-        .imagen {
-          height: 200px;
-        }
-      }
-    }
-  }
-}
-
-@media (min-width: 1024px) {
-  .container-biblioteca {
-    padding: 40px;
-
-    .biblioteca-grid {
-      .biblioteca-card {
-        width: calc(17% - 13.2px);
-
-        .imagen {
-          height: 300px;
-        }
-      }
-    }
-  }
-}
-
 .loading-container {
   display: flex;
   justify-content: center;
@@ -568,6 +602,8 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  width: 100%;
+  padding: 0 15px;
 }
 
 .cyber-glitch {
@@ -600,15 +636,18 @@
 
 .cyber-text {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 1.5;
   animation: textFlicker 2s infinite;
 }
 
 .cyber-bar {
-  width: 280px;
+  width: 100%;
+  max-width: 280px;
   height: 4px;
   background-color: #18181b;
   border: 1px solid #27272a;
@@ -627,61 +666,6 @@
   background: linear-gradient(90deg, transparent, #66f61e, #ffffff);
   animation: scanBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   box-shadow: 0 0 10px #66f61e;
-}
-
-@keyframes spinOuter {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes spinInner {
-  0% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
-@keyframes neonGlow {
-  0% {
-    filter: drop-shadow(0 0 5px rgba(102, 246, 30, 0.4));
-  }
-  100% {
-    filter: drop-shadow(0 0 15px rgba(102, 246, 30, 0.8));
-  }
-}
-
-@keyframes textFlicker {
-  0%,
-  100% {
-    opacity: 1;
-    text-shadow: 0 0 8px rgba(102, 246, 30, 0.6);
-  }
-  50% {
-    opacity: 0.6;
-    text-shadow: none;
-  }
-  55% {
-    opacity: 1;
-    text-shadow: 0 0 15px rgba(102, 246, 30, 0.8);
-  }
-  60% {
-    opacity: 0.4;
-  }
-}
-
-@keyframes scanBar {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(250%);
-  }
 }
 
 .error-container {
@@ -756,26 +740,48 @@
   box-shadow: 0 0 20px rgba(255, 0, 60, 0.5);
 }
 
-@keyframes errorGlitchIcon {
-  0% {
-    transform: translate(0);
-    opacity: 1;
+@media (min-width: 768px) {
+  .container-biblioteca {
+    padding: 40px;
+
+    .biblioteca-grid {
+      .biblioteca-card {
+        width: calc(25% - 8px);
+
+        .imagen {
+          height: 200px;
+        }
+      }
+    }
   }
-  25% {
-    transform: translate(-3px, 2px) skewX(3deg);
-    opacity: 0.9;
+
+  .container-biblioteca .empty-state-container {
+    padding: 60px 20px;
+    margin: 20px auto;
   }
-  50% {
-    transform: translate(3px, -2px) skewX(-3deg);
-    opacity: 1;
-    filter: drop-shadow(0 0 15px rgba(255, 0, 60, 1));
+
+  .cyber-text {
+    font-size: 1.1rem;
+    letter-spacing: 4px;
   }
-  75% {
-    transform: translate(-2px, -1px);
-    opacity: 0.8;
+}
+
+@media (min-width: 1024px) {
+  .container-biblioteca {
+    padding: 40px;
+
+    .biblioteca-grid {
+      .biblioteca-card {
+        width: calc(17% - 13.2px);
+
+        .imagen {
+          height: 300px;
+        }
+      }
+    }
   }
-  100% {
-    transform: translate(0);
-    opacity: 1;
+
+  .container-biblioteca .empty-state-container {
+    margin: 40px auto;
   }
 }
