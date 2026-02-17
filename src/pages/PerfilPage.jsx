@@ -29,7 +29,18 @@ export default function PerfilPage() {
   const [esSeguidor, setEsSeguidor] = useState(false);
   const [contadorSeguidores, setContadorSeguidores] = useState(0);
   const [loadingAction, setLoadingAction] = useState(false);
+  const [seccionActiva, setSeccionActiva] = useState("biblioteca");
   const interactuadoRef = useRef(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (cargando) {
+        navigate("*");
+      }
+    }, 20000);
+
+    return () => clearTimeout(timeout);
+  }, [cargando, navigate]);
 
   useEffect(() => {
     if (usuario && id) {
@@ -110,7 +121,7 @@ export default function PerfilPage() {
   }
 
   if (!usuario) {
-    return navigate("*");
+    return null;
   }
 
   const {
@@ -118,6 +129,7 @@ export default function PerfilPage() {
     biografia,
     foto_de_perfil,
     juegosComprados,
+    juegosDeseados,
     foto_banner,
   } = usuario;
   const iniciales = nombreUsuario?.toUpperCase().slice(0, 2);
@@ -237,7 +249,17 @@ export default function PerfilPage() {
           </div>
 
           <div className="perfil_page_tarjetas">
-            <div className="card_links" onClick={() => navigate("/biblioteca")}>
+            <div
+              className={`card_links ${seccionActiva === "biblioteca" ? "active" : ""}`}
+              onClick={() => setSeccionActiva("biblioteca")}
+              style={{
+                border:
+                  seccionActiva === "biblioteca"
+                    ? "1px solid #84cc16"
+                    : "1px solid transparent",
+                cursor: "pointer",
+              }}
+            >
               <img src={grid_green} alt="Biblioteca" />
               <div>
                 <p>Biblioteca</p>
@@ -246,11 +268,21 @@ export default function PerfilPage() {
               {isDesktop && <img className="next-icon" src={next} alt="" />}
             </div>
 
-            <div className="card_links">
+            <div
+              className={`card_links ${seccionActiva === "deseados" ? "active" : ""}`}
+              onClick={() => setSeccionActiva("deseados")}
+              style={{
+                border:
+                  seccionActiva === "deseados"
+                    ? "1px solid #84cc16"
+                    : "1px solid transparent",
+                cursor: "pointer",
+              }}
+            >
               <img src={deseados} alt="Deseados" />
               <div>
                 <p>Lista de Deseados</p>
-                <p>Ver todos (12)</p>
+                <p>Ver todos ({juegosDeseados?.length || 0})</p>
               </div>
               {isDesktop && <img className="next-icon" src={next} alt="" />}
             </div>
@@ -260,10 +292,17 @@ export default function PerfilPage() {
 
       <section className="listado_juegos_section">
         <p className="listado_juegos_titulo">
-          <img src={game_green} alt="" /> Listado de Juegos
+          <img src={game_green} alt="" />
+          {seccionActiva === "biblioteca"
+            ? "Listado de Juegos"
+            : "Lista de Deseados"}
         </p>
         <section className="juegos_comprados">
-          <JuegosDelUsuario juegosComprados={juegosComprados} />
+          <JuegosDelUsuario
+            juegosComprados={
+              seccionActiva === "biblioteca" ? juegosComprados : juegosDeseados
+            }
+          />
         </section>
       </section>
     </section>

@@ -56,7 +56,10 @@ export default function DetallesJuegoPage() {
     verificarEstadoLike();
   }, [juego?._id]);
 
-  if (!juego || !desarrollador) return <Error404 />;
+  if (!juego || !desarrollador)
+    return setTimeout(() => {
+      <Error404 />;
+    }, 20000);
 
   const {
     titulo,
