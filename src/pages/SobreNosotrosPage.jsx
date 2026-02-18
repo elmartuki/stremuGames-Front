@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/sobrenosotros.css";
 import foto_perfil_juan_jose from "../images/foto_perfil_juan_jose.png";
-import martuki_foto_perfil from "../images/martuki_foto_perfil.png";
+import martuki_foto_perfil from "../images/martuki_foto_perfil.jpeg";
 
 export default function SobreNosotrosPage() {
   const navigate = useNavigate();
