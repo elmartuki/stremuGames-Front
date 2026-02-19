@@ -149,6 +149,8 @@ export default function Login() {
                       onChange={(e) =>
                         setForm({ ...form, usuario_email: e.target.value })
                       }
+                      minLength={6}
+                      maxLength={50}
                     />
                   </div>
                 </div>
@@ -177,6 +179,8 @@ export default function Login() {
                       onChange={(e) =>
                         setForm({ ...form, password: e.target.value })
                       }
+                      minLength={6}
+                      maxLength={50}
                     />
                     <button
                       type="button"

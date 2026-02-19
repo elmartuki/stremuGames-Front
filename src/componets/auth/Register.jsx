@@ -232,6 +232,8 @@ export default function Register() {
                       placeholder="Tu usuario"
                       value={form.nombreUsuario}
                       onChange={handleChange}
+                      minLength={6}
+                      maxLength={20}
                     />
                   </div>
                 </div>
@@ -247,6 +249,8 @@ export default function Register() {
                       placeholder="alias@stremu.games"
                       value={form.email}
                       onChange={handleChange}
+                      minLength={6}
+                      maxLength={50}
                     />
                   </div>
                 </div>
@@ -263,6 +267,8 @@ export default function Register() {
                       onChange={(e) =>
                         setForm({ ...form, password: e.target.value })
                       }
+                      minLength={6}
+                      maxLength={50}
                     />
                     <button
                       type="button"
@@ -291,6 +297,8 @@ export default function Register() {
                       onChange={(e) =>
                         setForm({ ...form, repeatPassword: e.target.value })
                       }
+                      minLength={6}
+                      maxLength={50}
                     />
                     <button
                       type="button"
