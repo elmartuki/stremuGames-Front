@@ -1,7 +1,6 @@
 import "../../css/editarJuego.css";
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useObtenerUnJuego } from "../../services/obtenerUnJuego";
+import { useNavigate } from "react-router-dom";
 import ArrowLeft from "../../icons/back.svg";
 import MoreVertical from "../../icons/more.svg";
 import general from "../../icons/general.svg";
@@ -15,6 +14,7 @@ import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
 import useMediaQuery from "../../utils/changeDesk";
 import { useMessageStore } from "../../services/MessageModal";
+import { useJuegoStore } from "../../services/juegosStore";
 
 const CATEGORIAS_DISPONIBLES = [
   "Acción",
@@ -29,13 +29,13 @@ const CATEGORIAS_DISPONIBLES = [
   "Sci-Fi",
 ];
 
-export default function EditarJuego() {
-  const { id } = useParams();
+export default function SubirJuego() {
   const navigate = useNavigate();
-
   const isDesktop = useMediaQuery("(min-width: 1025px)");
 
   const { showMessage } = useMessageStore.getState();
+  const setListado = useJuegoStore((state) => state.setListado);
+  const listado = useJuegoStore((state) => state.listado);
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
@@ -59,7 +59,6 @@ export default function EditarJuego() {
     subiendo: subiendoGaleria,
   } = useSubirImagen();
 
-  const { juego, loading } = useObtenerUnJuego(id);
   const [tagInput, setTagInput] = useState("");
 
   const [form, setForm] = useState({
@@ -73,33 +72,9 @@ export default function EditarJuego() {
     galeria: [],
     categorias: [],
     etiquetas: [],
-    version: "",
+    version: "1.0.0",
     pesoGB: 0,
   });
-
-  const triggerPortadaUpload = () => inputPortadaRef.current.click();
-  const triggerBannerUpload = () => inputBannerRef.current.click();
-  const triggerGaleriaUpload = () => inputGaleriaRef.current.click();
-
-  useEffect(() => {
-    if (juego) {
-      setForm({
-        ...juego,
-        precioBase: juego.precioBase ?? 0,
-        precioDescuento: juego.precioDescuento ?? 0,
-        pesoGB: juego.pesoGB ?? 0,
-        version: juego.version || "1.0.0",
-        titulo: juego.titulo || "",
-        descripcion: juego.descripcion || "",
-        imagenPortada: juego.imagenPortada || "",
-        imagenBanner: juego.imagenBanner || "",
-        galeria: juego.galeria || [],
-        slug: juego.slug || "",
-        categorias: juego.categorias || [],
-        etiquetas: juego.etiquetas || [],
-      });
-    }
-  }, [juego]);
 
   useEffect(() => {
     if (urlPortada) {
@@ -121,6 +96,10 @@ export default function EditarJuego() {
       }));
     }
   }, [urlGaleria]);
+
+  const triggerPortadaUpload = () => inputPortadaRef.current.click();
+  const triggerBannerUpload = () => inputBannerRef.current.click();
+  const triggerGaleriaUpload = () => inputGaleriaRef.current.click();
 
   const handleFilePortada = (e) => {
     const file = e.target.files[0];
@@ -181,11 +160,6 @@ export default function EditarJuego() {
     }));
   };
 
-  const handleImageError = (e) => {
-    e.target.onerror = null;
-    e.target.src = noImage;
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -200,6 +174,14 @@ export default function EditarJuego() {
     if (!slugRegex.test(form.slug)) {
       return showMessage(
         "El Slug solo admite minúsculas, números y guiones",
+        "error",
+      );
+    }
+
+    const versionRegex = /^\d+\.\d+\.\d+$/;
+    if (!versionRegex.test(form.version)) {
+      return showMessage(
+        "La versión debe tener el formato estricto de números separados por puntos (ej: 1.0.0)",
         "error",
       );
     }
@@ -227,16 +209,25 @@ export default function EditarJuego() {
     }
 
     try {
-      await clientAxios.put(`/juegos/${id}`, form);
-      showMessage("Juego actualizado correctamente", "success");
-      navigate(-1);
+      const { data } = await clientAxios.post("/juegos/crear", form);
+
+      if (setListado && data.datos) {
+        setListado([...listado, data.datos]);
+      }
+
+      showMessage("Juego creado exitosamente", "success");
+      navigate("/studio-panel");
     } catch (error) {
-      const msg = error.response?.data?.message || "Error al actualizar";
+      const msg =
+        error.response?.data?.message || "Hubo un error al crear el juego";
       showMessage(msg, "error");
     }
   };
 
-  if (loading || !juego) return <></>;
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
+  };
 
   return (
     <section className="edit-game">
@@ -246,8 +237,8 @@ export default function EditarJuego() {
             <img src={ArrowLeft} alt="Volver" />
           </div>
           <div className="edit-game_title">
-            <p>Editar Juego</p>
-            <p>Editar detalles del juego</p>
+            <p>Agregar Juego</p>
+            <p>Crear un nuevo juego</p>
           </div>
           <div className="edit-game_options">
             <img src={MoreVertical} alt="Opciones" />
@@ -262,18 +253,24 @@ export default function EditarJuego() {
             Informacion General
           </p>
           <div className="edit-game_input-group">
-            <p>Título</p>
+            <p>Título (Solo letras y números, max 80)</p>
             <input
               className="edit-game_input"
+              maxLength={80}
               onChange={(event) => {
-                const newTitle = event.target.value;
-                const newSlug = newTitle
+                let val = event.target.value.replace(
+                  /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,
+                  "",
+                );
+
+                const newSlug = val
                   .toLowerCase()
                   .trim()
                   .replace(/[\s\W-]+/g, "-")
-                  .replace(/^-+|-+$/g, "");
+                  .replace(/^-+|-+$/g, "")
+                  .slice(0, 80);
 
-                setForm({ ...form, titulo: newTitle, slug: newSlug });
+                setForm({ ...form, titulo: val, slug: newSlug });
               }}
               type="text"
               placeholder="Nombre del juego"
@@ -283,9 +280,10 @@ export default function EditarJuego() {
 
           <div className="edit-game_row">
             <div className="edit-game_input-group">
-              <p>Slug (URL)</p>
+              <p>Slug (URL, max 80)</p>
               <input
                 className="edit-game_input"
+                maxLength={80}
                 onChange={(event) =>
                   setForm({ ...form, slug: event.target.value })
                 }
@@ -298,25 +296,30 @@ export default function EditarJuego() {
 
           <div className="edit-game_row">
             <div className="edit-game_input-group">
-              <p>Peso (GB)</p>
+              <p>Peso (GB - Max 3 dígitos)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
-                  setForm({ ...form, pesoGB: Number(event.target.value) })
-                }
-                type="number"
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
+
+                  setForm({ ...form, pesoGB: val === "" ? "" : Number(val) });
+                }}
+                type="text"
+                inputMode="numeric"
                 placeholder="Ej: 50"
                 value={form.pesoGB}
               />
             </div>
 
             <div className="edit-game_input-group">
-              <p>Versión</p>
+              <p>Versión (Formato 0.0.0)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
-                  setForm({ ...form, version: event.target.value })
-                }
+                onChange={(event) => {
+                  let val = event.target.value.replace(/[^0-9.]/g, "");
+                  setForm({ ...form, version: val });
+                }}
                 type="text"
                 placeholder="1.0.0"
                 value={form.version}
@@ -432,8 +435,8 @@ export default function EditarJuego() {
                   onError={handleImageError}
                 />
                 <button
-                  className="eliminar_imagen"
                   type="button"
+                  className="eliminar_imagen"
                   onClick={() => removeImageFromGallery(index)}
                 >
                   ✕
@@ -445,6 +448,7 @@ export default function EditarJuego() {
               <div
                 onClick={!subiendoGaleria ? triggerGaleriaUpload : undefined}
                 className="agregar_imagen"
+                style={{ cursor: subiendoGaleria ? "wait" : "pointer" }}
               >
                 {subiendoGaleria ? (
                   <span style={{ fontSize: "0.8rem" }}>Subiendo...</span>
@@ -486,33 +490,41 @@ export default function EditarJuego() {
           </p>
           <div className="edit-game_row">
             <div className="edit-game_input-group">
-              <p>Precio Base</p>
+              <p>Precio Base (Max 3 dígitos)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
+
                   setForm({
                     ...form,
-                    precioBase: Number(event.target.value),
-                  })
-                }
-                type="number"
-                placeholder="0.00"
+                    precioBase: val === "" ? "" : Number(val),
+                  });
+                }}
+                type="text"
+                inputMode="numeric"
+                placeholder="0"
                 value={form.precioBase}
               />
             </div>
 
             <div className="edit-game_input-group">
-              <p>Precio con Descuento</p>
+              <p>Precio con Descuento (Max 3 dígitos)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
+
                   setForm({
                     ...form,
-                    precioDescuento: Number(event.target.value),
-                  })
-                }
-                type="number"
-                placeholder="0.00"
+                    precioDescuento: val === "" ? "" : Number(val),
+                  });
+                }}
+                type="text"
+                inputMode="numeric"
+                placeholder="0"
                 value={form.precioDescuento}
               />
             </div>
@@ -544,11 +556,17 @@ export default function EditarJuego() {
           </div>
 
           <div className="edit-game_input-group">
-            <p>Etiquetas (Escribe y presiona Enter)</p>
+            <p>Etiquetas (Solo texto - Enter para añadir)</p>
             <input
               className="edit-game_input"
               value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
+              onChange={(e) => {
+                let val = e.target.value.replace(
+                  /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g,
+                  "",
+                );
+                setTagInput(val);
+              }}
               onKeyDown={handleTagKeyDown}
               type="text"
               placeholder="Escribe una etiqueta..."
@@ -578,12 +596,17 @@ export default function EditarJuego() {
             Descripción
           </p>
           <div className="edit-game_input-group">
-            <p>Descripción</p>
+            <p>Descripción (Texto y números - Max 1000 caracteres)</p>
             <textarea
               className="edit-game_textarea"
-              onChange={(event) =>
-                setForm({ ...form, descripcion: event.target.value })
-              }
+              maxLength={1000}
+              onChange={(event) => {
+                let val = event.target.value.replace(
+                  /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!?()\-]/g,
+                  "",
+                );
+                setForm({ ...form, descripcion: val });
+              }}
               name="descripcion"
               placeholder="Descripción del juego..."
               value={form.descripcion}
@@ -592,7 +615,7 @@ export default function EditarJuego() {
         </section>
 
         <button className="edit-game_submit-btn" type="submit">
-          Guardar Cambios
+          Crear Juego
         </button>
         <button
           type="button"

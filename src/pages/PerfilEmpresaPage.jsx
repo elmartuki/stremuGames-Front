@@ -1,4 +1,4 @@
-import { PerfilEmpresaSkeleton } from "../componets/skeletons/Skeleton";
+import { PerfilEmpresaSkeleton } from "../components/skeletons/Skeleton";
 import "../css/studioPerfil.css";
 import mail from "../icons/mail.svg";
 import back from "../icons/back.svg";

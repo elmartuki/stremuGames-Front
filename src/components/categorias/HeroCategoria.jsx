@@ -9,14 +9,15 @@ import clientAxios from "../../utils/clientAxios";
 import { useMessageStore } from "../../services/MessageModal";
 
 export default function HeroCategoria() {
-  const { listado } = useObtenerJuegos();
+  const { listado, setListado } = useObtenerJuegos();
   const { id } = useParams();
   const [indiceHero, setIndiceHero] = useState(0);
   const navigate = useNavigate();
 
-  const [esFavorito, setEsFavorito] = useState(false);
   const [loadingAction, setLoadingAction] = useState(false);
   const showMessage = useMessageStore((state) => state.showMessage);
+
+  const idUsuarioActual = JSON.parse(localStorage.getItem("usuario"))?.id;
 
   const juegosParaMostrar = useMemo(() => {
     if (!listado) return [];
@@ -58,6 +59,15 @@ export default function HeroCategoria() {
       .slice(0, 6);
   }, [listado, id]);
 
+  const juegoActual = juegosParaMostrar[indiceHero];
+
+  const esFavorito = useMemo(() => {
+    if (!juegoActual || !idUsuarioActual) return false;
+    return juegoActual.usuarios_likes?.some(
+      (uid) => String(uid) === String(idUsuarioActual),
+    );
+  }, [juegoActual, idUsuarioActual]);
+
   useEffect(() => {
     if (juegosParaMostrar.length <= 1) return;
 
@@ -74,30 +84,6 @@ export default function HeroCategoria() {
     setIndiceHero(0);
   }, [id]);
 
-  const juegoActual = juegosParaMostrar[indiceHero];
-
-  useEffect(() => {
-    if (!juegoActual) return;
-
-    setEsFavorito(false);
-
-    const verificarEstadoLike = async () => {
-      try {
-        const token = localStorage.getItem("TokenStremuGames");
-        if (!token) return;
-
-        const { data } = await clientAxios.get(
-          `/usuarios/favoritos/verificar/${juegoActual._id}`,
-        );
-        setEsFavorito(data.esFavorito);
-      } catch (error) {
-        setEsFavorito(false);
-      }
-    };
-
-    verificarEstadoLike();
-  }, [juegoActual]);
-
   const handleFavorito = async (e) => {
     e.stopPropagation();
 
@@ -109,7 +95,16 @@ export default function HeroCategoria() {
         `/usuarios/favoritos/${juegoActual._id}`,
       );
 
-      setEsFavorito(data.esFavorito);
+      if (setListado) {
+        const nuevoListado = listado.map((j) => {
+          if (j._id === juegoActual._id) {
+            return { ...j, usuarios_likes: data.usuarios_likes };
+          }
+          return j;
+        });
+        setListado(nuevoListado);
+      }
+
       showMessage(data.message, "success");
     } catch (error) {
       if (error.response?.status === 401 || error.response?.status === 403) {

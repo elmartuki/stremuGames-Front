@@ -1,6 +1,7 @@
 import "../../css/editarJuego.css";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useObtenerUnJuego } from "../../services/obtenerUnJuego";
 import ArrowLeft from "../../icons/back.svg";
 import MoreVertical from "../../icons/more.svg";
 import general from "../../icons/general.svg";
@@ -14,6 +15,7 @@ import clientAxios from "../../utils/clientAxios";
 import { useSubirImagen } from "../../services/uploadImages";
 import useMediaQuery from "../../utils/changeDesk";
 import { useMessageStore } from "../../services/MessageModal";
+import { useJuegoStore } from "../../services/juegosStore";
 
 const CATEGORIAS_DISPONIBLES = [
   "Acción",
@@ -28,11 +30,12 @@ const CATEGORIAS_DISPONIBLES = [
   "Sci-Fi",
 ];
 
-export default function SubirJuego() {
+export default function EditarJuego() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const isDesktop = useMediaQuery("(min-width: 1025px)");
-
   const { showMessage } = useMessageStore.getState();
+  const actualizarUnJuego = useJuegoStore((state) => state.actualizarUnJuego);
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
@@ -43,19 +46,18 @@ export default function SubirJuego() {
     imagenUrl: urlPortada,
     subiendo: subiendoPortada,
   } = useSubirImagen();
-
   const {
     subirImagen: subirBanner,
     imagenUrl: urlBanner,
     subiendo: subiendoBanner,
   } = useSubirImagen();
-
   const {
     subirImagen: subirGaleria,
     imagenUrl: urlGaleria,
     subiendo: subiendoGaleria,
   } = useSubirImagen();
 
+  const { juego, loading } = useObtenerUnJuego(id);
   const [tagInput, setTagInput] = useState("");
 
   const [form, setForm] = useState({
@@ -69,34 +71,45 @@ export default function SubirJuego() {
     galeria: [],
     categorias: [],
     etiquetas: [],
-    version: "1.0.0",
+    version: "",
     pesoGB: 0,
   });
-
-  useEffect(() => {
-    if (urlPortada) {
-      setForm((prev) => ({ ...prev, imagenPortada: urlPortada }));
-    }
-  }, [urlPortada]);
-
-  useEffect(() => {
-    if (urlBanner) {
-      setForm((prev) => ({ ...prev, imagenBanner: urlBanner }));
-    }
-  }, [urlBanner]);
-
-  useEffect(() => {
-    if (urlGaleria) {
-      setForm((prev) => ({
-        ...prev,
-        galeria: [...prev.galeria, urlGaleria],
-      }));
-    }
-  }, [urlGaleria]);
 
   const triggerPortadaUpload = () => inputPortadaRef.current.click();
   const triggerBannerUpload = () => inputBannerRef.current.click();
   const triggerGaleriaUpload = () => inputGaleriaRef.current.click();
+
+  useEffect(() => {
+    if (juego) {
+      setForm({
+        titulo: juego.titulo || "",
+        slug: juego.slug || "",
+        descripcion: juego.descripcion || "",
+        precioBase: juego.precioBase ?? 0,
+        precioDescuento: juego.precioDescuento ?? 0,
+        imagenPortada: juego.imagenPortada || "",
+        imagenBanner: juego.imagenBanner || "",
+        galeria: juego.galeria || [],
+        categorias: juego.categorias || [],
+        etiquetas: juego.etiquetas || [],
+        version: juego.version || "1.0.0",
+        pesoGB: juego.pesoGB ?? 0,
+      });
+    }
+  }, [juego]);
+
+  useEffect(() => {
+    if (urlPortada) setForm((prev) => ({ ...prev, imagenPortada: urlPortada }));
+  }, [urlPortada]);
+
+  useEffect(() => {
+    if (urlBanner) setForm((prev) => ({ ...prev, imagenBanner: urlBanner }));
+  }, [urlBanner]);
+
+  useEffect(() => {
+    if (urlGaleria)
+      setForm((prev) => ({ ...prev, galeria: [...prev.galeria, urlGaleria] }));
+  }, [urlGaleria]);
 
   const handleFilePortada = (e) => {
     const file = e.target.files[0];
@@ -110,9 +123,7 @@ export default function SubirJuego() {
 
   const handleFileGaleria = (e) => {
     const file = e.target.files[0];
-    if (file && form.galeria.length < 4) {
-      subirGaleria(file);
-    }
+    if (file && form.galeria.length < 4) subirGaleria(file);
     e.target.value = null;
   };
 
@@ -139,7 +150,6 @@ export default function SubirJuego() {
     if (event.key === "Enter" || event.key === ",") {
       event.preventDefault();
       const nuevaEtiqueta = tagInput.trim();
-
       if (nuevaEtiqueta && !form.etiquetas.includes(nuevaEtiqueta)) {
         setForm((prev) => ({
           ...prev,
@@ -157,21 +167,9 @@ export default function SubirJuego() {
     }));
   };
 
-  const handleTitleChange = (event) => {
-    const newTitle = event.target.value;
-    const newSlug = newTitle
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9\s-]/g, "")
-      .trim()
-      .replace(/\s+/g, "-");
-
-    setForm((prev) => ({
-      ...prev,
-      titulo: newTitle,
-      slug: newSlug,
-    }));
+  const handleImageError = (e) => {
+    e.target.onerror = null;
+    e.target.src = noImage;
   };
 
   const handleSubmit = async (event) => {
@@ -184,51 +182,40 @@ export default function SubirJuego() {
       );
     }
 
-    const slugRegex = /^[a-z0-9-]+$/;
-    if (!slugRegex.test(form.slug)) {
-      return showMessage(
-        "El Slug solo admite minúsculas, números y guiones",
-        "error",
-      );
+    const versionRegex = /^\d+\.\d+\.\d+$/;
+    if (!versionRegex.test(form.version)) {
+      return showMessage("Formato de versión inválido (0.0.0)", "error");
     }
 
-    if (form.precioBase < 0 || form.precioDescuento < 0 || form.pesoGB < 0) {
-      return showMessage(
-        "Los valores numéricos no pueden ser negativos",
-        "error",
-      );
-    }
+    const datosModificados = {};
+    Object.keys(form).forEach((key) => {
+      if (JSON.stringify(form[key]) !== JSON.stringify(juego[key])) {
+        datosModificados[key] = form[key];
+      }
+    });
 
-    if (form.precioDescuento > form.precioBase) {
-      return showMessage(
-        "El descuento no puede superar al precio base",
-        "error",
-      );
-    }
-
-    if (!form.imagenPortada || !form.imagenBanner) {
-      return showMessage("La portada y el banner son obligatorios", "error");
-    }
-
-    if (form.categorias.length === 0) {
-      return showMessage("Selecciona al menos una categoría", "error");
+    if (Object.keys(datosModificados).length === 0) {
+      return showMessage("No se detectaron cambios para actualizar", "info");
     }
 
     try {
-      await clientAxios.post("/juegos/crear", form);
-      showMessage("Juego creado exitosamente", "success");
-      navigate("/studio-panel");
+      const { data } = await clientAxios.put(`/juegos/${id}`, datosModificados);
+
+      if (actualizarUnJuego && data.datos) {
+        actualizarUnJuego(data.datos);
+      }
+
+      showMessage("Juego actualizado correctamente", "success");
+      navigate(-1);
     } catch (error) {
-      const msg =
-        error.response?.data?.message || "Hubo un error al crear el juego";
-      showMessage(msg, "error");
+      showMessage(
+        error.response?.data?.message || "Error al actualizar",
+        "error",
+      );
     }
   };
 
-  const handleImageError = (e) => {
-    e.target.onerror = null;
-    e.target.src = noImage;
-  };
+  if (loading || !juego) return <></>;
 
   return (
     <section className="edit-game">
@@ -238,8 +225,8 @@ export default function SubirJuego() {
             <img src={ArrowLeft} alt="Volver" />
           </div>
           <div className="edit-game_title">
-            <p>Agregar Juego</p>
-            <p>Crear un nuevo juego</p>
+            <p>Editar Juego</p>
+            <p>Editar detalles del juego</p>
           </div>
           <div className="edit-game_options">
             <img src={MoreVertical} alt="Opciones" />
@@ -254,10 +241,23 @@ export default function SubirJuego() {
             Informacion General
           </p>
           <div className="edit-game_input-group">
-            <p>Título</p>
+            <p>Título (Solo letras y números, max 80)</p>
             <input
               className="edit-game_input"
-              onChange={handleTitleChange}
+              maxLength={80}
+              onChange={(event) => {
+                let val = event.target.value.replace(
+                  /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,
+                  "",
+                );
+                const newSlug = val
+                  .toLowerCase()
+                  .trim()
+                  .replace(/[\s\W-]+/g, "-")
+                  .replace(/^-+|-+$/g, "")
+                  .slice(0, 80);
+                setForm({ ...form, titulo: val, slug: newSlug });
+              }}
               type="text"
               placeholder="Nombre del juego"
               value={form.titulo}
@@ -266,9 +266,10 @@ export default function SubirJuego() {
 
           <div className="edit-game_row">
             <div className="edit-game_input-group">
-              <p>Slug (URL)</p>
+              <p>Slug (URL, max 80)</p>
               <input
                 className="edit-game_input"
+                maxLength={80}
                 onChange={(event) =>
                   setForm({ ...form, slug: event.target.value })
                 }
@@ -281,25 +282,30 @@ export default function SubirJuego() {
 
           <div className="edit-game_row">
             <div className="edit-game_input-group">
-              <p>Peso (GB)</p>
+              <p>Peso (GB - Max 3 dígitos)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
-                  setForm({ ...form, pesoGB: Number(event.target.value) })
-                }
-                type="number"
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
+                  setForm({ ...form, pesoGB: val === "" ? "" : Number(val) });
+                }}
+                type="text"
+                inputMode="numeric"
                 placeholder="Ej: 50"
                 value={form.pesoGB}
               />
             </div>
 
             <div className="edit-game_input-group">
-              <p>Versión</p>
+              <p>Versión (Formato 0.0.0)</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
-                  setForm({ ...form, version: event.target.value })
-                }
+                onChange={(event) => {
+                  let val = event.target.value.replace(/[^0-9.]/g, "");
+                  setForm({ ...form, version: val });
+                }}
+                maxLength="5"
                 type="text"
                 placeholder="1.0.0"
                 value={form.version}
@@ -324,16 +330,12 @@ export default function SubirJuego() {
                   }
                   alt="Portada Preview"
                   style={{ opacity: subiendoPortada ? 0.5 : 1 }}
-                  onError={(e) =>
-                    (e.target.src =
-                      "https://via.placeholder.com/150?text=Error+URL")
-                  }
+                  onError={handleImageError}
                 />
                 {subiendoPortada && (
                   <div className="loading-overlay">Subiendo...</div>
                 )}
               </div>
-
               <div className="edit-game_input-group">
                 <p>Imagen Portada</p>
                 <div className="input-with-button">
@@ -366,16 +368,12 @@ export default function SubirJuego() {
                   }
                   alt="Banner Preview"
                   style={{ opacity: subiendoBanner ? 0.5 : 1 }}
-                  onError={(e) =>
-                    (e.target.src =
-                      "https://via.placeholder.com/150?text=Error+URL")
-                  }
+                  onError={handleImageError}
                 />
                 {subiendoBanner && (
                   <div className="loading-overlay">Subiendo...</div>
                 )}
               </div>
-
               <div className="edit-game_input-group">
                 <p>Imagen Banner</p>
                 <div className="input-with-button">
@@ -405,30 +403,27 @@ export default function SubirJuego() {
             <img src={galeriaIcon} alt="" />
             Galería (Máx 4)
           </p>
-
           <div className="galeria_container">
             {form.galeria.map((imgUrl, index) => (
-              <div key={index} className="imagen">
+              <div className="imagen" key={index}>
                 <img
                   src={imgUrl || noImage}
                   alt=""
                   onError={handleImageError}
                 />
                 <button
-                  type="button"
                   className="eliminar_imagen"
+                  type="button"
                   onClick={() => removeImageFromGallery(index)}
                 >
                   ✕
                 </button>
               </div>
             ))}
-
             {form.galeria.length < 4 && (
               <div
-                className="agregar_imagen"
                 onClick={!subiendoGaleria ? triggerGaleriaUpload : undefined}
-                style={{ cursor: subiendoGaleria ? "wait" : "pointer" }}
+                className="agregar_imagen"
               >
                 {subiendoGaleria ? (
                   <span style={{ fontSize: "0.8rem" }}>Subiendo...</span>
@@ -441,7 +436,6 @@ export default function SubirJuego() {
               </div>
             )}
           </div>
-
           <input
             type="file"
             ref={inputGaleriaRef}
@@ -449,9 +443,6 @@ export default function SubirJuego() {
             accept="image/*"
             onChange={handleFileGaleria}
           />
-          <p style={{ fontSize: "0.8rem", color: "#666", marginTop: "5px" }}>
-            {form.galeria.length} de 4 imágenes utilizadas.
-          </p>
         </section>
 
         <section className="inputs_container">
@@ -464,27 +455,33 @@ export default function SubirJuego() {
               <p>Precio Base</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
-                  setForm({ ...form, precioBase: Number(event.target.value) })
-                }
-                type="number"
-                placeholder="0.00"
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
+                  setForm({
+                    ...form,
+                    precioBase: val === "" ? "" : Number(val),
+                  });
+                }}
+                type="text"
+                inputMode="numeric"
                 value={form.precioBase}
               />
             </div>
-
             <div className="edit-game_input-group">
-              <p>Precio con Descuento</p>
+              <p>Descuento</p>
               <input
                 className="edit-game_input"
-                onChange={(event) =>
+                onChange={(event) => {
+                  let val = event.target.value.replace(/\D/g, "");
+                  if (val.length > 3) val = val.slice(0, 3);
                   setForm({
                     ...form,
-                    precioDescuento: Number(event.target.value),
-                  })
-                }
-                type="number"
-                placeholder="0.00"
+                    precioDescuento: val === "" ? "" : Number(val),
+                  });
+                }}
+                type="text"
+                inputMode="numeric"
                 value={form.precioDescuento}
               />
             </div>
@@ -499,31 +496,31 @@ export default function SubirJuego() {
           <div className="edit-game_input-group">
             <p>Categorías</p>
             <div className="edit-game_categories-container">
-              {CATEGORIAS_DISPONIBLES.map((cat) => {
-                const isActive = form.categorias.includes(cat);
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    className={`category-btn ${isActive ? "active" : ""}`}
-                    onClick={() => toggleCategoria(cat)}
-                  >
-                    {cat}
-                  </button>
-                );
-              })}
+              {CATEGORIAS_DISPONIBLES.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={`category-btn ${form.categorias.includes(cat) ? "active" : ""}`}
+                  onClick={() => toggleCategoria(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
-
           <div className="edit-game_input-group">
-            <p>Etiquetas (Escribe y presiona Enter)</p>
+            <p>Etiquetas</p>
             <input
               className="edit-game_input"
               value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
+              onChange={(e) =>
+                setTagInput(
+                  e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, ""),
+                )
+              }
               onKeyDown={handleTagKeyDown}
               type="text"
-              placeholder="Escribe una etiqueta..."
+              placeholder="Añadir etiqueta..."
             />
             <div
               className="edit-game_categories-container"
@@ -535,7 +532,6 @@ export default function SubirJuego() {
                   type="button"
                   className="category-btn tag-btn"
                   onClick={() => removeTag(tag)}
-                  title="Clic para eliminar"
                 >
                   {tag} ✕
                 </button>
@@ -550,27 +546,29 @@ export default function SubirJuego() {
             Descripción
           </p>
           <div className="edit-game_input-group">
-            <p>Descripción</p>
             <textarea
               className="edit-game_textarea"
+              maxLength={1000}
               onChange={(event) =>
-                setForm({ ...form, descripcion: event.target.value })
+                setForm({
+                  ...form,
+                  descripcion: event.target.value.replace(
+                    /[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!?()\-]/g,
+                    "",
+                  ),
+                })
               }
-              name="descripcion"
-              placeholder="Descripción del juego..."
               value={form.descripcion}
             ></textarea>
           </div>
         </section>
 
         <button className="edit-game_submit-btn" type="submit">
-          Crear Juego
+          Guardar Cambios
         </button>
         <button
           type="button"
-          onClick={() => {
-            navigate("/studio-panel");
-          }}
+          onClick={() => navigate("/studio-panel")}
           className="edit-game_cancel-btn"
         >
           Cancelar

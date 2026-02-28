@@ -19,7 +19,7 @@ import { useObtenerUsuario } from "../services/obtenerUsuario";
 import { useObtenerUnJuego } from "../services/obtenerUnJuego";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "../services/MessageModal";
-import CarroucelLargo from "../componets/explorar/CarroucelLargo";
+import CarroucelLargo from "../components/explorar/CarroucelLargo";
 import useMediaQuery from "../utils/changeDesk";
 import Error404 from "./Error404";
 

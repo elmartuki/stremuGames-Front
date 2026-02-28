@@ -1,7 +1,7 @@
-import Carroucel from "../componets/explorar/Carroucel";
-import CarroucelLargo from "../componets/explorar/CarroucelLargo";
-import Categorias from "../componets/explorar/Categorias";
-import HeroJuegos from "../componets/explorar/HeroJuegos";
+import Carroucel from "../components/explorar/Carroucel";
+import CarroucelLargo from "../components/explorar/CarroucelLargo";
+import Categorias from "../components/explorar/Categorias";
+import HeroJuegos from "../components/explorar/HeroJuegos";
 import "../css/explorarPage.css";
 import rigth_green from "../icons/rigth_green.svg";
 import likes from "../icons/fav.svg";

@@ -1,37 +1,18 @@
-import { useEffect, useState } from "react";
-import clientAxios from "../utils/clientAxios";
+import { useEffect } from "react";
 import { useObtenerToken } from "./obtenerToken";
-import { useMessageStore } from "./MessageModal";
+import { useUsuarioStore } from "./usuarioStore";
 
 export const useObtenerUsuario = (usuarioExterno = null) => {
-  const [usuario, setUsuario] = useState(null);
+  const { usuario, obtenerUsuario } = useUsuarioStore();
   const { usuarioInfo } = useObtenerToken();
 
   const usuarioParaBuscar = usuarioExterno || usuarioInfo?.nombreUsuario;
 
   useEffect(() => {
-    if (!usuarioParaBuscar) return;
-
-    const fetchUsuario = async () => {
-      const { showMessage } = useMessageStore.getState();
-      try {
-        const response = await clientAxios.get(
-          `/usuarios/${usuarioParaBuscar}`,
-        );
-
-        if (response.data) {
-          setUsuario(response.data.datos);
-        }
-      } catch (error) {
-        showMessage(
-          error.response?.data?.message || "Error al obtener usuario",
-          "error",
-        );
-      }
-    };
-
-    fetchUsuario();
-  }, [usuarioParaBuscar]);
+    if (usuarioParaBuscar) {
+      obtenerUsuario(usuarioParaBuscar);
+    }
+  }, [usuarioParaBuscar, obtenerUsuario]);
 
   return { usuario };
 };

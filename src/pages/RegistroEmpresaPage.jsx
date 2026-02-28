@@ -1,7 +1,7 @@
 import "../css/login.css";
 import back from "../icons/back.svg";
 import more from "../icons/more.svg";
-import RegistroEmpresa from "../componets/auth/RegistroEmpresa";
+import RegistroEmpresa from "../components/auth/RegistroEmpresa";
 import { useNavigate } from "react-router-dom";
 
 export default function RegistroEmpresaPage() {

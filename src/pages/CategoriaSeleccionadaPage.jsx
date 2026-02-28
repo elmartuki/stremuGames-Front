@@ -1,7 +1,7 @@
 import "../css/categoriaSeleccionada.css";
-import Categoria from "../componets/categorias/Categoria";
+import Categoria from "../components/categorias/Categoria";
 import { useParams } from "react-router-dom";
-import HeroCategoria from "../componets/categorias/HeroCategoria";
+import HeroCategoria from "../components/categorias/HeroCategoria";
 
 export default function CategoriaSeleccionadaPage() {
   const { id } = useParams();

@@ -14,7 +14,7 @@ import { useObtenerJuegos } from "../services/obtenerJuegos";
 import { useCalcularNivel } from "../services/calcularNivel";
 
 import { useNavigate } from "react-router-dom";
-import { ComunidadSkeleton } from "../componets/skeletons/Skeleton";
+import { ComunidadSkeleton } from "../components/skeletons/Skeleton";
 import useMediaQuery from "../utils/changeDesk";
 
 const PlayerCard = ({ usuario, navigate }) => {
