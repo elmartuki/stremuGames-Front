@@ -7,7 +7,6 @@ export const useUsuarioStore = create((set, get) => ({
   cargado: false,
 
   obtenerUsuario: async (nombreUsuario) => {
-    // BLOQUEO CRUCIAL: Si ya cargó O está cargando actualmente, NO HACER NADA
     if (get().cargado || get().loading) return;
 
     set({ loading: true });
