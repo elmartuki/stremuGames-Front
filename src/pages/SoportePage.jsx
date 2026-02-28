@@ -18,6 +18,7 @@ export default function SoportePage() {
   const [formDataInput, setFormDataInput] = useState({
     nombre: "",
     email: "",
+    mensaje: "",
   });
 
   const showMessage = useMessageStore((state) => state.showMessage);
@@ -34,6 +35,7 @@ export default function SoportePage() {
           return prev;
         }
         return {
+          ...prev,
           nombre: usuarioInfo.nombreUsuario || "",
           email: usuarioInfo.email || "",
         };
@@ -43,10 +45,31 @@ export default function SoportePage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let sanitizado = value;
+
+    if (name === "nombre") {
+      sanitizado = value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, "").slice(0, 50);
+    } else if (name === "email") {
+      sanitizado = value.replace(/[^a-zA-Z0-9@.-]/g, "").slice(0, 100);
+    } else if (name === "mensaje") {
+      sanitizado = value
+        .replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.,!?()\-]/g, "")
+        .slice(0, 500);
+    }
+
     setFormDataInput((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: sanitizado,
     }));
+  };
+
+  const handlePasteBlock = (e) => {
+    e.preventDefault();
+    showMessage("Por seguridad, escribe el texto manualmente.", "warning");
+  };
+
+  const handleDropBlock = (e) => {
+    e.preventDefault();
   };
 
   const toggleFAQ = (index) => {
@@ -60,31 +83,45 @@ export default function SoportePage() {
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
+    setFormDataInput((prev) => ({ ...prev, mensaje: "" }));
     if (!usuarioInfo) {
-      setFormDataInput({ nombre: "", email: "" });
+      setFormDataInput({ nombre: "", email: "", mensaje: "" });
     }
   }, [usuarioInfo]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      !formDataInput.nombre.trim() ||
+      !formDataInput.email.trim() ||
+      !formDataInput.mensaje.trim()
+    ) {
+      return showMessage("Todos los campos son obligatorios.", "error");
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(formDataInput.email)) {
+      return showMessage("Ingresa un correo electrónico válido.", "error");
+    }
+
     setIsSending(true);
 
     const ticketData = {
-      nombre: formDataInput.nombre,
-      email: formDataInput.email,
+      nombre: formDataInput.nombre.trim(),
+      email: formDataInput.email.trim(),
       asunto: asunto,
-      mensaje: e.target.mensaje.value,
+      mensaje: formDataInput.mensaje.trim(),
     };
 
     try {
       await clientAxios.post("/ticket", ticketData);
       showMessage("Ticket enviado exitosamente.", "success");
-      e.target.reset();
       handleCloseModal();
     } catch (error) {
       console.error(error);
       showMessage(
-        response.data.message || "Error al enviar el ticket.",
+        error.response?.data?.message || "Error al enviar el ticket.",
         "error",
       );
     } finally {
@@ -219,6 +256,9 @@ export default function SoportePage() {
                     placeholder="Tu nombre"
                     value={formDataInput.nombre}
                     onChange={handleInputChange}
+                    onPaste={handlePasteBlock}
+                    onDrop={handleDropBlock}
+                    disabled={!!usuarioInfo?.nombreUsuario}
                     required
                   />
                 </div>
@@ -230,6 +270,9 @@ export default function SoportePage() {
                     placeholder="tucorreo@ejemplo.com"
                     value={formDataInput.email}
                     onChange={handleInputChange}
+                    onPaste={handlePasteBlock}
+                    onDrop={handleDropBlock}
+                    disabled={!!usuarioInfo?.email}
                     required
                   />
                 </div>
@@ -255,8 +298,23 @@ export default function SoportePage() {
                     name="mensaje"
                     rows="4"
                     placeholder="Describe tu problema..."
+                    value={formDataInput.mensaje}
+                    onChange={handleInputChange}
+                    onPaste={handlePasteBlock}
+                    onDrop={handleDropBlock}
                     required
                   ></textarea>
+                  <small
+                    style={{
+                      fontSize: "12px",
+                      color: "#666",
+                      display: "block",
+                      textAlign: "right",
+                      marginTop: "5px",
+                    }}
+                  >
+                    {formDataInput.mensaje.length}/500
+                  </small>
                 </div>
                 <button
                   type="submit"
