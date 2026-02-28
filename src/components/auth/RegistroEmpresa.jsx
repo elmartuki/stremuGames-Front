@@ -42,7 +42,10 @@ export default function RegistroEmpresa() {
     try {
       const { user } = await loginWithGoogle();
 
-      const nombreUsuario = user.displayName.toLowerCase().replace(/\s+/g, "");
+      const nombreUsuario = user.displayName
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+        .slice(0, 25);
 
       const datosParaEnviar = {
         nombreUsuario: nombreUsuario,
@@ -67,7 +70,6 @@ export default function RegistroEmpresa() {
         navigate("/explorar");
       }, 1500);
     } catch (error) {
-      console.error(error);
       showMessage("Error al registrarse con Google", "error");
     } finally {
       setLoading(false);
@@ -89,10 +91,11 @@ export default function RegistroEmpresa() {
     if (nombre.length < 3) {
       return showMessage("El nombre debe tener al menos 3 caracteres", "error");
     }
-    const nameRegex = /^[a-zA-Z0-9\s]+$/;
+
+    const nameRegex = /^[a-zA-Z0-9]+$/;
     if (!nameRegex.test(nombre)) {
       return showMessage(
-        "El nombre solo puede contener letras y números",
+        "El nombre solo puede contener letras y números (sin espacios)",
         "error",
       );
     }
@@ -102,7 +105,8 @@ export default function RegistroEmpresa() {
       return showMessage("Ingresa un correo electrónico válido", "error");
     }
 
-    const passRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const passRegex =
+      /^(?=.*[A-Z])(?=.*\d)[A-Z\d!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/-]{8,}$/i;
     if (!passRegex.test(password)) {
       return showMessage(
         "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.",
@@ -161,49 +165,39 @@ export default function RegistroEmpresa() {
   return (
     <section className="formulario_section">
       {isDesktop ? (
-        <>
-          <img className="background" src={background} alt="" />
-        </>
+        <img className="background" src={background} alt="" />
       ) : (
-        <>
-          <img className="background" src={background_4} alt="" />
-        </>
+        <img className="background" src={background_4} alt="" />
       )}
 
       {isDesktop ? (
         <div className="formulario_header">
           <div className="titulos_container">
             <p className="badge_text">Registro de estudios</p>
-
             <p>
               El hogar de tus <span className="highligth">Creaciones</span>
             </p>
-
             <p>
               Únete a la plataforma líder para desarrolladores independientes.
               Distribuye, gestiona y escala tus títulos ante una audiencia
               global.
             </p>
           </div>
-
           <div className="card_container">
             <div className="card">
               <div className="card_icon">
                 <img src={rocket} alt="" />
                 <p>Incrementa tus ganancias </p>
               </div>
-
               <p className="card_text">
                 Monetización líder y alcance global inmediato.
               </p>
             </div>
-
             <div className="card">
               <div className="card_icon">
                 <img src={headphone} alt="" />
                 <p>Soporte 24/7 </p>
               </div>
-
               <p className="card_text">
                 Asistencia técnica directa en tiempo real.
               </p>
@@ -215,7 +209,6 @@ export default function RegistroEmpresa() {
           <div className="icon">
             <img src={code} alt="" />
           </div>
-
           <div className="titulos_container">
             <p>Publica tus juegos</p>
             <p>Crea una cuenta para tu estudio.</p>
@@ -224,104 +217,116 @@ export default function RegistroEmpresa() {
       )}
 
       <section className="formulario_body">
-        {isDesktop ? (
-          <>
-            <div className="formulario_header">
-              <p>REGISTRO</p>
-            </div>
-          </>
-        ) : (
-          <></>
+        {isDesktop && (
+          <div className="formulario_header">
+            <p>REGISTRO</p>
+          </div>
         )}
 
         <p className="labels">Nombre del estudio</p>
-
         <div className="input_container">
           <img src={empresa} alt="" />
           <input
-            onChange={(event) =>
-              setForm({ ...form, nombreUsuario: event.target.value })
-            }
+            onChange={(e) => {
+              let val = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
+              setForm({ ...form, nombreUsuario: val });
+            }}
             type="text"
             maxLength="25"
             placeholder="Ej. PixelGames"
             value={form.nombreUsuario}
+            onPaste={(e) => {
+              e.preventDefault();
+              showMessage("Escribe el nombre manualmente.", "warning");
+            }}
+            onDrop={(e) => e.preventDefault()}
           />
         </div>
 
         <p className="labels">Correo Electrónico</p>
-
         <div className="input_container">
           <img src={mail} alt="" />
           <input
-            onChange={(event) =>
-              setForm({ ...form, email: event.target.value })
-            }
-            type="text"
-            maxLength="60"
+            onChange={(e) => {
+              let val = e.target.value.replace(/[^a-zA-Z0-9@.-]/g, "");
+              setForm({ ...form, email: val });
+            }}
+            type="email"
+            maxLength="100"
             placeholder="Ej. pixelgames@gmail.com"
             value={form.email}
+            onPaste={(e) => {
+              e.preventDefault();
+              showMessage("Escribe el correo manualmente.", "warning");
+            }}
+            onDrop={(e) => e.preventDefault()}
           />
         </div>
 
         <p className="labels">Contraseña</p>
-
         <div className="input_container">
           <img src={lock} alt="" />
           <input
-            onChange={(event) =>
-              setForm({ ...form, password: event.target.value })
-            }
+            onChange={(e) => {
+              let val = e.target.value.replace(/\s/g, "");
+              setForm({ ...form, password: val });
+            }}
             type={show ? "text" : "password"}
-            maxLength="60"
+            maxLength="200"
             placeholder="Mínimo 8 caracteres, 1 mayúscula y 1 número"
             value={form.password}
+            onPaste={(e) => {
+              e.preventDefault();
+              showMessage(
+                "Por seguridad, escribe la contraseña manualmente.",
+                "warning",
+              );
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+              showMessage("Por seguridad, no se puede copiar.", "warning");
+            }}
+            onDrop={(e) => e.preventDefault()}
           />
-          {show ? (
-            <img
-              onClick={() => setShow(!show)}
-              src={visibility_off}
-              alt=""
-              style={{ cursor: "pointer" }}
-            />
-          ) : (
-            <img
-              onClick={() => setShow(!show)}
-              src={visibility}
-              alt=""
-              style={{ cursor: "pointer" }}
-            />
-          )}
+          <img
+            onClick={() => setShow(!show)}
+            src={show ? visibility_off : visibility}
+            alt=""
+            className="toggle_pass"
+          />
         </div>
 
         <p className="labels">Repetir contraseña</p>
-
         <div className="input_container">
           <img src={lock_repeat} alt="" />
           <input
-            onChange={(event) =>
-              setForm({ ...form, repeatpassword: event.target.value })
-            }
+            onChange={(e) => {
+              let val = e.target.value.replace(/\s/g, "");
+              setForm({ ...form, repeatpassword: val });
+            }}
             type={show2 ? "text" : "password"}
             placeholder="Repita la contraseña"
-            maxLength="60"
+            maxLength="200"
             value={form.repeatpassword}
+            onPaste={(e) => {
+              e.preventDefault();
+              showMessage(
+                "Por seguridad, escribe la contraseña manualmente.",
+                "warning",
+              );
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+              showMessage("Por seguridad, no se puede copiar.", "warning");
+            }}
+            onDrop={(e) => e.preventDefault()}
           />
-          {show2 ? (
-            <img
-              onClick={() => setShow2(!show2)}
-              src={visibility_off}
-              alt=""
-              style={{ cursor: "pointer" }}
-            />
-          ) : (
-            <img
-              onClick={() => setShow2(!show2)}
-              src={visibility}
-              alt=""
-              style={{ cursor: "pointer" }}
-            />
-          )}
+          <img
+            onClick={() => setShow2(!show2)}
+            src={show2 ? visibility_off : visibility}
+            alt=""
+            className="toggle_pass"
+          />
         </div>
 
         <button
@@ -396,7 +401,7 @@ export default function RegistroEmpresa() {
             <p>Inicia sesión</p>
             <p
               onClick={() => !loading && navigate("/login")}
-              style={{ cursor: "pointer" }}
+              className="link_action"
             >
               haciendo click acá <img src={link} alt="" />
             </p>

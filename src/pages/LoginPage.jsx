@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../componets/auth/Login";
+import Login from "../components/auth/Login";
 import back from "../icons/back.svg";
 import more from "../icons/more.svg";
 import { useNavigate }  from "react-router-dom";

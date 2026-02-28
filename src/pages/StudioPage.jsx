@@ -15,7 +15,7 @@ import { eliminarUnJuego } from "../services/eliminarUnJuego";
 import clientAxios from "../utils/clientAxios";
 import { useMessageStore } from "../services/MessageModal";
 import { useConfirmStore } from "../services/ConfirmModal";
-import ConfirmModal from "../componets/modal/ConfirmModal";
+import ConfirmModal from "../components/modal/ConfirmModal";
 
 export default function StudioPage() {
   const [buscar, setBuscar] = useState("");

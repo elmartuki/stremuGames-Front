@@ -5,12 +5,12 @@ import next from "../icons/next.svg";
 import back from "../icons/back.svg";
 import more from "../icons/more.svg";
 import game_green from "../icons/games_green.svg";
-import JuegosDelUsuario from "../componets/perfil/JuegosDelUsuario";
+import JuegosDelUsuario from "../components/perfil/JuegosDelUsuario";
 import { useObtenerUsuario } from "../services/obtenerUsuario.js";
 import { useCalcularNivel } from "../services/calcularNivel.js";
 import useMediaQuery from "../utils/changeDesk.js";
 import { useNavigate, useParams } from "react-router-dom";
-import { PerfilPageSkeleton } from "../componets/skeletons/Skeleton.jsx";
+import { PerfilPageSkeleton } from "../components/skeletons/Skeleton.jsx";
 
 import { useState, useEffect, useRef } from "react";
 import clientAxios from "../utils/clientAxios";

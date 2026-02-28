@@ -1,37 +1,37 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import clientAxios from "../utils/clientAxios";
 import { eliminarUnJuego } from "../services/eliminarUnJuego";
 import { useMessageStore } from "./MessageModal";
+import { useJuegoStore } from "../store/juegoStore";
 
 export const useObtenerJuegosParthner = () => {
-  const [listado, setListado] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { listado, loading, fetchJuegos, setListado } = useJuegoStore();
+  const showMessage = useMessageStore((state) => state.showMessage);
 
   const recargarJuegos = async () => {
-    const { showMessage } = useMessageStore.getState();
     try {
-      const response = await clientAxios.get("/juegos/juegos-subidos");
-      setListado(response.data.datos);
+      await fetchJuegos(true);
     } catch (error) {
-      showMessage(error.response?.data?.message, "error");
-    } finally {
-      setLoading(false);
+      showMessage(
+        error.response?.data?.message || "Error al recargar",
+        "error",
+      );
     }
   };
 
   const handleEliminar = async (id) => {
     try {
       await eliminarUnJuego(id);
-
       await recargarJuegos();
+      showMessage("Juego eliminado", "success");
     } catch (error) {
       showMessage("Error al eliminar", "error");
     }
   };
 
   useEffect(() => {
-    recargarJuegos();
-  }, []);
+    fetchJuegos();
+  }, [fetchJuegos]);
 
   return { listado, loading, recargarJuegos, handleEliminar };
 };

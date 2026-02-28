@@ -31,7 +31,7 @@ export default function RecuperarPassword() {
     repeatNewPassword: "",
   });
 
-const handleNextStep = async () => {
+  const handleNextStep = async () => {
     if (step === 1) {
       if (!form.email.trim()) {
         showMessage("Por favor, ingresa tu correo electrónico.", "warning");
@@ -64,13 +64,10 @@ const handleNextStep = async () => {
       }
       setLoading(true);
       try {
-        const response = await clientAxios.post(
-          "/usuarios/verificarCodigo",
-          {
-            email: form.email,
-            codigo: form.codigo,
-          }
-        );
+        const response = await clientAxios.post("/usuarios/verificarCodigo", {
+          email: form.email,
+          codigo: form.codigo,
+        });
         if (response.status === 200) {
           setStep(3);
         }
@@ -226,7 +223,11 @@ const handleNextStep = async () => {
             <div className="input_container">
               <img src={mail} alt="" />
               <input
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => {
+                  let val = e.target.value.replace(/[^a-zA-Z0-9@.]/g, "");
+                  setForm({ ...form, email: val });
+                }}
+                maxLength={100}
                 type="email"
                 placeholder="ejemplo@correo.com"
                 value={form.email}
@@ -243,11 +244,13 @@ const handleNextStep = async () => {
               <input
                 className="input_code"
                 onChange={(e) => {
-                  if (e.target.value.length <= 6) {
-                    setForm({ ...form, codigo: e.target.value });
+                  let val = e.target.value.replace(/[^0-9]/g, "");
+                  if (val.length <= 6) {
+                    setForm({ ...form, codigo: val });
                   }
                 }}
                 type="text"
+                inputMode="numeric"
                 placeholder="Ej. 123456"
                 value={form.codigo}
               />
@@ -268,7 +271,7 @@ const handleNextStep = async () => {
                   setForm({ ...form, newPassword: e.target.value })
                 }
                 type={showNew ? "text" : "password"}
-                maxLength="60"
+                maxLength={200}
                 placeholder="Mínimo 8 car., 1 mayúscula y 1 número"
                 value={form.newPassword}
                 onPaste={(e) => {
@@ -310,7 +313,7 @@ const handleNextStep = async () => {
                 }
                 type={showRepeat ? "text" : "password"}
                 placeholder="Repita la nueva contraseña"
-                maxLength="60"
+                maxLength={200}
                 value={form.repeatNewPassword}
                 onPaste={(e) => {
                   e.preventDefault();
