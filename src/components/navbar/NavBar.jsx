@@ -156,9 +156,9 @@ export default function NavBar() {
                       <text
                         x="15"
                         y="90"
-                        font-family="'Arial Black', 'Helvetica Neue', sans-serif"
-                        font-weight="900"
-                        font-size="90"
+                        fontFamily="'Arial Black', 'Helvetica Neue', sans-serif"
+                        fontWeight="900"
+                        fontSize="90"
                         textLength="100%"
                         lengthAdjust="spacingAndGlyphs"
                       >

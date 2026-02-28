@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useObtenerJuegos } from "../../services/obtenerJuegos";
 import favoritoIcon from "../../icons/fav.svg";
 import { useNavigate } from "react-router-dom";
@@ -7,18 +7,30 @@ import clientAxios from "../../utils/clientAxios";
 import { useMessageStore } from "../../services/MessageModal";
 
 export default function HeroJuegos({ filtrar }) {
-  const { listado } = useObtenerJuegos();
+  const { listado, setListado } = useObtenerJuegos();
   const [indiceHero, setIndiceHero] = useState(0);
-  const [esFavorito, setEsFavorito] = useState(false);
   const [loadingAction, setLoadingAction] = useState(false);
   const showMessage = useMessageStore((state) => state.showMessage);
   const navigate = useNavigate();
 
-  const juegosParaMostrar = listado
-    ? [...listado].sort((a, b) => b.cantidadVotos - a.cantidadVotos).slice(0, 6)
-    : [];
+  const idUsuarioActual = JSON.parse(localStorage.getItem("usuario"))?.id;
+
+  const juegosParaMostrar = useMemo(() => {
+    return listado
+      ? [...listado]
+          .sort((a, b) => b.cantidadVotos - a.cantidadVotos)
+          .slice(0, 6)
+      : [];
+  }, [listado]);
 
   const juegoActual = juegosParaMostrar[indiceHero];
+
+  const esFavorito = useMemo(() => {
+    if (!juegoActual || !idUsuarioActual) return false;
+    return juegoActual.usuarios_likes?.some(
+      (id) => String(id) === String(idUsuarioActual),
+    );
+  }, [juegoActual, idUsuarioActual]);
 
   useEffect(() => {
     if (juegosParaMostrar.length === 0) return;
@@ -30,22 +42,6 @@ export default function HeroJuegos({ filtrar }) {
     return () => clearInterval(intervalo);
   }, [juegosParaMostrar.length]);
 
-  useEffect(() => {
-    if (!juegoActual) return;
-    setEsFavorito(false);
-    const verificarEstadoLike = async () => {
-      try {
-        const { data } = await clientAxios.get(
-          `/usuarios/favoritos/verificar/${juegoActual._id}`,
-        );
-        setEsFavorito(data.esFavorito);
-      } catch (error) {
-        setEsFavorito(false);
-      }
-    };
-    verificarEstadoLike();
-  }, [juegoActual]);
-
   const handleFavorito = async (e) => {
     e.stopPropagation();
     if (loadingAction || !juegoActual) return;
@@ -54,7 +50,18 @@ export default function HeroJuegos({ filtrar }) {
       const { data } = await clientAxios.put(
         `/usuarios/favoritos/${juegoActual._id}`,
       );
-      setEsFavorito(data.esFavorito);
+
+      const nuevoListado = listado.map((j) => {
+        if (j._id === juegoActual._id) {
+          return {
+            ...j,
+            usuarios_likes: data.usuarios_likes || j.usuarios_likes,
+          };
+        }
+        return j;
+      });
+      setListado(nuevoListado);
+
       showMessage(data.message, "success");
     } catch (error) {
       if (error.response?.status === 401 || error.response?.status === 403) {
