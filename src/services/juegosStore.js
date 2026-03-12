@@ -31,4 +31,6 @@ export const useJuegoStore = create((set, get) => ({
     );
     set({ listado: nuevoListado });
   },
+
+  setListado: (nuevoListado) => set({ listado: nuevoListado }),
 }));

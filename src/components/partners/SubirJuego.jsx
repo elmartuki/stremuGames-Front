@@ -36,6 +36,7 @@ export default function SubirJuego() {
   const { showMessage } = useMessageStore.getState();
   const setListado = useJuegoStore((state) => state.setListado);
   const listado = useJuegoStore((state) => state.listado);
+  const fetchJuegos = useJuegoStore((state) => state.fetchJuegos);
 
   const inputPortadaRef = useRef(null);
   const inputBannerRef = useRef(null);
@@ -214,6 +215,8 @@ export default function SubirJuego() {
       if (setListado && data.datos) {
         setListado([...listado, data.datos]);
       }
+
+      await fetchJuegos(true);
 
       showMessage("Juego creado exitosamente", "success");
       navigate("/studio-panel");
