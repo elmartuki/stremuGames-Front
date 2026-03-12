@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../../css/studioPanel.css";
 import editIcon from "../../icons/edit.svg";
 import deleteIcon from "../../icons/delete.svg";
@@ -8,26 +8,13 @@ import { useObtenerJuegosParthner } from "../../services/obtenerJuegosParthner.j
 
 export default function ListadoDeJuegos() {
   const { listado, loading, handleEliminar } = useObtenerJuegosParthner();
-  const [juegosLocal, setJuegosLocal] = useState([]);
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (listado) {
-      setJuegosLocal(listado);
-    }
-  }, [listado]);
-
-  const onEliminar = async (id) => {
-    setJuegosLocal((prev) => prev.filter((juego) => juego._id !== id));
-    await handleEliminar(id);
-  };
-
-  if (loading && juegosLocal.length === 0) return <></>;
+  if (loading && listado.length === 0) return <></>;
 
   return (
     <>
-      {juegosLocal?.map((juego, index) => {
+      {listado?.map((juego, index) => {
         const { titulo, imagenPortada, descargasTotales, precioBase, _id } =
           juego;
 
@@ -62,7 +49,7 @@ export default function ListadoDeJuegos() {
                 </button>
                 <button
                   onClick={() => {
-                    onEliminar(_id);
+                    handleEliminar(_id);
                   }}
                 >
                   <img src={deleteIcon} alt="" />
