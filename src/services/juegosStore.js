@@ -8,14 +8,19 @@ export const useJuegoStore = create((set, get) => ({
   loading: false,
   cargado: false,
 
-  fetchJuegos: async (forzar = false) => {
-    if ((get().cargado || peticionEnCurso) && !forzar) return;
+  fetchJuegos: async () => {
+    if (peticionEnCurso) return;
 
     peticionEnCurso = true;
-    set({ loading: true });
+
+    if (!get().cargado) {
+      set({ loading: true });
+    }
 
     try {
-      const { data } = await clientAxios.get("/juegos/");
+      const { data } = await clientAxios.get(
+        `/juegos/?t=${new Date().getTime()}`,
+      );
       set({ listado: data.datos, cargado: true });
     } catch (error) {
       console.error(error);
@@ -33,4 +38,9 @@ export const useJuegoStore = create((set, get) => ({
   },
 
   setListado: (nuevoListado) => set({ listado: nuevoListado }),
+
+  eliminarJuegoDelListado: (id) => {
+    const nuevoListado = get().listado.filter((j) => j._id !== id);
+    set({ listado: nuevoListado });
+  },
 }));
