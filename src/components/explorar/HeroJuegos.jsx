@@ -14,6 +14,9 @@ export default function HeroJuegos({ filtrar }) {
   const navigate = useNavigate();
 
   const idUsuarioActual = JSON.parse(localStorage.getItem("usuario"))?.id;
+  const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const esRestringido =
+    usuarioData?.rol === "admin" || usuarioData?.rol === "empresa";
 
   const juegosParaMostrar = useMemo(() => {
     return listado
@@ -76,6 +79,13 @@ export default function HeroJuegos({ filtrar }) {
 
   const handleComprar = async (e) => {
     e.stopPropagation();
+
+    if (esRestringido) {
+      return showMessage(
+        "Los Administradores y Empresas no pueden realizar compras.",
+        "error",
+      );
+    }
     if (loadingAction || !juegoActual) return;
     setLoadingAction(true);
     try {
@@ -132,7 +142,13 @@ export default function HeroJuegos({ filtrar }) {
             </p>
 
             <div className="btn_container">
-              <button onClick={handleComprar} disabled={loadingAction}>
+              <button
+                onClick={handleComprar}
+                disabled={loadingAction || esRestringido}
+                style={
+                  esRestringido ? { opacity: 0.5, cursor: "not-allowed" } : {}
+                }
+              >
                 {loadingAction ? "Cargando..." : "Comprar Ahora"}
               </button>
 

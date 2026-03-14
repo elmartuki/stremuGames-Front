@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet, useLocation } from "react-router-dom";
+import { Route, Routes, Outlet, useLocation, Navigate } from "react-router-dom";
 import EditarJuego from "../components/partners/EditarJuego.jsx";
 import SubirJuego from "../components/partners/SubirJuego.jsx";
 import ExplorarPage from "../pages/ExplorarPage.jsx";
@@ -40,10 +40,18 @@ import SobreNosotrosPage from "../pages/SobreNosotrosPage.jsx";
 
 export default function AppRouter() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
+  const location = useLocation();
+  const getAuthData = () => {
+    const user = JSON.parse(localStorage.getItem("usuario"));
+    return {
+      user,
+      esRestringido: user?.rol === "admin" || user?.rol === "empresa",
+    };
+  };
+
+  const { user, esRestringido } = getAuthData();
 
   const LayoutGlobal = () => {
-    const location = useLocation();
-
     const ocultarEnMovil = [
       "/perfil",
       "/carrito",
@@ -219,10 +227,14 @@ export default function AppRouter() {
           <Route
             path="/carrito"
             element={
-              <>
-                <CarritoPage />
-                {!isDesktop && <Footer />}
-              </>
+              esRestringido ? (
+                <Navigate to="/" replace />
+              ) : (
+                <>
+                  <CarritoPage />
+                  {!isDesktop && <Footer />}
+                </>
+              )
             }
           />
           <Route
