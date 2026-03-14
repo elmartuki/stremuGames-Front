@@ -36,6 +36,10 @@ export default function DetallesJuegoPage() {
   const [contadorLikes, setContadorLikes] = useState(0);
   const [loadingAction, setLoadingAction] = useState(false);
 
+  const usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+  const esRestringido =
+    usuarioActual?.rol === "admin" || usuarioActual?.rol === "empresa";
+
   useEffect(() => {
     if (!juego) return;
 
@@ -86,6 +90,13 @@ export default function DetallesJuegoPage() {
 
   const handleCarrito = async (juegoId) => {
     try {
+      if (esRestringido) {
+        return showMessage(
+          "Los Administradores y Empresas no pueden realizar compras.",
+          "error",
+        );
+      }
+
       const response = await clientAxios.post(`/carrito/${juegoId}`);
       if (response.status === 200) {
         showMessage(`${response.data.message}.`, "success");
@@ -181,7 +192,19 @@ export default function DetallesJuegoPage() {
               <div className="juego_acciones">
                 <button
                   onClick={() => handleCarrito(juego._id)}
+                  disabled={loadingAction || esRestringido}
                   className="btn_comprar"
+                  style={
+                    esRestringido
+                      ? {
+                          opacity: 0.5,
+                          padding: "5px",
+                          borderRadius: "10px",
+                          fontSize: "15px",
+                          cursor: "not-allowed",
+                        }
+                      : {}
+                  }
                 >
                   Añadir al carrito <img src={shop} alt="" />
                 </button>

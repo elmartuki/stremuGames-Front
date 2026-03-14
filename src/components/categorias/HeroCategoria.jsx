@@ -18,6 +18,9 @@ export default function HeroCategoria() {
   const showMessage = useMessageStore((state) => state.showMessage);
 
   const idUsuarioActual = JSON.parse(localStorage.getItem("usuario"))?.id;
+  const usuarioData = JSON.parse(localStorage.getItem("usuario"));
+  const esRestringido =
+    usuarioData?.rol === "admin" || usuarioData?.rol === "empresa";
 
   const juegosParaMostrar = useMemo(() => {
     if (!listado) return [];
@@ -119,7 +122,12 @@ export default function HeroCategoria() {
 
   const handleComprar = async (e) => {
     e.stopPropagation();
-
+    if (esRestringido) {
+      return showMessage(
+        "Los Administradores y Empresas no pueden realizar compras.",
+        "error",
+      );
+    }
     if (loadingAction || !juegoActual) return;
     setLoadingAction(true);
 
@@ -176,9 +184,19 @@ export default function HeroCategoria() {
 
           <div className="hero_buttons">
             <button
-              className="btn_comprar"
-              disabled={loadingAction}
               onClick={handleComprar}
+              disabled={loadingAction || esRestringido}
+              style={
+                esRestringido
+                  ? {
+                      opacity: 0.5,
+                      padding: "5px",
+                      borderRadius: "10px",
+                      fontSize: "15px",
+                      cursor: "not-allowed",
+                    }
+                  : {}
+              }
             >
               {loadingAction ? "Cargando..." : "Comprar Ahora"}
             </button>

@@ -21,6 +21,9 @@ export default function FavoritosPage() {
   const isDesktop = useMediaQuery("(min-width: 1025px)");
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
   const isExtraLargeScreen = useMediaQuery("(min-width: 1440px)");
+  const usuarioActual = JSON.parse(localStorage.getItem("usuario"));
+  const esRestringido =
+    usuarioActual?.rol === "admin" || usuarioActual?.rol === "empresa";
 
   const itemsPerPage = isExtraLargeScreen ? 12 : isLargeScreen ? 10 : 8;
 
@@ -225,12 +228,10 @@ export default function FavoritosPage() {
             </div>
             <h2 className="empty-title">LISTA DE DESEOS VACÍA</h2>
             <p className="empty-text">
-              Tu base de datos de deseos está vacía. Explora el catálogo para añadir títulos.
+              Tu base de datos de deseos está vacía. Explora el catálogo para
+              añadir títulos.
             </p>
-            <button
-              className="empty-cta-btn"
-              onClick={() => navigate("/")}
-            >
+            <button className="empty-cta-btn" onClick={() => navigate("/")}>
               EXPLORAR CATÁLOGO
             </button>
           </div>
@@ -251,7 +252,8 @@ export default function FavoritosPage() {
             </div>
             <h2 className="empty-title">DATOS NO ENCONTRADOS</h2>
             <p className="empty-text">
-              No hay coincidencias en tus registros para el término de búsqueda actual.
+              No hay coincidencias en tus registros para el término de búsqueda
+              actual.
             </p>
           </div>
         ) : (
@@ -308,6 +310,7 @@ export default function FavoritosPage() {
                           </div>
                           <button
                             className="btn-add-cart"
+                            style={esRestringido ? { display: "none" } : {}}
                             onClick={(e) => handleAgregarCarrito(e, juego._id)}
                             title="Agregar al carrito"
                           >
